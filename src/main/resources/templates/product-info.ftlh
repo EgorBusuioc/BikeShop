@@ -9,6 +9,9 @@
 <h1>AdminPage</h1>
 <h4>Товары</h4>
 <h4>Подробная информация о товаре</h4>
+<#list images as img>
+   <img src="/images/${img.id}" height="60px"/><br><br>
+</#list>
 <b>Название товара: </b>${product.title}<br>
 <b>Номер Артикля: </b>${product.article_number}</br>
 <b>Количество на складе: </b>${product.quantity_in_stock}

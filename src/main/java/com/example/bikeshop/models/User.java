@@ -22,7 +22,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(name = "phone_number")
-    private String phoneNumer;
+    private String phoneNumber;
 
     @Column(name = "name")
     private String name;
@@ -51,6 +51,9 @@ public class User implements UserDetails {
     }
 
     //security
+    public boolean isAdmin() {
+        return roles.contains(Role.ROLE_ADMIN);
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

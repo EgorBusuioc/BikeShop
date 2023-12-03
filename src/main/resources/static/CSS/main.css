@@ -1,0 +1,379 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --index: calc(1vw + 1vh);
+    --color-header: #f0f0f0;
+    --color-text:#f0f0f0;
+    --gallery-gap:  calc(var(--index) * 10)
+}
+.content, .main-header, .BikeShop__text, .gallery > * {
+	will-change: transform;
+}
+h1, h2, h3, h4, h5, h6, p {
+	font-family: menu-button;
+}
+
+@font-face{
+    font-family: menu-button;
+    src: url(../fonts/Montserrat-SemiBold.ttf);
+}
+@font-face{
+    font-family: BikeShop;
+    src: url(../fonts/brush\ script\ mt\ kursiv.ttf);
+}
+@font-face {
+	font-family: outfit-c;
+	src: url(../fonts/outfit-regular.woff2);
+}
+@font-face {
+    font-family: footer;
+    src: url(../fonts/Montserrat-Regular.ttf);
+}
+
+
+body{
+    background-color: #0f1116;
+    color: #f0f0f0;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+header {
+    height: 100vh;
+    background: linear-gradient(rgba(1, 3, 56, .8), rgba(1, 3, 56, .4)), url(../Images/Road-to-Trieste-DesktopHero.jpg);
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.header__container{
+    display: block;
+    margin: 0 50px;
+    max-height: 100vh;
+    max-width: 1500px;
+}
+
+.headers__of__header{
+    display: flex;
+}
+.burger {
+    position: relative;
+    display: inline-block;
+    z-index: 103;
+}
+
+.burger_menu{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    width: 17vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(#b9fcf7, #fafafa);
+    transition: 0.5s;
+    transform: translateX(-100%);
+}
+.burger_active {
+    transform: translateX(0%);
+}
+.bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #66FCF1;
+    margin: 6px 0;
+    transition: 0.4s;
+    border-radius: 3px;
+}
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+    background-color: #0B0C10;
+    position: relative;
+    z-index: 100;
+}
+.change .bar2 {
+    opacity: 0;
+}
+
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+    position: relative;
+    background-color: #0B0C10;
+    z-index: 100;
+}
+
+.menu__button{
+    position: relative;
+    padding-top: 56px;
+    padding-left: 21px;
+    font-size: 1.3em;
+    font-family: menu-button;
+    transition: 0.4s;
+    z-index: 300;
+    transition: 0.5s ease-in-out;
+    color: #fafafa;
+}
+.menu__button__active{
+    z-index: 300;
+    font-family: menu-button;
+    font-weight: bold;
+    color: black;
+}
+.menu-list {
+    display: flex;
+    height: 60%;
+    flex-direction: column;
+
+}
+.menu-list a{
+    color: black;
+    font-family: menu-button;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+/*Вывод фото*/
+.parent{
+    width: 17vw;
+    font-size: 1.1em;
+    font-weight: bold;
+    display: block;
+    border-bottom: 2px solid black;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
+.ancestor{
+    width: 14vw;
+    font-size: 1em;
+    display: block;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    position: relative;
+    left: 3vw;
+}
+.main__text__menu{
+    position: absolute;
+    top: 35vh;
+    left: 2vw;
+    font-family: menu-button;
+    text-transform: uppercase;
+    font-size: 9vh;
+}
+.text__menu{
+    padding: 1vh;
+    width: 30vw;
+    font-size:2vh;
+}
+
+.tooltip{
+    transition: .2s ease-in-out;
+}
+.tooltip:hover{
+    background-color: black;
+}
+.tooltip a:hover{
+    color: white;
+}
+.tooltip span{
+    width: 83vw;
+    height: 100vh;
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+    left: 17vw;
+    background: #fff;
+}
+ 
+.tooltip:hover span{
+visibility: visible;
+}
+
+.logo_menu{
+    font-family: BikeShop;
+    font-size: calc(2vh + 2vw);
+    color: black;
+    position: relative;
+    left: 20%;
+    bottom: -40%;
+}
+
+/*------------------------*/
+
+.item2{
+    position:absolute; 
+    right: 50%; 
+    left: 50%; 
+    width: 320px; 
+    margin-left: -160px; 
+    top: 5px;
+}
+.item{
+    transition: transform 0.2s ease-in-out;
+}
+.item:hover{
+    transform: scale(1.1);
+}
+.item3{
+    position: absolute; 
+    top: 54px; 
+    right: 130px;
+    transition: transform 0.2s ease-in-out;
+}
+.item4{
+    position: absolute; 
+    top: 54px; 
+    right: 50px;
+}
+.img1{
+    width: calc(var(--index) * 1.5);
+}
+.img2{
+    width: calc(var(--index) * 1.5);
+}
+
+.button__top__links{
+    transition: 0.3s;
+}
+.button__top__links:hover{
+    transform: scale(1.1);
+}
+.header__texts{
+    margin: auto;
+    display: block;
+    flex-direction: column;
+}
+
+.BikeShop__text{
+    padding-top: 120px;
+    font-family: BikeShop;
+    color:#66FCF1;
+    font-size: 170px;
+    text-align: center;
+}
+.hello__text{
+    margin: auto;
+    max-width: 690px;
+    font-family: menu-button;
+    color: #fafafa;
+    font-size: 25px;
+    text-align: center;
+}
+
+.very__beatiful__button{
+    padding-top: 7vh;
+}
+
+.shop__now {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -87px;
+    width: 174px;
+    font-family: menu-button;
+    background: none;
+    border: 3px solid #66FCF1;
+    color: #fafafa;
+    text-align: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    padding: 10px 25px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: .4s;
+}
+
+.shop__now:hover {
+    background: #66FCF1;
+    color: rgba(0, 0, 0);
+}
+
+.mouse__container {
+    padding-top: 7vh;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.field {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	width: 300px;
+}
+
+.mouse {
+	width: 35px;
+	height: 55px;
+	border: 3px solid #fafafa;
+	border-radius: 60px;
+	position: relative;
+}
+.mouse::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fafafa;
+    border-radius: 50%;
+    opacity: 1;
+    animation: wheel 2s infinite;
+    -webkit-animation: wheel 2s infinite;
+}
+
+@keyframes wheel {
+	to {
+		opacity: 0;
+		top: 90%;
+	}
+}
+
+@-webkit-keyframes wheel {
+	to {
+		opacity: 0;
+		top: 1%;
+	}
+}
+
+
+/*------------------------------------------*/
+/*-------------------main-------------------*/
+.container {
+	padding: 0 7vw;
+}
+.gallery{
+    display: flex ;
+    padding: calc(var(--index) * 11) 0;
+}
+.gallery > * {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.gallery__item{
+    max-width: calc(var(--index) * 21);
+    margin-bottom: var(--gallery-gap);
+}
+.text-block__h{
+    font-size: 3vw;
+}
+.text-block__p{
+    font-size: 1.3vw;
+}
+

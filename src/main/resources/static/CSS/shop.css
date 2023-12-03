@@ -1,0 +1,595 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --index: calc(1vw + 1vh);
+    --color-header: #f0f0f0;
+    --color-text:#f0f0f0;
+    --gallery-gap:  calc(var(--index) * 10)
+}
+.content, .main-header, .BikeShop__text, .gallery > * {
+	will-change: transform;
+}
+h1, h2, h3, h4, h5, h6, p {
+	font-family: menu-button;
+}
+
+@font-face{
+    font-family: menu-button;
+    src: url(../fonts/Montserrat-SemiBold.ttf);
+}
+@font-face{
+    font-family: BikeShop;
+    src: url(../fonts/brush\ script\ mt\ kursiv.ttf);
+}
+@font-face {
+	font-family: outfit-c;
+	src: url(../fonts/outfit-regular.woff2);
+}
+@font-face {
+    font-family: footer;
+    src: url(../fonts/Montserrat-Regular.ttf);
+}
+
+@font-face{
+    font-family: boldMont;
+    src: url(../fonts/Montserrat-Black.ttf);
+}
+
+body{
+    padding: 100px 0;
+    background-color: #fafafa;
+    color: #fafafa;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+header {
+    height: 15vh;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.header__container{
+    display: block;
+    margin: 0 50px;
+    max-height: 100vh;
+    max-width: 1500px;
+}
+
+.headers__of__header{
+    display: flex;
+}
+
+@keyframes fadeOut {
+    0% { background-color: #b9fcf7; }
+    100% { background-color: rgba(255, 255, 255, 0); }
+}
+
+.circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px 30px 30px 30px;
+    background-color: #b9fcf7;
+    top: 39px;
+    left: 37px;
+    position: absolute;
+    z-index: -1;
+}
+.circle_left{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px 30px 30px 30px;
+    background-color: #b9fcf7;
+    top: 39px;
+    right: 37px;
+    position: absolute;
+    z-index: -1;
+}
+.circle_active {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px 30px 30px 30px;
+    top: 39px;
+    left: 37px;
+    position: absolute;
+    z-index: 102;
+    background-color: rgba(255, 255, 255, 1);
+    animation: fadeOut 1s linear forwards;
+}
+
+/*Animated Burger Button*/
+.burger {
+    position: relative;
+    display: inline-block;
+    z-index: 103;
+}
+
+.burger_menu{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    width: 17vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(#b9fcf7, #fafafa);
+    transition: 0.5s;
+    transform: translateX(-100%);
+}
+.burger_active {
+    transform: translateX(0%);
+}
+.bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: black;
+    margin: 6px 0;
+    transition: 0.4s;
+    border-radius: 3px;
+}
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+    background-color: #0B0C10;
+    position: relative;
+    z-index: 100;
+}
+.change .bar2 {
+    opacity: 0;
+}
+
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+    position: relative;
+    background-color: #0B0C10;
+    z-index: 100;
+}
+
+.menu__button{
+    position: relative;
+    padding-top: 56px;
+    padding-left: 21px;
+    font-size: 1.3em;
+    font-family: menu-button;
+    transition: 0.4s;
+    z-index: 300;
+    transition: 0.5s ease-in-out;
+    color: rgba(255, 255, 255, 0);;
+}
+.menu__button__active{
+    z-index: 300;
+    font-family: menu-button;
+    font-weight: bold;
+    color: black;
+}
+.menu-list {
+    display: flex;
+    height: 60%;
+    flex-direction: column;
+
+}
+.menu-list a{
+    color: black;
+    font-family: menu-button;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+/*Вывод фото*/
+.parent{
+    width: 17vw;
+    font-size: 1.1em;
+    font-weight: bold;
+    display: block;
+    border-bottom: 2px solid black;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
+.ancestor{
+    width: 14vw;
+    font-size: 1em;
+    display: block;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    position: relative;
+    left: 3vw;
+}
+.main__text__menu{
+    position: absolute;
+    top: 35vh;
+    left: 2vw;
+    font-family: menu-button;
+    text-transform: uppercase;
+    font-size: 9vh;
+}
+.text__menu{
+    padding: 1vh;
+    width: 30vw;
+    font-size:2vh;
+}
+
+.tooltip{
+    transition: .2s ease-in-out;
+}
+.tooltip:hover{
+    background-color: black;
+}
+.tooltip a:hover{
+    color: white;
+}
+.tooltip span{
+    width: 83vw;
+    height: 100vh;
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+    left: 17vw;
+    background: #fff;
+}
+ 
+.tooltip:hover span{
+visibility: visible;
+}
+
+.logo_menu{
+    font-family: BikeShop;
+    font-size: calc(2vh + 2vw);
+    color: black;
+    position: relative;
+    left: 20%;
+    bottom: -40%;
+}
+
+/*------------------------*/
+.bikeshop__header{
+    display: inline-block;
+    width: 100vw;
+}
+.bikeshop__header__text{
+    position:absolute;
+    top: 20px;  
+    left: 43%; 
+    font-size: 5vw;
+    font-family: BikeShop;
+    
+}
+
+
+.shoppingcart{
+    padding-top: 49px;
+    position: absolute;
+    right: 40px;
+    border: none;
+    background-color: transparent;
+    transition: transform 0.2s ease-in-out;
+}
+.shoppingcart:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+
+.item2{
+    position:absolute; 
+    right: 50%; 
+    left: 50%; 
+    width: 320px; 
+    margin-left: -160px; 
+    top: 5px;
+}
+.item{
+    transition: transform 0.2s ease-in-out;
+}
+.item:hover{
+    transform: scale(1.1);
+}
+.item3{
+    position: absolute; 
+    top: 54px; 
+    right: 130px;
+    transition: transform 0.2s ease-in-out;
+}
+.item4{
+    position: absolute; 
+    top: 54px; 
+    right: 50px;
+}
+
+.img2{
+    width: calc(var(--index) * 1.8);
+}
+
+.button__top__links{
+    transition: 0.3s;
+}
+.button__top__links:hover{
+    transform: scale(1.1);
+}
+.header__texts{
+    display: flex;
+    flex-direction: column;
+}
+
+.BikeShop__text{
+    padding-top: 120px;
+    font-family: BikeShop;
+    color:#66FCF1;
+    font-size: 170px;
+    text-align: center;
+}
+
+
+
+/*------------------------------------------*/
+/*-------------------main-------------------*/
+
+.container{
+    display: block;
+    width: 100%;
+}
+
+
+.hero__selection img{
+    width: 100vw;
+    height: 85vh;
+}
+
+.hero__text{
+    position: absolute;
+    top: 30vh;
+    left: 2vw;
+    font-family: menu-button;
+    text-transform: uppercase;
+    font-size: 8vh;
+}
+
+.hero__text__little{
+    padding: 1vh;
+    width: 30vw;
+    font-size:2.3vh;
+}
+
+.product {
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+	border-radius: 4px;
+	padding: 20px;
+	padding-top: 9px;
+	font-size: 14px;
+	background-color: #f1f1f1;;
+    font-family: menu-button;
+}
+
+.product__image {
+	position: relative;
+	overflow: hidden;
+	display: block;
+	height: 162px;
+}
+
+.image-switch {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 20;
+	width: 100%;
+	height: 100%;
+	display: flex;
+}
+
+.image-switch__item {
+	flex-grow: 1;
+	cursor: pointer;
+}
+
+.image-switch__img {
+	position: absolute;
+	left: 50%;
+	top: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	transform: translateX(-50%);
+	pointer-events: none;
+	background-color: #f1f1f1;;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+}
+
+.image-switch__img img {
+	display: block;
+	max-width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.image-switch__item:first-child .image-switch__img {
+	opacity: 1;
+	z-index: -1;
+}
+
+.image-switch__item:hover .image-switch__img {
+	opacity: 1;
+	z-index: -1;
+}
+
+.image-pagination {
+	position: absolute;
+	z-index: 30;
+	left: 0;
+	bottom: 15px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.image-pagination__item {
+	display: block;
+	width: 7px;
+	height: 7px;
+	border-radius: 100%;
+	margin: 0 3px;
+	background-color: #c4c4c4;
+}
+
+.image-pagination__item--active {
+	background-color: #66FCF1;
+}
+
+.product__title {
+	margin-bottom: 8px;
+	font-weight: 400;
+	font-size: 20px;
+	line-height: 20px;
+	color: black;
+}
+
+.final__description{
+
+    position: absolute;
+    width: 395px;
+    height: 340px;
+    display: none;
+}
+
+.bold__text{
+    font-family: boldMont;
+}
+
+.light__text{
+    padding-bottom: 7%;
+}
+
+.classification{
+    position: absolute;
+    bottom: 0;
+    font-size: 2.4vw;
+    font-family: BikeShop;
+}
+
+.product__info {
+	margin-bottom: 17px;
+	font-size: 12px;
+	color: var(--color-light);
+}
+
+.product__term {
+	display: block;
+	margin-bottom: 7px;
+}
+
+.product__available {
+	display: block;
+}
+
+.product-price {
+	margin-bottom: 17px;
+	display: flex;
+	align-items: center;
+}
+
+.product-price__current {
+	margin-right: 12px;
+	font-size: 24px;
+}
+
+.product-price__old {
+	font-size: 12px;
+	text-decoration: line-through;
+}
+
+.product__btn {
+    margin-bottom: 10px;
+    font-family: menu-button;
+	border: none;
+	font-size: 17px;
+	padding: 14px 0;
+	border-radius: 25px;
+	width: 100%;
+	color: black;
+	background-color: #66FCF1;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+	cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.products__selection{
+    margin-top: 2%;
+}
+
+.container__of__products{
+    max-width: 1234px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+.product-grid{
+    grid-column: 3 span;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+}
+.product__btn__sort {
+    margin-bottom: 10px;
+    font-family: menu-button;
+	border: none;
+	font-size: 17px;
+	padding: 14px 0;
+	border-radius: 25px;
+	width: 100%;
+	color:#66FCF1;
+	background-color: black;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+	cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.product__btn__sort.active {
+    color: black;
+	background-color: #66FCF1;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.product__btn__sort:hover {
+    color: black;
+	background-color: #66FCF1;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.product__btn:hover {
+    color: white;
+	background-color: black;
+    transition: background-color 0.3s ease-in-out;
+}
+
+
+.sort__selection{
+    margin-top: 0.8%;
+}
+
+.container__of__sort{
+    max-width: 1234px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+.product-grid-sort{
+    grid-column: 3 span;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+}
+

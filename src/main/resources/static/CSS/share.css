@@ -1,0 +1,145 @@
+@font-face{
+    font-family: menu-button;
+    src: url(../fonts/Montserrat-SemiBold.ttf);
+}
+@font-face{
+    font-family: BikeShop;
+    src: url(../fonts/brush\ script\ mt\ kursiv.ttf);
+}
+
+
+  html, body {
+      font-family: menu-button;
+      font-size: 16px;
+      line-height: 1.3;
+      font-weight: 400;
+      letter-spacing: -.02em;
+      color: #111;
+      
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+      
+    *, *:before, *:after {
+      box-sizing: border-box;
+      }
+  }
+  
+  body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow-y: auto;
+  }
+  
+  main {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+  }
+
+  .text__selection{
+    margin-left: 2vh;
+    margin-top: 28vh;
+  }
+
+  .main__text{
+    color: white;
+    font-size: 4vw;
+    margin-bottom: 1vh;
+  }
+
+  .secondary__text{
+    color: white;
+    font-size: 1.3vw;
+  }
+  
+  section {
+      position: absolute;
+      height: 100vh;
+      width: 100%;
+      top: 0;
+      left: 0;
+      padding: 1rem;
+      
+      &:nth-child(1) {
+        background-image: url(../Images/shareGroup/1.jpg);
+        background-size: cover; /* Adjust as needed: cover, contain, or specific dimensions */
+        background-position: center; /* Adjust as needed: top, bottom, left, right, or specific position */
+        background-repeat: no-repeat;
+      }
+      &:nth-child(2) {
+        background-image: url(../Images/shareGroup/2.jpg);
+        background-size: cover; /* Adjust as needed: cover, contain, or specific dimensions */
+        background-position: center; /* Adjust as needed: top, bottom, left, right, or specific position */
+        background-repeat: no-repeat;
+      }
+      &:nth-child(3) {
+        background-image: url(../Images/shareGroup/4.jpg);
+        background-size: cover; /* Adjust as needed: cover, contain, or specific dimensions */
+        background-position: center; /* Adjust as needed: top, bottom, left, right, or specific position */
+        background-repeat: no-repeat;
+      }
+      
+      
+      &:not(:first-child) {
+          top: 100%;
+      }
+  }
+  
+  h1, h2 {
+      font-size: 18vw;
+      line-height: .8;
+  }
+ 
+
+.Contact-us{
+    margin-top: 7vh;
+    margin-left: 3vw;
+    margin-bottom: 7vh;
+    font-size: 3vw;
+    color: white;
+}
+
+.dates{
+    color: white;
+    font-size: 2vw;
+    padding-bottom: 3vh;
+}
+
+.links__decoration{
+  text-decoration: none;
+  display: block;
+  color: white;
+  transition: all 0.2s ease-in-out;
+}
+
+.links__decoration:hover{
+  color: #b9fcf7;
+}
+
+.mailto-link{
+        text-decoration: none;
+        color: inherit; 
+        transition: all 0.2s ease-in-out;
+}
+
+.mailto-link:hover{
+    color: #b9fcf7;
+}
+
+.bike___shop{
+    font-family: BikeShop;
+    text-decoration: none;
+    color: #b9fcf7;
+    position: absolute; 
+    left: 9vw;
+    bottom: 48.5vh;
+    font-size: 3vw;
+}
+
+a{
+    text-decoration: none;
+    color: #b9fcf7;
+}

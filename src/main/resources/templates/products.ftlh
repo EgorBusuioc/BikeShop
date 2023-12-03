@@ -17,6 +17,9 @@
 <#else>
     <a href="/login">Войти</a>
 </#if>
+<#if user.isAdmin()>
+    <a href="/admin">Панель администратора</a>
+</#if>
 <h4>Товары</h4>
 <form action="/" method="get">
     Поиск по названию объявления: <input type="text" name="title"><br>

@@ -1,21 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>BUYSELL</title>
+    <title>BikeShop</title>
+    <link rel="stylesheet" href="../static/CSS/login.css">
 </head>
 <body>
-<h1>BUYSELL</h1><hr>
-<h4>Регистрация</h4>
-<form action="/registration" method="post">
-    Имя пользователя: <input type="text" name="name"><br><br>
-    Эл. почта: <input type="email" name="email"><br><br>
-    Номер телефона: <input type="text" name="phoneNumber"><br><br>
-    Пароль: <input type="password" name="password"><br><br>
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Зарегистрироваться"/>
-</form>
-<#if errorMessage??>
-    <h2 style="color: red">${errorMessage}</h2>
-</#if>
+<div class="container_for_sign_in">
+    <div class="registration_header"></div>
+    <div class="login_form">
+        <div class="form_content">
+            <div class="BikeShop__text">BikeShop</div>
+            <div class="sign_in">Make your own Account</div>
+            <form action="/registration" method="post">
+                <input type="email" name="email" placeholder="Email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" class="input" required><br><br>
+                <#if errorMessage??>
+                   <div class="error">${errorMessage}</div>
+                </#if>
+                <input type="password" name="password" placeholder="Password" class="input"  id="password"
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 9 or more characters" required onkeyup='check();'><br><br>
+                <input type="password" placeholder="Confirm Password" class="input" id="confirm_password" onkeyup='check();' required><br><br>
+                <input type="text" name="name" placeholder="Name" class="input" required><br><br>
+                <input type="text" name="surname" placeholder="Surname" class="input" required><br><br>
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="submit" value="Sign Up" class="sign_in_btn"/>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
+
+<script>
+    var check = function() {
+        if (document.getElementById('password').value ==
+            document.getElementById('confirm_password').value) {
+            document.getElementById('password').style.borderColor = 'black';
+            document.getElementById('confirm_password').style.borderColor = 'black';
+            document.getElementById('password').style.borderWidth = '1px';
+            document.getElementById('confirm_password').style.borderWidth = '1px';
+        } else {
+            document.getElementById('password').style.borderColor = 'red';
+            document.getElementById('confirm_password').style.borderColor = 'red';
+            document.getElementById('password').style.borderWidth = '2px';
+            document.getElementById('confirm_password').style.borderWidth = '2px';
+        }
+    }
+</script>
 </html>

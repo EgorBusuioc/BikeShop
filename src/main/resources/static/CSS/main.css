@@ -240,6 +240,10 @@ visibility: visible;
 .img2{
     width: calc(var(--index) * 1.5);
 }
+.img3{
+    width: calc(var(--index) * 1.6);
+}
+
 
 .button__top__links{
     transition: 0.3s;

@@ -1,15 +1,13 @@
 package com.example.bikeshop.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class MainPageController {
+public class BuyADefaultBikeController {
 
-    @RequestMapping("/")
+    @RequestMapping("/buy-a-default-bike")
     public String getMainPage() {
-        return "index";
+        return "buy-a-default-bike";
     }
-
 }

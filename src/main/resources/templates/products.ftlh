@@ -2,11 +2,11 @@
 <html>
 
 <head>
-    <title>ADMINPAGE</title>
+    <title>BikeShop</title>
 </head>
 
 <body style="background-color: pink;">
-<h1>AdminPage</h1>
+<h1>ShoppingCart</h1>
 <#if user.email??>
     <h3>Здравствуйте, <i>${user.name}</i></h3>
     <hr>

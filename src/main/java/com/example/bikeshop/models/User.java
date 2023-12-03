@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Entity
@@ -27,12 +28,20 @@ public class User implements UserDetails {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "surname")
+    private String surname;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "country")
+    private String country;
+
     @Column(name = "active")
     private boolean active;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "image_id")
-    private Image avatar;
 
     @Column(name = "password", length = 1000)
     private String password;
@@ -45,11 +54,43 @@ public class User implements UserDetails {
     private List<Product> products = new ArrayList<>();
     private LocalDateTime dateOfCreated;
 
+    public void merge(User otherUser) {
+        if (otherUser.getEmail() != null) {
+            this.setEmail(otherUser.getEmail());
+        }
+        if (otherUser.getPhoneNumber() != null) {
+            this.setPhoneNumber(otherUser.getPhoneNumber());
+        }
+        if (otherUser.getName() != null) {
+            this.setName(otherUser.getName());
+        }
+        if (otherUser.getSurname() != null) {
+            this.setSurname(otherUser.getSurname());
+        }
+        if (otherUser.getAddress() != null) {
+            this.setAddress(otherUser.getAddress());
+        }
+        if (otherUser.getCity() != null) {
+            this.setCity(otherUser.getCity());
+        }
+        if (otherUser.getCountry() != null) {
+            this.setCountry(otherUser.getCountry());
+        }
+        this.setActive(otherUser.isActive());
+
+        if (otherUser.getPassword() != null) {
+            this.setPassword(otherUser.getPassword());
+        }
+    }
     @PrePersist
     private void init(){
         dateOfCreated = LocalDateTime.now();
     }
 
+    public String creationDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en"));
+        return dateOfCreated.format(formatter);
+    }
     //security
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN);

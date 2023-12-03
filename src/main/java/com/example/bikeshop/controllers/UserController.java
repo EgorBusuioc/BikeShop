@@ -8,14 +8,32 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
     @GetMapping("/login")
-    public String login() {
+    public String login(Principal principal, Model model, @RequestParam(name = "error", required = false) String error) {
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+
+        if (error != null) {
+            model.addAttribute("loginError", "The username or password is not correct");
+        }
         return "login";
+    }
+
+    @PostMapping("/update-user/{id}")
+    public String updateUser(@PathVariable("id") Long id, User updatedUser, Model model) {
+
+        userService.updateUser(updatedUser, id);
+        model.addAttribute("successMessage", "User updated successfully");
+
+        return "redirect:/login";
     }
 
     @GetMapping("/registration")
@@ -26,19 +44,10 @@ public class UserController {
     @PostMapping("/registration")
     public String createUser(User user, Model model) {
         if(!userService.createUser(user)) {
-            model.addAttribute("errorMessage", "Пользователь с email: (" + user.getEmail() + ") уже найден");
+            model.addAttribute("errorMessage", "User with email: (" + user.getEmail() + ") already exists");
             return "registration";
         }
         return "redirect:/login";
     }
-    @GetMapping("/user/{user}")
-    public String userInfo(@PathVariable("user") User user, Model model) {
-        model.addAttribute("user", user);
-        return "user-info";
-    }
 
-    @GetMapping("/hello")
-    public String securityUrl() {
-        return "hello";
-    }
 }

@@ -3,12 +3,17 @@ package com.example.bikeshop.sevices;
 import com.example.bikeshop.models.User;
 import com.example.bikeshop.models.enums.Role;
 import com.example.bikeshop.repositories.UserRepository;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -21,19 +26,33 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public boolean createUser(User user) {
         String email = user.getEmail();
         if (userRepository.findByEmail(user.getEmail()) != null) return false;
         user.setActive(true);
-//        if(user.getPassword().length() > 9 && containsUpperCase(user.getPassword()) && containsDigits(user.getPassword())) {
-//            user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
         log.info("Saving new User with email: {}", email);
         userRepository.save(user);
         return true;
+    }
+
+    @Transactional
+    public void updateUser(User updatedUser, Long id) {
+        User userInDatabase = userRepository.findById(id).orElse(null);
+
+        if (userInDatabase != null) {
+            userInDatabase.setAddress(updatedUser.getAddress());
+            userInDatabase.setCity(updatedUser.getCity());
+            userInDatabase.setCountry(updatedUser.getCountry());
+            userInDatabase.setPhoneNumber(updatedUser.getPhoneNumber());
+
+
+            User mergedUser = entityManager.merge(userInDatabase);
+        }
     }
 
     public List<User> list() {
@@ -54,6 +73,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public User getUserByPrincipal(Principal principal) {
+        if (principal == null) return new User();
+        return userRepository.findByEmail(principal.getName());
+    }
+
     public void changeUserRoles(User user, Map<String, String> form) {
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
@@ -67,13 +91,4 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private static boolean containsUpperCase(String str) {
-
-        return !str.equals(str.toLowerCase());
-    }
-
-    private static boolean containsDigits(String str) {
-
-        return str.matches(".*\\d.*");
-    }
 }

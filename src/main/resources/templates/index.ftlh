@@ -149,7 +149,7 @@
                 </div>
 
                 <div class="very__beatiful__button">
-                    <a href="/buy-a-default-bike" class="shop__now">shop now</a>
+                    <a href="/default-bike" class="shop__now">shop now</a>
                 </div>
                 <div>
                     <div data-lag=".4" class="mouse__container">

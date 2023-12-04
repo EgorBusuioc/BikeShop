@@ -50,38 +50,11 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Product> products = new ArrayList<>();
     private LocalDateTime dateOfCreated;
 
-    public void merge(User otherUser) {
-        if (otherUser.getEmail() != null) {
-            this.setEmail(otherUser.getEmail());
-        }
-        if (otherUser.getPhoneNumber() != null) {
-            this.setPhoneNumber(otherUser.getPhoneNumber());
-        }
-        if (otherUser.getName() != null) {
-            this.setName(otherUser.getName());
-        }
-        if (otherUser.getSurname() != null) {
-            this.setSurname(otherUser.getSurname());
-        }
-        if (otherUser.getAddress() != null) {
-            this.setAddress(otherUser.getAddress());
-        }
-        if (otherUser.getCity() != null) {
-            this.setCity(otherUser.getCity());
-        }
-        if (otherUser.getCountry() != null) {
-            this.setCountry(otherUser.getCountry());
-        }
-        this.setActive(otherUser.isActive());
-
-        if (otherUser.getPassword() != null) {
-            this.setPassword(otherUser.getPassword());
-        }
-    }
     @PrePersist
     private void init(){
         dateOfCreated = LocalDateTime.now();

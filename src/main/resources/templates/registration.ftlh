@@ -10,7 +10,7 @@
     <div class="login_form">
         <div class="form_content">
             <div class="BikeShop__text">BikeShop</div>
-            <div class="sign_in">Make your own Account</div>
+            <div class="sign_in">Create your own Account</div>
             <form action="/registration" method="post">
                 <input type="email" name="email" placeholder="Email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" class="input" required><br><br>
                 <#if errorMessage??>

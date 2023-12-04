@@ -3,8 +3,12 @@ package com.example.bikeshop.sevices;
 import com.example.bikeshop.models.Image;
 import com.example.bikeshop.models.Product;
 import com.example.bikeshop.models.User;
+import com.example.bikeshop.models.enums.BikeCategory;
+import com.example.bikeshop.models.enums.Role;
+import com.example.bikeshop.repositories.ImageRepository;
 import com.example.bikeshop.repositories.ProductRepository;
 import com.example.bikeshop.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,16 +27,20 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+
     public List<Product> listProducts(String title) {
         if (title != null) return productRepository.findByTitle(title);
         return productRepository.findAll();
     }
 
-    public void saveProduct(Principal principal, Product product, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException {
+    @Transactional
+    public void saveProduct(Principal principal, Product product, MultipartFile file1, MultipartFile file2, MultipartFile file3, MultipartFile file4, MultipartFile file5) throws IOException {
         product.setUser(getUserByPrincipal(principal));
         Image image1;
         Image image2;
         Image image3;
+        Image image4;
+        Image image5;
         if (file1.getSize() != 0) {
             image1 = toImageEntity(file1);
             image1.setPreviewImage(true);
@@ -46,8 +54,16 @@ public class ProductService {
             image3 = toImageEntity(file3);
             product.addImageToProduct(image3);
         }
+        if (file4.getSize() != 0) {
+            image4 = toImageEntity(file4);
+            product.addImageToProduct(image4);
+        }
+        if (file5.getSize() != 0) {
+            image5 = toImageEntity(file5);
+            product.addImageToProduct(image5);
+        }
 
-        log.info("Saving new {}", product);
+        log.info("Saving new {}", product.getTitle());
         Product productFromDb = productRepository.save(product);
         productFromDb.setPreviewImageId(productFromDb.getImages().get(0).getId());
         productRepository.save(product);

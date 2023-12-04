@@ -36,10 +36,4 @@ public class AdminController {
         model.addAttribute("roles", Role.values());
         return "user-edit";
     }
-
-    @PostMapping("/admin/user/edit")
-    public String userEdit(@RequestParam("userId") User user, @RequestParam Map<String, String> form) {
-        userService.changeUserRoles(user, form);
-        return "redirect:/admin";
-    }
 }

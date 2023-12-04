@@ -45,11 +45,18 @@ public class UserService {
         User userInDatabase = userRepository.findById(id).orElse(null);
 
         if (userInDatabase != null) {
-            userInDatabase.setAddress(updatedUser.getAddress());
-            userInDatabase.setCity(updatedUser.getCity());
-            userInDatabase.setCountry(updatedUser.getCountry());
-            userInDatabase.setPhoneNumber(updatedUser.getPhoneNumber());
-
+            if(!updatedUser.getAddress().equals("")){
+                userInDatabase.setAddress(updatedUser.getAddress());
+            }
+            if(!updatedUser.getCity().equals("")){
+                userInDatabase.setCity(updatedUser.getCity());
+            }
+            if(!updatedUser.getCountry().equals("")){
+                userInDatabase.setCountry(updatedUser.getCountry());
+            }
+            if(!updatedUser.getPhoneNumber().equals("")){
+                userInDatabase.setPhoneNumber(updatedUser.getPhoneNumber());
+            }
 
             User mergedUser = entityManager.merge(userInDatabase);
         }
@@ -77,18 +84,4 @@ public class UserService {
         if (principal == null) return new User();
         return userRepository.findByEmail(principal.getName());
     }
-
-    public void changeUserRoles(User user, Map<String, String> form) {
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-        user.getRoles().clear();
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
-            }
-        }
-        userRepository.save(user);
-    }
-
 }

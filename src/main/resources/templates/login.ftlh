@@ -108,7 +108,4 @@
     </div>
 </#if>
 </body>
-<style>
-
-</style>
 </html>

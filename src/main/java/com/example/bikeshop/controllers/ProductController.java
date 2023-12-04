@@ -22,29 +22,16 @@ public class ProductController {
         return "products";
     }
 
-    @GetMapping("/product/type")
-    public String productType() {
-        return "redirect:/product-add-bike";
-    }
-
-    @GetMapping("/product/{id}")
-    public String productInfo(@PathVariable Long id, Model model) {
-        Product product = productService.getProductById(id);
-        model.addAttribute("product", productService.getProductById(id));
-        model.addAttribute("images", product.getImages());
-        return "product-info";
-    }
-
     @PostMapping("/product/create")
     public String createProduct(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2,
-                                @RequestParam("file3") MultipartFile file3, Product product, Principal principal) throws IOException {
-        productService.saveProduct(principal, product, file1, file2, file3);
-        return "redirect:/";
+                                @RequestParam("file3") MultipartFile file3, @RequestParam("file4") MultipartFile file4, @RequestParam("file5") MultipartFile file5, Product product, Principal principal) throws IOException {
+        productService.saveProduct(principal, product, file1, file2, file3, file4, file5);
+        return "redirect:/admin";
     }
 
     @PostMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return "redirect:/";
+        return "redirect:/product";
     }
 }

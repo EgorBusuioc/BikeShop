@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Controller
@@ -53,7 +54,6 @@ public class ShoppingCartController {
     public String shoppingCart(@RequestParam(name = "title", required = false) String title, Principal principal, Model model, User user) {
         model.addAttribute("products", shoppingCartService.listProductsShoppingCart(title));
         model.addAttribute("user", productService.getUserByPrincipal(principal));
-        model.addAttribute("products_from_shop", productService.listProducts(title));
         return "shopping";
     }
 

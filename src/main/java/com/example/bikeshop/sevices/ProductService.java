@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +23,10 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
-
     public List<Product> listProducts(String title) {
         if (title != null) return productRepository.findByTitle(title);
         return productRepository.findAll();
     }
-
     @Transactional
     public void saveProduct(Principal principal, Product product, MultipartFile file1, MultipartFile file2, MultipartFile file3, MultipartFile file4, MultipartFile file5) throws IOException {
         product.setUser(getUserByPrincipal(principal));

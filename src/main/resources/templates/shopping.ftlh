@@ -19,33 +19,26 @@
                 <tr>
                     <th>Title</th>
                     <th>Type</th>
-                    <th>Article Number</th>
                     <th>Price</th>
                     <th>Discount</th>
-                    <th>Fork</th>
-                    <th>Frame</th>
-                    <th>Swat</th>
-                    <th>Cassete</th>
-                    <th>Brakes</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
                     <th>Delete</th>
                     <th>Creation Date</th>
                 </tr>
                 </thead>
                 <tbody>
                 <#list products as production>
-                    <#list products_from_shop as product>
                         <#if production.getUser().id == user.id>
-                            <tr <#if product_index % 2 == 0>class="active-row"</#if>>
-                                <td>${product.title}</td>
-                                <td><#list product.bikeCategories as category>${category}</#list></td>
-                                <td>${product.article_number}</td>
-                                <td>${product.price}</td>
-                                <td><#if product.discount?has_content>${product.discount}<#else>-</#if></td>
-                                <td>${product.fork}</td>
-                                <td>${product.frame}</td>
-                                <td>${product.swat}</td>
-                                <td>${product.cassete}</td>
-                                <td>${product.brakes}</td>
+                            <tr <#if production_index % 2 == 0>class="active-row"</#if>>
+                                <td>${production.product.title}</td>
+                                <td><#list production.product.bikeCategories as category>${category}</#list></td>
+                                <td>${production.product.price}</td>
+                                <td><#if production.product.discount?has_content>${production.product.discount}<#else>-</#if></td>
+                                <td>${production.user.name}</td>
+                                <td><#if production.user.address?has_content>${production.user.address}<#else>-</#if></td>
+                                <td><#if production.user.phoneNumber?has_content>${production.user.phoneNumber}<#else>-</#if></td>
                                 <td>
                                     <form action="/shopping_cart/delete/${production.id}" method="post">
                                         <input type="hidden" name="_csrf" value="${_csrf.token}">
@@ -55,8 +48,6 @@
                                 <td>${production.creationDate()}</td>
                             </tr>
                         </#if>
-                    </#list>
-
                 </#list>
                 </tbody>
             </table>

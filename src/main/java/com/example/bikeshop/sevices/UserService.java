@@ -3,7 +3,6 @@ package com.example.bikeshop.sevices;
 import com.example.bikeshop.models.User;
 import com.example.bikeshop.models.enums.Role;
 import com.example.bikeshop.repositories.UserRepository;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -11,14 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -47,17 +41,22 @@ public class UserService {
         if (userInDatabase != null) {
             if(!updatedUser.getAddress().equals("")){
                 userInDatabase.setAddress(updatedUser.getAddress());
+                log.info("Update {} with Adress: {}", userInDatabase.getEmail(), updatedUser.getAddress());
             }
             if(!updatedUser.getCity().equals("")){
                 userInDatabase.setCity(updatedUser.getCity());
+                log.info("Update {} with City: {}", userInDatabase.getEmail(), updatedUser.getCity());
             }
             if(!updatedUser.getCountry().equals("")){
                 userInDatabase.setCountry(updatedUser.getCountry());
+                log.info("Update {} with Country: {}", userInDatabase.getEmail(), updatedUser.getCountry());
             }
             if(!updatedUser.getPhoneNumber().equals("")){
                 userInDatabase.setPhoneNumber(updatedUser.getPhoneNumber());
+                log.info("Update {} with Phone Number: {}", userInDatabase.getEmail(), updatedUser.getPhoneNumber());
             }
 
+            log.info("User {} was updated", userInDatabase.getEmail());
             User mergedUser = entityManager.merge(userInDatabase);
         }
     }
@@ -71,10 +70,10 @@ public class UserService {
         if (user != null) {
             if (user.isActive()) {
                 user.setActive(false);
-                log.info("Ban user with id = {}; email: {}", user.getId(), user.getEmail());
+                log.info("Ban user with id: {}; email: {}", user.getId(), user.getEmail());
             } else {
                 user.setActive(true);
-                log.info("Unban user with id = {}; email: {}", user.getId(), user.getEmail());
+                log.info("Unban user with id: {}; email: {}", user.getId(), user.getEmail());
             }
         }
         userRepository.save(user);

@@ -35,12 +35,12 @@
                     <div class="burger_menu">
                         <a href="#" class="burger_active"></a>
                         <nav class="menu-list">
-                            <div class="tooltip"><a href="/buy-a-default-bike" class="parent">bikes</a><span><div
+                            <div class="tooltip"><a href="/default-bike" class="parent">bikes</a><span><div
                                             class="main__text__menu" style="top:40vh;">Bikes</div><img
                                             style="width: 83vw; height: 100vh;"
                                             src="../static/Images/work/Bikes.jpg"></span></div>
 
-                            <div class="tooltip"><a href="HTML/ShopAMoutainBike.html"
+                            <div class="tooltip"><a href="/mountain-bike"
                                                     class="ancestor">mountain</a><span>
                             <div class="main__text__menu">Mountain <br>bikes
                                 <div class="text__menu">We’re drawn to the trail for all sorts of reasons, whether it’s to chase that rush of speed, to push our limits, or to simply
@@ -51,7 +51,7 @@
                             <img style="width: 83vw; height: 100vh;" src="../static/Images/work/MTB-hero.jpg"></span>
                             </div>
 
-                            <div class="tooltip"><a href="HTML/ShopARoadBike.html" class="ancestor">road</a><span>
+                            <div class="tooltip"><a href="/road-bike" class="ancestor">road</a><span>
                             <div class="main__text__menu" style="top: 40vh">ROAD BIKES
                                 <div class="text__menu">
                                     Whether it’s the alpine passes of the Tour or the rolling gravel roads outside of town,
@@ -61,7 +61,7 @@
                             <img style="width: 83vw; height: 100vh;" src="../static/Images/work/Road.jpg"></span>
                             </div>
 
-                            <div class="tooltip"><a href="HTML/ShopAActiveBike.html" class="ancestor">active</a><span>
+                            <div class="tooltip"><a href="/active-bike" class="ancestor">active</a><span>
                             <div class="main__text__menu" style="top: 40vh">Active
                                 <div class="text__menu">
                                     From light hill-climbers to pedal-assist bikes that’ll flatten hills for you, our Fitness Bikes
@@ -71,7 +71,7 @@
                             <img style="width: 83vw; height: 100vh;" src="../static/Images/work/Active.jpg"></span>
                             </div>
 
-                            <div class="tooltip"><a href="HTML/ShopATurboBike.html" class="ancestor">turbo-e</a><span>
+                            <div class="tooltip"><a href="/turbo-bike" class="ancestor">turbo-e</a><span>
                             <div class="main__text__menu" style="color:rgb(0, 0, 0); left: 50vw;">It's You, <br>Only Faster
                                 <div class="text__menu" style="color:rgb(35, 35, 35);">
                                     Since 1974, we’ve had one goal: Innovate and inspire to improve riders’ lives. So, when we developed our first electric bike in 2009,
@@ -82,24 +82,7 @@
                             <img style="width: 83vw; height: 100vh;" src="../static/Images/work/electro.jpg"></span></a>
                             </div>
 
-                            <div class="tooltip"><a href="HTML/Equipment.html" class="parent">equipment</a><span>
-                            <div class="main__text__menu" style="top: 44vh; color: black;">equipment
-                                <div class="text__menu">
-                                </div>
-                            </div>
-                            <img style="width: 83vw; height: 100vh;"
-                                 src="../static/Images/work/equipment1.jpg"></span></a>
-                            </div>
-
-                            <div class="tooltip"><a href="HTML/Component.html" class="parent">components</a><span>
-                            <div class="main__text__menu" style="top: 40vh;">Bike <br>Components
-                                <div class="text__menu">
-                                </div>
-                            </div>
-                            <img style="width: 83vw; height: 100vh;" src="../static/Images/work/comp11.jpg"></span></a>
-                            </div>
-
-                            <div class="tooltip"><a href="HTML/ShopASWorksBike.html" class="parent">s-works</a><span>
+                            <div class="tooltip"><a href="/sworks-bike" class="parent">s-works</a><span>
                             <div class="main__text__menu" style="top: 40vh;">S-Works <br>Bikes
                                 <div class="text__menu">
                                     Innovate or Die. <br>Three words behind every design<br> decision we make.
@@ -131,8 +114,8 @@
                         </a>
                     </div>
                     <div class="item item4">
-                        <a href="/product">
-                            <img class="img2" src="../static/Images/share.png">
+                        <a href="/shopping_cart">
+                            <img class="img2" src="../static/Images/shoppingcart-blue.png">
                         </a>
                     </div>
                 </div>

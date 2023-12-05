@@ -49,6 +49,9 @@
                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                 <input type="submit" value="Delete" class="table_btn">
                             </form>
+                            <#if deleteProductError??>
+                                <div class="error">${deleteProductError}</div>
+                            </#if>
                         </td>
                         <td>${product.creationDate()}</td>
                     </tr>

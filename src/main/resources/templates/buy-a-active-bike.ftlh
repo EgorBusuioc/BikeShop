@@ -58,7 +58,8 @@
                                                 machines and do-it-all trail bikes to gravity-racing speed sleds.
                                             </div>
                                         </div>
-                                        <img style="width: 83vw; height: 100vh;" src="../static/Images/work/MTB-hero.jpg">
+                                        <img style="width: 83vw; height: 100vh;"
+                                             src="../static/Images/work/MTB-hero.jpg">
                                     </span>
                             </div>
 
@@ -103,7 +104,8 @@
                                                 Faste
                                             </div>
                                         </div>
-                                        <img style="width: 83vw; height: 100vh;" src="../static/Images/work/electro.jpg">
+                                        <img style="width: 83vw; height: 100vh;"
+                                             src="../static/Images/work/electro.jpg">
                                     </span></a>
                             </div>
 
@@ -114,7 +116,8 @@
                                                 make.
                                             </div>
                                         </div>
-                                        <img style="width: 83vw; height: 100vh;" src="../static/Images/work/s-works.jpg">
+                                        <img style="width: 83vw; height: 100vh;"
+                                             src="../static/Images/work/s-works.jpg">
                                     </span></a>
                             </div>
 
@@ -148,16 +151,10 @@
         <main>
             <div class="container">
                 <div class="hero__selection">
-                    <div class="hero__text">Shaped by the <br>Fastest Riders <br>on Earth
-                        <div class="hero__text__little">When races are won and lost by fractions of a second,
-                            riders get particular about their bikes. Which explains why we spent years field-testing
-                            prototypes,
-                            nerd’ing out on the R&D, and testing various wheel and geometry setups in World Cup
-                            events. It might seem excessive,
-                            but when your R&D team has some of the best riders on earth, you listen. They know fast.
-                        </div>
-                    </div>
-                    <img src="../static/Images/work/heroselectionbikes.jpg">
+                    <div class="hero__text" style="padding-top: 120px; left: 1vw;;">Active<br> Bikes
+                    </div style="pointer-events: none;">
+                    <iframe src="https://www.youtube.com/embed/Pcc7ma4yqWg?modestbranding=1&amp;controls=0&amp;disablekb=1&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;loop=1&amp;mute=1&amp;playlist=Pcc7ma4yqWg" frameborder="0"  allowfullscreen style="width: 100%; height: 116vh; pointer-events: none;"></iframe>
+
                 </div>
             </div>
 
@@ -166,72 +163,77 @@
                     <div class="products-content grid-container">
                         <ul class="product-grid">
                             <#list products as product>
-                                <li class="product-grid__item dis">
-                                    <article class="product"
-                                             style="color: black; background-color: #f1f1f1; margin: auto;">
-                                        <div class="final__description">
-                                            <div class="bold__text">FRAME:</div>
-                                            <div class="light__text">${product.frame}</div>
-                                            <div class="bold__text">FORK:</div>
-                                            <div class="light__text">${product.fork}</div>
-                                            <div class="bold__text">BRAKES:</div>
-                                            <div class="light__text">${product.brakes}</div>
-                                            <div class="bold__text">SWAT:</div>
-                                            <div class="light__text">${product.swat}</div>
-                                            <div class="bold__text">CASSETTE:</div>
-                                            <div class="light__text">${product.cassete}</div>
-                                            <div class="classification" style="padding-top: 8%;">
-                                                <#list product.bikeCategories as category>
-                                                    <#if category == "MOUNTAIN_BIKE">Mountain Bikes</#if>
-                                                    <#if category == "ACTIVE_BIKE">Active Bikes</#if>
-                                                    <#if category == "ROAD_BIKE">Road Bikes</#if>
-                                                    <#if category == "TURBO_E">Turbo-E Bikes</#if>
-                                                    <#if category == "S_WORKS">S-Works Bikes</#if>
-                                                </#list>
-                                            </div>
-                                        </div>
-                                        <a href="#" class="product__image">
-                                            <div class="product__switch image-switch">
-                                                <#list images as img>
-                                                    <#if product.getId() == img.product.getId()>
-                                                        <div class="image-switch__item">
-                                                            <div class="image-switch__img">
-                                                                <img src="/images/${img.id}">
-                                                            </div>
-                                                        </div>
-                                                    </#if>
-                                                </#list>
-                                            </div>
-                                            <ul class="product__image-pagination image-pagination" aria-hidden="true">
-                                            </ul>
-                                        </a>
+                                <#list product.bikeCategories as category>
+                                    <#if category == "ACTIVE_BIKE">
+                                        <li class="product-grid__item dis">
+                                            <article class="product"
+                                                     style="color: black; background-color: #f1f1f1; margin: auto;">
+                                                <div class="final__description">
+                                                    <div class="bold__text">FRAME:</div>
+                                                    <div class="light__text">${product.frame}</div>
+                                                    <div class="bold__text">FORK:</div>
+                                                    <div class="light__text">${product.fork}</div>
+                                                    <div class="bold__text">BRAKES:</div>
+                                                    <div class="light__text">${product.brakes}</div>
+                                                    <div class="bold__text">SWAT:</div>
+                                                    <div class="light__text">${product.swat}</div>
+                                                    <div class="bold__text">CASSETTE:</div>
+                                                    <div class="light__text">${product.cassete}</div>
+                                                    <div class="classification" style="padding-top: 8%;">
+                                                        <#list product.bikeCategories as category>
+                                                            <#if category == "MOUNTAIN_BIKE">Mountain Bikes</#if>
+                                                            <#if category == "ACTIVE_BIKE">Active Bikes</#if>
+                                                            <#if category == "ROAD_BIKE">Road Bikes</#if>
+                                                            <#if category == "TURBO_E">Turbo-E Bikes</#if>
+                                                            <#if category == "S_WORKS">S-Works Bikes</#if>
+                                                        </#list>
+                                                    </div>
+                                                </div>
+                                                <a href="#" class="product__image">
+                                                    <div class="product__switch image-switch">
+                                                        <#list images as img>
+                                                            <#if product.getId() == img.product.getId()>
+                                                                <div class="image-switch__item">
+                                                                    <div class="image-switch__img">
+                                                                        <img src="/images/${img.id}">
+                                                                    </div>
+                                                                </div>
+                                                            </#if>
+                                                        </#list>
+                                                    </div>
+                                                    <ul class="product__image-pagination image-pagination"
+                                                        aria-hidden="true">
+                                                    </ul>
+                                                </a>
 
-                                        <h3 class="product__title">
-                                            <a href="#"
-                                               style="text-decoration: none; color: black;">${product.title}</a>
-                                        </h3>
-                                        <div class="product__info">
-                                            <span class="product__term">Article number: ${product.article_number}</span>
-                                            <span class="product__available">In Stock: ${product.quantity_in_stock} pcs.</span>
-                                        </div>
-                                        <div class="product__price product-price">
-                                            <#if product.discount == ""><span
-                                                    class="product-price__current">${product.price} $</span>
-                                            <#else>
-                                                <span class="product-price__current">${product.discount} $</span>
-                                                <span class="product-price__old">${product.price} $</span>
-                                            </#if>
-                                        </div>
-                                        <form action="/add_to_cart/add/${product.getId()}" method="post">
-                                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                            <input type="submit" value="ADD TO CART" class="product__btn"/>
-                                        </form>
-                                        <div class="description"
-                                             style="text-align: center; cursor: pointer; height: 10%;">
-                                            DESCRIPTION
-                                        </div>
-                                    </article>
-                                </li>
+                                                <h3 class="product__title">
+                                                    <a href="#"
+                                                       style="text-decoration: none; color: black;">${product.title}</a>
+                                                </h3>
+                                                <div class="product__info">
+                                                    <span class="product__term">Article number: ${product.article_number}</span>
+                                                    <span class="product__available">In Stock: ${product.quantity_in_stock} pcs.</span>
+                                                </div>
+                                                <div class="product__price product-price">
+                                                    <#if product.discount == ""><span
+                                                            class="product-price__current">${product.price} $</span>
+                                                    <#else>
+                                                        <span class="product-price__current">${product.discount} $</span>
+                                                        <span class="product-price__old">${product.price} $</span>
+                                                    </#if>
+                                                </div>
+                                                <form action="/add_to_cart/add/${product.getId()}" method="post">
+                                                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                                    <input type="submit" value="ADD TO CART" class="product__btn"/>
+                                                </form>
+                                                <div class="description"
+                                                     style="text-align: center; cursor: pointer; height: 10%;">
+                                                    DESCRIPTION
+                                                </div>
+                                            </article>
+                                        </li>
+                                    </#if>
+                                </#list>
                             </#list>
                         </ul>
                     </div>

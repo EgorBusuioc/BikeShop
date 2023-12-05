@@ -1,7 +1,6 @@
 package com.example.bikeshop.models;
 
 import com.example.bikeshop.models.enums.BikeCategory;
-import com.example.bikeshop.models.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +17,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "title")
     private String title;
@@ -58,8 +57,8 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
     private List<Image> images = new ArrayList<>();
     private Long previewImageId;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
     private LocalDateTime dateOfCreated;
@@ -77,4 +76,5 @@ public class Product {
         image.setProduct(this);
         images.add(image);
     }
+
 }

@@ -7,17 +7,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @Controller
 @AllArgsConstructor
-public class BuyADefaultBikeController {
+public class BuyASworksBike {
     private final BuyADefaultBikeService buyADefaultBikeService;
     private final ImageRepository imageRepository;
 
-    @GetMapping("/default-bike")
+
+    @GetMapping("/sworks-bike")
     public String buyADefaultBike(Model model) {
         model.addAttribute("products", buyADefaultBikeService.productList());
         model.addAttribute("images", imageRepository.findAll());
-        return "buy-a-default-bike";
+        return "buy-a-sworks-bike";
     }
 }

@@ -28,18 +28,6 @@
             <div class="grid_item item2">
                 <div class="grid_container2">
                     <div class="info_text">
-                        Name
-                    </div>
-                    <div class="result_text">
-                        ${user.name}
-                    </div>
-                    <div class="info_text">
-                        Surname
-                    </div>
-                    <div class="result_text">
-                        ${user.surname}
-                    </div>
-                    <div class="info_text">
                         Email
                     </div>
                     <div class="result_text">
@@ -62,6 +50,12 @@
                     </div>
                     <div class="result_text">
                         <#if user.country?has_content>${user.country}<#else></#if>
+                    </div>
+                    <div class="info_text">
+                        Address
+                    </div>
+                    <div class="result_text">
+                        <#if user.country?has_content>${user.address}<#else></#if>
                     </div>
                     <div class="info_text">
                         Creation Date

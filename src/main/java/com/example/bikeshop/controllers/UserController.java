@@ -3,6 +3,7 @@ package com.example.bikeshop.controllers;
 import com.example.bikeshop.models.User;
 import com.example.bikeshop.sevices.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -29,15 +31,14 @@ public class UserController {
 
     @PostMapping("/update-user/{id}")
     public String updateUser(@PathVariable("id") Long id, User updatedUser, Model model) {
-
         userService.updateUser(updatedUser, id);
         model.addAttribute("successMessage", "User updated successfully");
-
         return "redirect:/login";
     }
 
     @GetMapping("/registration")
     public String registration() {
+
         return "registration";
     }
 

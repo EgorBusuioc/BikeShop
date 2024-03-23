@@ -2,7 +2,9 @@ package com.example.bikeshop.models;
 
 import com.example.bikeshop.models.enums.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,6 +15,8 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -38,28 +42,32 @@ public class User implements UserDetails {
     @Column(name = "active")
     private boolean active;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "creation_date")
+    private LocalDateTime creationDate;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime dateOfCreated;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ShoppingCart shoppingCart;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AdditionalInformation additionalInformation;
 
     @PrePersist
     private void init(){
-        dateOfCreated = LocalDateTime.now();
+        creationDate = LocalDateTime.now();
     }
 
     public String creationDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMMM/yyyy", new Locale("en"));
-        return dateOfCreated.format(formatter);
+        return creationDate.format(formatter);
     }
 
-    //security
+    //SecurityConfig
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN);
     }

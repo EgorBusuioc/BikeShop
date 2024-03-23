@@ -32,23 +32,23 @@ public class ShoppingCartController {
     private final ProductService productService;
     private final ShoppingCartService shoppingCartService;
 
-    @PostMapping("/add_to_cart/add/{id}")
-    public String addToCart(@PathVariable String id, Principal principal) {
-        long longValue = Long.parseLong(id.replace(".", ""));
-
-        User user = userRepository.findByEmail(principal.getName());
-        Product product = productRepository.findById(longValue).orElse(null);
-
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
-        shoppingCart.setProduct(product);
-        shoppingCart.setQuantity(1);
-        shoppingCart.setDateAdded(LocalDateTime.now());
-
-
-        shoppingCartRepository.save(shoppingCart);
-        return "redirect:/shopping_cart";
-    }
+//    @PostMapping("/add_to_cart/add/{id}")
+//    public String addToCart(@PathVariable String id, Principal principal) {
+//        long longValue = Long.parseLong(id.replace(".", ""));
+//
+//        User user = userRepository.findByEmail(principal.getName());
+//        Product product = productRepository.findById(longValue).orElse(null);
+//
+//        ShoppingCart shoppingCart = new ShoppingCart();
+//        shoppingCart.setUser(user);
+//        shoppingCart.setProduct(product);
+//        shoppingCart.setQuantity(1);
+//        shoppingCart.setDateAdded(LocalDateTime.now());
+//
+//
+//        shoppingCartRepository.save(shoppingCart);
+//        return "redirect:/shopping_cart";
+//    }
 
     @GetMapping("/shopping_cart")
     public String shoppingCart(@RequestParam(name = "title", required = false) String title, Principal principal, Model model, User user) {

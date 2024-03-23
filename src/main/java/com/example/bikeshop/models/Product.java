@@ -14,16 +14,14 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
-    private Long id;
+    private int productId;
 
     @Column(name = "title")
     private String title;
-
-    @Column(name = "article_number")
-    private String article_number;
 
     @Column(name = "quantity_in_stock")
     private String quantity_in_stock;
@@ -31,47 +29,30 @@ public class Product {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "discount")
-    private String discount;
-
-    @Column(name = "frame")
-    private String frame;
-
-    @Column(name = "fork")
-    private String fork;
-
-    @Column(name = "brakes")
-    private String brakes;
-
-    @Column(name = "swat")
-    private String swat;
-
-    @Column(name = "cassete")
-    private String cassete;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "creation_date")
+    private LocalDateTime creationDate;
 
     @ElementCollection(targetClass = BikeCategory.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "bike_category", joinColumns = @JoinColumn(name = "id"))
+    @CollectionTable(name = "bike_category", joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
     private Set<BikeCategory> bikeCategories = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Image> images = new ArrayList<>();
-    private Long previewImageId;
 
-    private LocalDateTime dateOfCreated;
     @PrePersist
     private void init(){
-        dateOfCreated = LocalDateTime.now();
+        creationDate = LocalDateTime.now();
     }
 
     public String creationDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en"));
-        return dateOfCreated.format(formatter);
+        return creationDate.format(formatter);
     }
 
     public void addImageToProduct(Image image) {
         image.setProduct(this);
         images.add(image);
     }
-
 }

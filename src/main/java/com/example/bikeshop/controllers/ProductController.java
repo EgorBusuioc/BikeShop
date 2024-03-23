@@ -35,23 +35,23 @@ public class ProductController {
 //        return "redirect:/admin";
 //    }
 
-    @PostMapping("/product/delete/{id}")
-    public String deleteProduct(@PathVariable String id, RedirectAttributes redirectAttributes) {
-        long longValue = Long.parseLong(id.replace(".", ""));
-        List<ShoppingCart> shoppingCartList = shoppingCartRepository.findAll();
-        ShoppingCart shoppingCart;
-        Product product;
-
-        for (int i = 0; i < shoppingCartList.size(); i++) {
-            shoppingCart = shoppingCartList.get(i);
-            product = shoppingCart.getProduct();
-            if(product.getId() == longValue){
-                redirectAttributes.addFlashAttribute("deleteProductError", "You cannot delete this product because it is in a shopping cart.");
-                return "redirect:/product";
-            }
-        }
-
-        productService.deleteProduct(longValue);
-        return "redirect:/product";
-    }
+//    @PostMapping("/product/delete/{id}")
+//    public String deleteProduct(@PathVariable String id, RedirectAttributes redirectAttributes) {
+//        long longValue = Long.parseLong(id.replace(".", ""));
+//        List<ShoppingCart> shoppingCartList = shoppingCartRepository.findAll();
+//        ShoppingCart shoppingCart;
+//        Product product;
+//
+//        for (int i = 0; i < shoppingCartList.size(); i++) {
+//            shoppingCart = shoppingCartList.get(i);
+//            product = shoppingCart.getProduct();
+//            if(product.getId() == longValue){
+//                redirectAttributes.addFlashAttribute("deleteProductError", "You cannot delete this product because it is in a shopping cart.");
+//                return "redirect:/product";
+//            }
+//        }
+//
+//        productService.deleteProduct(longValue);
+//        return "redirect:/product";
+//    }
 }

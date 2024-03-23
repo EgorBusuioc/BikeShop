@@ -16,8 +16,8 @@ import java.util.Set;
 @Entity
 @Table(name = "product_informaton")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductInformation {
 
     @Id

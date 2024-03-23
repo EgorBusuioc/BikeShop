@@ -61,16 +61,16 @@
             <div class="BikeShop__text">BikeShop</div>
             <div class="sign_in">Add New Product</div>
             <form action="/product/create" method="post" enctype="multipart/form-data">
-                <input type="text" name="title" placeholder="Model Name" class="input"/><br><br>
-                <input type="text" name="article_number" placeholder="Article Number" class="input"/><br><br>
-                <input type="text" name="quantity_in_stock" placeholder="Quantity" class="input"/><br><br>
-                <input type="number" name="price" placeholder="Price" class="input"/><br><br>
+                <input type="text" name="title" placeholder="Model Name" class="input" required/><br><br>
+                <input type="text" name="article_number" placeholder="Article Number" class="input" required/><br><br>
+                <input type="text" name="quantity_in_stock" placeholder="Quantity" class="input" required/><br><br>
+                <input type="number" name="price" placeholder="Price" class="input" required/><br><br>
                 <input type="number" name="discount" placeholder="Discount" class="input"/><br><br>
-                <input type="text" name="frame" placeholder="Frame" class="input"/><br><br>
-                <input type="text" name="fork" placeholder="Fork" class="input"/><br><br>
-                <input type="text" name="brakes" placeholder="Brakes" class="input"/><br><br>
-                <input type="text" name="swat" placeholder="Swat" class="input"/><br><br>
-                <input type="text" name="cassete" placeholder="Cassete" class="input"/><br><br>
+                <input type="text" name="frame" placeholder="Frame" class="input" required/><br><br>
+                <input type="text" name="fork" placeholder="Fork" class="input" required/><br><br>
+                <input type="text" name="brakes" placeholder="Brakes" class="input" required/><br><br>
+                <input type="text" name="swat" placeholder="Swat" class="input" required/><br><br>
+                <input type="text" name="cassete" placeholder="Cassete" class="input" required/><br><br>
                 <label class="result_text" style="font-size: 2.3vh">
                     <input type="radio" name="bikeCategories" value="MOUNTAIN_BIKE">
                     Mountain Bike

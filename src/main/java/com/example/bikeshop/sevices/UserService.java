@@ -34,50 +34,53 @@ public class UserService {
         return true;
     }
 
-    @Transactional
-    public void updateUser(User updatedUser, Long id) {
-        User userInDatabase = userRepository.findById(id).orElse(null);
-
-        if (userInDatabase != null) {
-            if(!updatedUser.getAddress().equals("")){
-                userInDatabase.setAddress(updatedUser.getAddress());
-                log.info("Update {} with Adress: {}", userInDatabase.getEmail(), updatedUser.getAddress());
-            }
-            if(!updatedUser.getCity().equals("")){
-                userInDatabase.setCity(updatedUser.getCity());
-                log.info("Update {} with City: {}", userInDatabase.getEmail(), updatedUser.getCity());
-            }
-            if(!updatedUser.getCountry().equals("")){
-                userInDatabase.setCountry(updatedUser.getCountry());
-                log.info("Update {} with Country: {}", userInDatabase.getEmail(), updatedUser.getCountry());
-            }
-            if(!updatedUser.getPhoneNumber().equals("")){
-                userInDatabase.setPhoneNumber(updatedUser.getPhoneNumber());
-                log.info("Update {} with Phone Number: {}", userInDatabase.getEmail(), updatedUser.getPhoneNumber());
-            }
-
-            log.info("User {} was updated", userInDatabase.getEmail());
-            User mergedUser = entityManager.merge(userInDatabase);
-        }
-    }
+//    @Transactional
+//    public void updateUser(User updatedUser, Long id) {
+//        User userInDatabase = userRepository.findById(id).orElse(null);
+//
+//        if (userInDatabase != null) {
+//            if(!updatedUser.getAddress().equals("")){
+//                userInDatabase.setAddress(updatedUser.getAddress());
+//                log.info("Update {} with Adress: {}", userInDatabase.getEmail(), updatedUser.getAddress());
+//            }
+//
+//            if(!updatedUser.getCity().equals("")){
+//                userInDatabase.setCity(updatedUser.getCity());
+//                log.info("Update {} with City: {}", userInDatabase.getEmail(), updatedUser.getCity());
+//            }
+//
+//            if(!updatedUser.getCountry().equals("")){
+//                userInDatabase.setCountry(updatedUser.getCountry());
+//                log.info("Update {} with Country: {}", userInDatabase.getEmail(), updatedUser.getCountry());
+//            }
+//
+//            if(!updatedUser.getPhoneNumber().equals("")){
+//                userInDatabase.setPhoneNumber(updatedUser.getPhoneNumber());
+//                log.info("Update {} with Phone Number: {}", userInDatabase.getEmail(), updatedUser.getPhoneNumber());
+//            }
+//
+//            log.info("User {} was updated", userInDatabase.getEmail());
+//            User mergedUser = entityManager.merge(userInDatabase);
+//        }
+//    }
 
     public List<User> list() {
         return userRepository.findAll();
     }
 
-    public void banUser(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        if (user != null) {
-            if (user.isActive()) {
-                user.setActive(false);
-                log.info("Ban user with id: {}; email: {}", user.getId(), user.getEmail());
-            } else {
-                user.setActive(true);
-                log.info("Unban user with id: {}; email: {}", user.getId(), user.getEmail());
-            }
-        }
-        userRepository.save(user);
-    }
+//    public void banUser(Long id) {
+//        User user = userRepository.findById(id).orElse(null);
+//        if (user != null) {
+//            if (user.isActive()) {
+//                user.setActive(false);
+//                log.info("Ban user with id: {}; email: {}", user.getId(), user.getEmail());
+//            } else {
+//                user.setActive(true);
+//                log.info("Unban user with id: {}; email: {}", user.getId(), user.getEmail());
+//            }
+//        }
+//        userRepository.save(user);
+//    }
 
     public User getUserByPrincipal(Principal principal) {
         if (principal == null) return new User();

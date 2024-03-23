@@ -19,10 +19,10 @@ public class AdminController {
         model.addAttribute("users", userService.list());
         return "admin";
     }
-    @PostMapping("/admin/user/ban/{id}")
-    public String userBan(@PathVariable("id") Long id) {
-        userService.banUser(id);
-        return "redirect:/admin";
-    }
+//    @PostMapping("/admin/user/ban/{id}")
+//    public String userBan(@PathVariable("id") Long id) {
+//        userService.banUser(id);
+//        return "redirect:/admin";
+//    }
 
 }

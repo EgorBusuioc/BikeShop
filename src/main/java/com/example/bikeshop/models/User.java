@@ -14,16 +14,11 @@ import java.util.*;
 @Table(name = "users")
 @Data
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    @Column(name = "email", unique = true)
-    private String email;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "user_id")
+    private int userId;
 
     @Column(name = "name")
     private String name;
@@ -31,28 +26,24 @@ public class User implements UserDetails {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "email", unique = true)
+    private String email;
 
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "country")
-    private String country;
-
-    @Column(name = "active")
-    private boolean active;
+    @Column(name = "login", unique = true)
+    private String login;
 
     @Column(name = "password", length = 1000)
     private String password;
+
+    @Column(name = "active")
+    private boolean active;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
-    private List<Product> products = new ArrayList<>();
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateOfCreated;
 
     @PrePersist
@@ -61,13 +52,15 @@ public class User implements UserDetails {
     }
 
     public String creationDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMMM/yyyy", new Locale("en"));
         return dateOfCreated.format(formatter);
     }
+
     //security
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN);
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

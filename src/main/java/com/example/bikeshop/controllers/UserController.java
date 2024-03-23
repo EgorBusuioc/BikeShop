@@ -26,15 +26,16 @@ public class UserController {
         if (error != null) {
             model.addAttribute("loginError", "The username or password is not correct");
         }
+
         return "login";
     }
-
-    @PostMapping("/update-user/{id}")
-    public String updateUser(@PathVariable("id") Long id, User updatedUser, Model model) {
-        userService.updateUser(updatedUser, id);
-        model.addAttribute("successMessage", "User updated successfully");
-        return "redirect:/login";
-    }
+//
+//    @PostMapping("/update-user/{id}")
+//    public String updateUser(@PathVariable("id") Long id, User updatedUser, Model model) {
+//        userService.updateUser(updatedUser, id);
+//        model.addAttribute("successMessage", "User updated successfully");
+//        return "redirect:/login";
+//    }
 
     @GetMapping("/registration")
     public String registration() {

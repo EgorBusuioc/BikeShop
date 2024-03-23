@@ -16,7 +16,7 @@ import java.util.*;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private int productId;
 
@@ -33,13 +33,11 @@ public class Product {
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
-    @ElementCollection(targetClass = BikeCategory.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "bike_category", joinColumns = @JoinColumn(name = "product_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<BikeCategory> bikeCategories = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Image> images = new ArrayList<>();
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ProductInformation productInformation;
 
     @PrePersist
     private void init(){

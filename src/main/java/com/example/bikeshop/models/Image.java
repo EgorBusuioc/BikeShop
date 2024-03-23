@@ -20,13 +20,13 @@ public class Image {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "originalFileName")
+    @Column(name = "original_file_name")
     private String originalFileName;
 
     @Column(name = "size")
     private Long size;
 
-    @Column(name = "contentType")
+    @Column(name = "content_type")
     private String contentType;
 
     @Lob

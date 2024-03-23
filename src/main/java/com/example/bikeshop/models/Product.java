@@ -1,6 +1,5 @@
 package com.example.bikeshop.models;
 
-import com.example.bikeshop.models.enums.BikeCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +37,9 @@ public class Product {
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProductInformation productInformation;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ShoppingCartItem shoppingCartItem;
 
     @PrePersist
     private void init(){

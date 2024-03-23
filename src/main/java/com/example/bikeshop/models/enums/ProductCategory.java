@@ -1,6 +1,6 @@
 package com.example.bikeshop.models.enums;
 
-public enum BikeCategory {
+public enum ProductCategory {
     MOUNTAIN_BIKE,
     ACTIVE_BIKE,
     ROAD_BIKE,

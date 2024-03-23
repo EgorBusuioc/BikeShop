@@ -1,6 +1,6 @@
 package com.example.bikeshop.models;
 
-import com.example.bikeshop.models.enums.BikeCategory;
+import com.example.bikeshop.models.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,8 +16,8 @@ import java.util.Set;
 @Entity
 @Table(name = "product_informaton")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductInformation {
 
     @Id
@@ -40,10 +40,10 @@ public class ProductInformation {
     @Column(name = "cassete")
     private String cassete;
 
-    @ElementCollection(targetClass = BikeCategory.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = ProductCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "bike_category", joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
-    private Set<BikeCategory> bikeCategories = new HashSet<>();
+    private Set<ProductCategory> productCategories = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")

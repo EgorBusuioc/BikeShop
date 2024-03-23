@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "shopping_cart")
 @Data
@@ -19,6 +22,9 @@ public class ShoppingCart {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    @OneToMany(mappedBy = "shoppingCart")
+    private List<ShoppingCartItem> shoppingCartItems = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")

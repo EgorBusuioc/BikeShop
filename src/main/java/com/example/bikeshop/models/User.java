@@ -46,6 +46,9 @@ public class User implements UserDetails {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateOfCreated;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private AdditionalInformation additionalInformation;
+
     @PrePersist
     private void init(){
         dateOfCreated = LocalDateTime.now();

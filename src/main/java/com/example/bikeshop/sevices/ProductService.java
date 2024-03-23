@@ -27,47 +27,47 @@ public class ProductService {
         if (title != null) return productRepository.findByTitle(title);
         return productRepository.findAll();
     }
-    @Transactional
-    public void saveProduct(Principal principal, Product product, MultipartFile file1, MultipartFile file2, MultipartFile file3, MultipartFile file4, MultipartFile file5) throws IOException {
-        product.setUser(getUserByPrincipal(principal));
-        Image image1;
-        Image image2;
-        Image image3;
-        Image image4;
-        Image image5;
-        if (file1.getSize() != 0) {
-            image1 = toImageEntity(file1);
-            image1.setPreviewImage(true);
-            product.addImageToProduct(image1);
-            log.info("Preview image ({}) was added to Product", file1.getName());
-        }
-        if (file2.getSize() != 0) {
-            image2 = toImageEntity(file2);
-            product.addImageToProduct(image2);
-            log.info("Second image ({}) was added to Product", file2.getName());
-        }
-        if (file3.getSize() != 0) {
-            image3 = toImageEntity(file3);
-            product.addImageToProduct(image3);
-            log.info("Third image ({}) was added to Product", file3.getName());
-        }
-        if (file4.getSize() != 0) {
-            image4 = toImageEntity(file4);
-            product.addImageToProduct(image4);
-            log.info("Fourth image ({}) was added to Product", file4.getName());
-        }
-        if (file5.getSize() != 0) {
-            image5 = toImageEntity(file5);
-            product.addImageToProduct(image5);
-            log.info("Fifth image ({}) was added to Product", file5.getName());
-        }
-
-        log.info("Saving new product: {}, in category {}", product.getTitle(), product.getBikeCategories());
-
-        Product productFromDb = productRepository.save(product);
-        productFromDb.setPreviewImageId(productFromDb.getImages().get(0).getId());
-        productRepository.save(product);
-    }
+//    @Transactional
+//    public void saveProduct(Principal principal, Product product, MultipartFile file1, MultipartFile file2, MultipartFile file3, MultipartFile file4, MultipartFile file5) throws IOException {
+//        product.setUser(getUserByPrincipal(principal));
+//        Image image1;
+//        Image image2;
+//        Image image3;
+//        Image image4;
+//        Image image5;
+//        if (file1.getSize() != 0) {
+//            image1 = toImageEntity(file1);
+//            image1.setPreviewImage(true);
+//            product.addImageToProduct(image1);
+//            log.info("Preview image ({}) was added to Product", file1.getName());
+//        }
+//        if (file2.getSize() != 0) {
+//            image2 = toImageEntity(file2);
+//            product.addImageToProduct(image2);
+//            log.info("Second image ({}) was added to Product", file2.getName());
+//        }
+//        if (file3.getSize() != 0) {
+//            image3 = toImageEntity(file3);
+//            product.addImageToProduct(image3);
+//            log.info("Third image ({}) was added to Product", file3.getName());
+//        }
+//        if (file4.getSize() != 0) {
+//            image4 = toImageEntity(file4);
+//            product.addImageToProduct(image4);
+//            log.info("Fourth image ({}) was added to Product", file4.getName());
+//        }
+//        if (file5.getSize() != 0) {
+//            image5 = toImageEntity(file5);
+//            product.addImageToProduct(image5);
+//            log.info("Fifth image ({}) was added to Product", file5.getName());
+//        }
+//
+//        log.info("Saving new product: {}, in category {}", product.getTitle(), product.getBikeCategories());
+//
+//        Product productFromDb = productRepository.save(product);
+//        productFromDb.setPreviewImageId(productFromDb.getImages().get(0).getId());
+//        productRepository.save(product);
+//    }
 
     public User getUserByPrincipal(Principal principal) {
         if (principal == null) return new User();

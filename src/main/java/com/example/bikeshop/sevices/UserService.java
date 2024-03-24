@@ -20,6 +20,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
     @PersistenceContext
     private EntityManager entityManager;
 

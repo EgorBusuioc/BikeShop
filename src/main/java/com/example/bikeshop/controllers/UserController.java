@@ -1,5 +1,6 @@
 package com.example.bikeshop.controllers;
 
+import com.example.bikeshop.models.AdditionalInformation;
 import com.example.bikeshop.models.User;
 import com.example.bikeshop.sevices.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +18,8 @@ import java.security.Principal;
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
-
-    @GetMapping("/login")
-    public String login(Principal principal, Model model, @RequestParam(name = "error", required = false) String error) {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-
-        if (error != null) {
-            model.addAttribute("loginError", "The username or password is not correct");
-        }
-
-        return "login";
-    }
-//
-//    @PostMapping("/update-user/{id}")
-//    public String updateUser(@PathVariable("id") Long id, User updatedUser, Model model) {
-//        userService.updateUser(updatedUser, id);
-//        model.addAttribute("successMessage", "User updated successfully");
-//        return "redirect:/login";
-//    }
 
     @GetMapping("/registration")
     public String registration() {
@@ -45,6 +29,7 @@ public class UserController {
 
     @PostMapping("/registration")
     public String createUser(User user, Model model) {
+
         if(!userService.createUser(user)) {
             model.addAttribute("errorMessage", "User with email: (" + user.getEmail() + ") already exists");
             return "registration";
@@ -52,4 +37,22 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @GetMapping("/login")
+    public String login(Principal principal, Model model, @RequestParam(name = "error", required = false) String error) {
+
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+
+        if (error != null) {
+            model.addAttribute("loginError", "The username or password is not correct");
+        }
+
+        return "login";
+    }
+
+    @PostMapping("/update-user/{id}")
+    public String updateUser(@PathVariable("id") int id, AdditionalInformation additionalInformation) {
+
+        userService.updateUser(additionalInformation, id);
+        return "redirect:/login";
+    }
 }

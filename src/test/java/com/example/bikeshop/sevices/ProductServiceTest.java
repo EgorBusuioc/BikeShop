@@ -34,7 +34,7 @@ class ProductServiceTest {
         when(productRepository.findByTitle(title)).thenReturn(mockProducts);
 
 
-        List<Product> result = productService.listProducts(title);
+        List<Product> result = productService.findAll();
 
 
         verify(productRepository).findByTitle(title);

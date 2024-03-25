@@ -37,25 +37,24 @@
                         Phone Number
                     </div>
                     <div class="result_text">
-                        <#if user.phoneNumber?has_content>${user.phoneNumber}<#else></#if>
                     </div>
                     <div class="info_text">
                         City
                     </div>
                     <div class="result_text">
-                        <#if user.city?has_content>${user.city}<#else></#if>
+
                     </div>
                     <div class="info_text">
                         Country
                     </div>
                     <div class="result_text">
-                        <#if user.country?has_content>${user.country}<#else></#if>
+
                     </div>
                     <div class="info_text">
                         Address
                     </div>
                     <div class="result_text">
-                        <#if user.country?has_content>${user.address}<#else></#if>
+
                     </div>
                     <div class="info_text">
                         Creation Date
@@ -68,12 +67,12 @@
             <div class="grid_item item3">
                 <div class="grid_container2">
                     <div class="item_grid_update">Update your Data</div>
-                    <form action="/update-user/${user.id}" method="post" class="item_grid_form">
+                    <form action="/update-user/${user.getUserId()}" method="post" class="item_grid_form">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
                         <input type="text" name="address" placeholder="Address" class="input item_grid_form" ><br><br>
                         <input type="text" name="city" placeholder="City" class="input" ><br><br>
                         <input type="text" name="country" placeholder="Country" class="input" ><br><br>
                         <input type="text" name="phoneNumber" placeholder="Phone Number" class="input" ><br><br>
-                        <input type="hidden" name="_csrf" value="${_csrf.token}">
                         <input type="submit" value="Save" class="sign_in_btn">
                     </form>
                 </div>

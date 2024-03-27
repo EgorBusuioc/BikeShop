@@ -4,16 +4,17 @@ import com.example.bikeshop.models.AdditionalInformation;
 import com.example.bikeshop.models.User;
 import com.example.bikeshop.models.enums.Role;
 import com.example.bikeshop.repositories.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 @Slf4j
 @RequiredArgsConstructor
 public class UserService {
@@ -21,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public boolean createUser(User user) {
 
         String email = user.getEmail();
@@ -45,23 +47,22 @@ public class UserService {
             return;
 
         AdditionalInformation additionalInformation = userInDatabase.getAdditionalInformation();
-
-        if (!newInformation.getAddress().equals("")) {
+        if (!newInformation.getAddress().isEmpty()) {
             additionalInformation.setAddress(newInformation.getAddress());
             log.info("Update {} with Address: {}", userInDatabase.getEmail(), additionalInformation.getAddress());
         }
 
-        if (!newInformation.getCity().equals("")) {
+        if (!newInformation.getCity().isEmpty()) {
             additionalInformation.setCity(newInformation.getCity());
             log.info("Update {} with City: {}", userInDatabase.getEmail(), additionalInformation.getCity());
         }
 
-        if (!newInformation.getCountry().equals("")) {
+        if (!newInformation.getCountry().isEmpty()) {
             additionalInformation.setCountry(newInformation.getCountry());
             log.info("Update {} with Country: {}", userInDatabase.getEmail(), additionalInformation.getCountry());
         }
 
-        if (!newInformation.getPhoneNumber().equals("")) {
+        if (!newInformation.getPhoneNumber().isEmpty()) {
             additionalInformation.setPhoneNumber(newInformation.getPhoneNumber());
             log.info("Update {} with Phone Number: {}", userInDatabase.getEmail(), additionalInformation.getPhoneNumber());
         }
@@ -72,25 +73,39 @@ public class UserService {
     }
 
     public List<User> list() {
+
         return userRepository.findAll();
     }
 
-//    public void banUser(Long id) {
-//        User user = userRepository.findById(id).orElse(null);
-//        if (user != null) {
-//            if (user.isActive()) {
-//                user.setActive(false);
-//                log.info("Ban user with id: {}; email: {}", user.getId(), user.getEmail());
-//            } else {
-//                user.setActive(true);
-//                log.info("Unban user with id: {}; email: {}", user.getId(), user.getEmail());
-//            }
-//        }
-//        userRepository.save(user);
-//    }
+    @Transactional
+    public void saveUser(User user) {
+
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void banUser(int id) {
+
+        User user = userRepository.findById(id).orElse(null);
+
+        if (user != null) {
+            if (user.isActive()) {
+                user.setActive(false);
+                log.info("Ban user with id: {}; email: {}", user.getUserId(), user.getEmail());
+            } else {
+                user.setActive(true);
+                log.info("Unban user with id: {}; email: {}", user.getUserId(), user.getEmail());
+            }
+
+            userRepository.save(user);
+        }
+    }
 
     public User getUserByPrincipal(Principal principal) {
-        if (principal == null) return new User();
+
+        if (principal == null)
+            return new User();
+
         return userRepository.findByEmail(principal.getName());
     }
 }

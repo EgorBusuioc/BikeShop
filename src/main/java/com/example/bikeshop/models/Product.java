@@ -23,7 +23,10 @@ public class Product {
     private String title;
 
     @Column(name = "quantity_in_stock")
-    private String quantity_in_stock;
+    private int quantityInStock;
+
+    @Column(name = "article_number")
+    private String articleNumber;
 
     @Column(name = "price")
     private int price;
@@ -52,6 +55,7 @@ public class Product {
     }
 
     public void addImageToProduct(Image image) {
+
         image.setProduct(this);
         images.add(image);
     }

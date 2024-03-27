@@ -10,25 +10,25 @@
 
     <title>BikeShop</title>
 
-    <script src="../libs/gsap/gsap.min.js" defer></script>
-    <script src="../libs/gsap/ScrollTrigger.min.js" defer></script>
-    <script src="../libs/gsap/ScrollSmoother.min.js" defer></script>
-    <script src="../JavaScript/product_scripts.js" defer></script>
+    <script src="../../static/JavaScriptLibraries/gsap/gsap.min.js" defer></script>
+    <script src="../../static/JavaScriptLibraries/gsap/ScrollTrigger.min.js" defer></script>
+    <script src="../../static/JavaScriptLibraries/gsap/ScrollSmoother.min.js" defer></script>
+    <script src="../../static/JavaScript/product_scripts.js" defer></script>
     <script src="../libs/modal/modal.js" defer></script>
     <script src="../JavaScript/simplebar.js" defer></script>
     <script src="../JavaScript/shoppingcart.js" defer></script>
 
 
-    <link rel="stylesheet" href="../css/shop.css">
-    <link rel="stylesheet" href="../css/footer_shop.css">
-    <link rel="stylesheet" href="../css/shoppingCart.css">
-    <link rel="stylesheet" href="../css/simplebar.css">
-    <link rel="stylesheet" href="../libs/modal/modal.css">
+    <link rel="stylesheet" href="../../static/CSS/shop.css">
+    <link rel="stylesheet" href="../../static/CSS/footer_shop.css">
+    <link rel="stylesheet" href="../../static/CSS/shoppingCart.css">
+    <link rel="stylesheet" href="../../static/CSS/simplebar.css">
+    <link rel="stylesheet" href="../../static/libs/modal/modal.css">
     <link rel="stylesheet" href="../CSS/modalorder.css">
 
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <script src="../JavaScript/app.js" defer></script>
+    <script src="../../static/JavaScript/app.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
 </head>
@@ -44,10 +44,10 @@
                         <nav class="menu-list">
                             <div class="tooltip"><a href="#" class="parent">bikes</a><span>
                                         <div class="main__text__menu" style="top:40vh;">Bikes</div><img
-                                    style="width: 83vw; height: 100vh;" src="../Images/work/Bikes.jpg">
+                                    style="width: 83vw; height: 100vh;" src="../../static/Images/work/Bikes.jpg">
                                     </span></div>
 
-                            <div class="tooltip"><a href="../HTML/ShopAMoutainBike.html"
+                            <div class="tooltip"><a href="../../static/HTML/ShopAMoutainBike.html"
                                                     class="ancestor">mountain</a><span>
                                         <div class="main__text__menu">Mountain <br>bikes
                                             <div class="text__menu">We’re drawn to the trail for all sorts of reasons,
@@ -71,7 +71,8 @@
                                                 bikes set the standard by which all others are measured.
                                             </div>
                                         </div>
-                                        <img style="width: 83vw; height: 100vh;" src="../Images/work/Road.jpg">
+                                        <img style="width: 83vw; height: 100vh;"
+                                             src="../../static/Images/work/Road.jpg">
                                     </span>
                             </div>
 
@@ -84,7 +85,8 @@
                                                 are designed to help you get on, get out, and achieve your goals fast.
                                             </div>
                                         </div>
-                                        <img style="width: 83vw; height: 100vh;" src="../Images/work/Active.jpg">
+                                        <img style="width: 83vw; height: 100vh;"
+                                             src="../../static/Images/work/Active.jpg">
                                     </span>
                             </div>
 
@@ -103,7 +105,8 @@
                                                 Faste
                                             </div>
                                         </div>
-                                        <img style="width: 83vw; height: 100vh;" src="../Images/work/electro.jpg">
+                                        <img style="width: 83vw; height: 100vh;"
+                                             src="../../static/Images/work/electro.jpg">
                                     </span></a>
                             </div>
 
@@ -112,7 +115,8 @@
                                             <div class="text__menu">
                                             </div>
                                         </div>
-                                        <img style="width: 83vw; height: 100vh;" src="../Images/work/equipment1.jpg">
+                                        <img style="width: 83vw; height: 100vh;"
+                                             src="../../static/Images/work/equipment1.jpg">
                                     </span></a>
                             </div>
 
@@ -122,7 +126,8 @@
                                             <div class="text__menu">
                                             </div>
                                         </div>
-                                        <img style="width: 83vw; height: 100vh;" src="../Images/work/comp11.jpg">
+                                        <img style="width: 83vw; height: 100vh;"
+                                             src="../../static/Images/work/comp11.jpg">
                                     </span></a>
                             </div>
 
@@ -133,7 +138,8 @@
                                                 make.
                                             </div>
                                         </div>
-                                        <img style="width: 83vw; height: 100vh;" src="../Images/work/s-works.jpg">
+                                        <img style="width: 83vw; height: 100vh;"
+                                             src="../../static/Images/work/s-works.jpg">
                                     </span></a>
                             </div>
 
@@ -156,7 +162,7 @@
 
                     <div class="header__cart cart" tabindex="0">
                         <div class="cart__text">
-                            <img class="img2" src="../Images/shoppingcart.png">
+                            <img class="img2" src="../../static/Images/shoppingcart.png">
                             <span class="cart__quantity"></span>
                         </div>
                         <div class="cart-content">
@@ -191,14 +197,16 @@
                             but when your R&D team has some of the best riders on earth, you listen. They know fast.
                         </div>
                     </div>
-                    <img src="../Images/work/heroselectionbikes.jpg">
+                    <img src="../../static/Images/work/heroselectionbikes.jpg">
                 </div>
             </div>
             <div class="products__selection">
                 <div class="container__of__products">
                     <div class="products-content grid-container">
                         <ul class="product-grid">
-                            <li class="product-grid__item dis" data-price="4500">
+
+                            <li th:each ="bike : ${bikes}"
+                                class="product-grid__item dis" data-price="4500">
                                 <article class="product"
                                          style="color: black; background-color: #f1f1f1; margin: auto;">
                                     <div class="final__description">
@@ -242,17 +250,20 @@
                                     </a>
 
                                     <h3 class="product__title">
-                                        <a href="#" style="text-decoration: none; color: black;">Epic Comp</a>
+                                        <a th:text="${bike.getTitle()}" href="#" style="text-decoration: none; color: black;"></a>
                                     </h3>
                                     <div class="product__info">
                                         <span class="product__term">Article number: 879876</span>
-                                        <span class="product__available">In Stock: 13 pcs.</span>
+                                        <span th:text="${bike.getQuantity_in_stock()}" class="product__available">In Stock: 13 pcs.</span>
                                     </div>
                                     <div class="product__price product-price">
                                         <span class="product-price__current">4 500 $</span>
                                         <span class="product-price__old">5 600 $</span>
                                     </div>
-                                    <button class="product__btn ">ADD TO CART</button>
+                                    <form th:action="@{/shopping_cart/add_to_cart/add/{productId}(productId=${bike.getProductId()})}" th:method="POST">
+                                        <input type="submit" value="ADD TO CART">
+                                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                                    </form>
                                     <div class="description"
                                          style="text-align: center; cursor: pointer; height: 10%;">
                                         DESCRIPTION

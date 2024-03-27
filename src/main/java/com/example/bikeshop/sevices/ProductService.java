@@ -2,6 +2,7 @@ package com.example.bikeshop.sevices;
 
 import com.example.bikeshop.models.Image;
 import com.example.bikeshop.models.Product;
+import com.example.bikeshop.models.ProductInformation;
 import com.example.bikeshop.models.User;
 import com.example.bikeshop.models.enums.ProductCategory;
 import com.example.bikeshop.repositories.ProductRepository;
@@ -73,7 +74,25 @@ public class ProductService {
         log.info("Saving new product: {}", product.getTitle());
     }
 
+    @Transactional
+    public void updateInformation(ProductInformation productToUpdate, int id) {
+
+        Product product = productRepository.findById(id).orElse(null);
+        if(product == null)
+            return;
+
+        product.setProductInformation(productToUpdate);
+        productRepository.save(product);
+        log.info("Update product with id: {}", product.getProductId());
+    }
+
+    public Product getProductById(int id) {
+
+        return productRepository.findById(id).orElse(null);
+    }
+
     public User getUserByPrincipal(Principal principal) {
+
         if (principal == null)
             return new User();
 
@@ -81,6 +100,7 @@ public class ProductService {
     }
 
     private Image toImageEntity(MultipartFile file) throws IOException {
+
         Image image = new Image();
         image.setName(file.getName());
         image.setOriginalFileName(file.getOriginalFilename());
@@ -90,9 +110,33 @@ public class ProductService {
         return image;
     }
 
-    public void deleteProduct(Long id) {
+    @Transactional
+    public void deleteProduct(int id) {
 
         productRepository.deleteById(id);
         log.info("Product with {} id was deleted", id);
+    }
+
+    public Product findProduct(int id) {
+
+        return productRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public ProductInformation getProductInfo(int id) {
+
+        Product product = productRepository.findById(id).orElse(null);
+
+        if(product == null)
+            return null;
+
+        if(product.getProductInformation() == null){
+            ProductInformation productInformation = new ProductInformation();
+            productInformation.setProduct(product);
+            product.setProductInformation(productInformation);
+            productRepository.save(product);
+        }
+
+        return product.getProductInformation();
     }
 }

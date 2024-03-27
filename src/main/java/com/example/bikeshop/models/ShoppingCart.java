@@ -23,10 +23,10 @@ public class ShoppingCart {
     @Column(nullable = false)
     private Integer quantity;
 
-    @OneToMany(mappedBy = "shoppingCart")
+    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ShoppingCartItem> shoppingCartItems = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 }

@@ -27,26 +27,26 @@
                 </tr>
                 </thead>
                 <tbody>
-                <#list users as user>
-                    <tr <#if user_index % 2 == 0>class="active-row"</#if>>
-                        <td>${user.name}</td>
-                        <td>${user.surname}</td>
-                        <td>${user.email}</td>
-                        <td><#if user.phoneNumber?has_content>${user.phoneNumber}<#else>-</#if></td>
-                        <td><#if user.address?has_content>${user.address}<#else>-</#if></td>
-                        <td><#if user.country?has_content>${user.country}<#else>-</#if></td>
-                        <td><#if user.city?has_content>${user.city}<#else>-</#if></td>
-                        <td><#if user.active>true<#else>false</#if></td>
-                        <td><#list user.roles as role>${role}</#list></td>
-                        <td>
-                            <form action="/admin/user/ban/${user.id}" method="post">
-                                <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                <input type="submit" value="Change Activity" class="table_btn">
-                            </form>
-                        </td>
-                        <td>${user.creationDate()}</td>
-                    </tr>
-                </#list>
+<#--                <#list users as user>-->
+<#--                    <tr <#if user_index % 2 == 0>class="active-row"</#if>>-->
+<#--                        <td>${user.name}</td>-->
+<#--                        <td>${user.surname}</td>-->
+<#--                        <td>${user.email}</td>-->
+<#--                        <td><#if user.phoneNumber?has_content>${user.phoneNumber}<#else>-</#if></td>-->
+<#--                        <td><#if user.address?has_content>${user.address}<#else>-</#if></td>-->
+<#--                        <td><#if user.country?has_content>${user.country}<#else>-</#if></td>-->
+<#--                        <td><#if user.city?has_content>${user.city}<#else>-</#if></td>-->
+<#--                        <td><#if user.active>true<#else>false</#if></td>-->
+<#--                        <td><#list user.roles as role>${role}</#list></td>-->
+<#--&lt;#&ndash;                        <td>&ndash;&gt;-->
+<#--&lt;#&ndash;                            <form action="/admin/user/ban/${user.id}" method="post">&ndash;&gt;-->
+<#--&lt;#&ndash;                                <input type="hidden" name="_csrf" value="${_csrf.token}">&ndash;&gt;-->
+<#--&lt;#&ndash;                                <input type="submit" value="Change Activity" class="table_btn">&ndash;&gt;-->
+<#--&lt;#&ndash;                            </form>&ndash;&gt;-->
+<#--&lt;#&ndash;                        </td>&ndash;&gt;-->
+<#--                        <td>${user.creationDate()}</td>-->
+<#--                    </tr>-->
+<#--                </#list>-->
                 <#if users?size == 0>
                     <tr>
                         <td colspan="11">
@@ -60,7 +60,7 @@
         <div class="login_form">
             <div class="BikeShop__text">BikeShop</div>
             <div class="sign_in">Add New Product</div>
-            <form action="/product/create" method="post" enctype="multipart/form-data">
+            <form action="/products/product/create" method="post" enctype="multipart/form-data">
                 <input type="text" name="title" placeholder="Model Name" class="input" required/><br><br>
                 <input type="text" name="article_number" placeholder="Article Number" class="input" required/><br><br>
                 <input type="text" name="quantity_in_stock" placeholder="Quantity" class="input" required/><br><br>

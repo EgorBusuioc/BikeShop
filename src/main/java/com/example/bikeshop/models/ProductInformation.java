@@ -41,7 +41,7 @@ public class ProductInformation {
     private String cassete;
 
     @ElementCollection(targetClass = ProductCategory.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "bike_category", joinColumns = @JoinColumn(name = "product_id"))
+    @CollectionTable(name = "bike_category", joinColumns = @JoinColumn(name = "product_information_id"))
     @Enumerated(EnumType.STRING)
     private Set<ProductCategory> productCategories = new HashSet<>();
 

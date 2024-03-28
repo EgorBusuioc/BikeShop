@@ -16,15 +16,16 @@ public class AdminController {
 
     private final UserService userService;
 
-    @GetMapping("/admin")
-    public String admin(Model model) {
-
-        model.addAttribute("users", userService.list());
-        return "admin";
-    }
+//    @GetMapping("/admin")
+//    public String admin(Model model) {
+//
+//        model.addAttribute("users", userService.list());
+//        return "admin";
+//    }
 
     @PostMapping("/admin/user/ban/{id}")
     public String userBan(@PathVariable("id") int id) {
+
         userService.banUser(id);
         return "redirect:/admin";
     }

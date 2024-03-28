@@ -26,6 +26,7 @@ public class ProductController {
 
         return "index";
     }
+
     @GetMapping("/bikes")
     public String showAllBikes(Model model) {
 
@@ -68,14 +69,6 @@ public class ProductController {
         return "products/turbo_bikes";
     }
 
-    @GetMapping("/products")
-    public String showProductList(Principal principal, Model model) {
-
-        model.addAttribute("products", productService.findBikes(null));
-        model.addAttribute("user", productService.getUserByPrincipal(principal));
-        return "products/products";
-    }
-
     @GetMapping("/product/see_information_about_product/{productId}")
     public String showInformationAboutProduct(@PathVariable("productId") int id, Model model) {
 
@@ -83,16 +76,31 @@ public class ProductController {
         return "products/product_info";
     }
 
-    @GetMapping("product/add_product_info/{productId}")
+    @GetMapping("/product/add_product_info/{productId}")
     public String addProductInfo(@PathVariable("productId") int id, Model model) {
 
         model.addAttribute("productInformation", productService.getProductInfo(id));
+        model.addAttribute("product", productService.getProductById(id));
+        model.addAttribute("productCategories", productService.getProductCategory());
         return "products/add_product_info";
     }
 
-    @GetMapping("/admin")
-    public String addNewProduct(@ModelAttribute("product") Product product) {
+    @PostMapping("/product/add_product_information/{product_id}")
+    public String addProductInformation(@PathVariable("product_id") int id,
+                                        @ModelAttribute("product_information") ProductInformation productToUpdate,
+                                        @RequestParam("category") String productCategory,
+                                        @RequestParam("productId") int productId) {
 
+        productService.updateInformation(productToUpdate, productCategory, id, productId);
+        return "redirect:/products/admin";
+    }
+
+    @GetMapping("/admin")
+    public String addNewProductAndShowProductList(@ModelAttribute("product") Product product,
+                                                  Principal principal, Model model) {
+
+        model.addAttribute("products", productService.findBikes(null));
+        model.addAttribute("user", productService.getUserByPrincipal(principal));
         return "products/admin";
     }
 
@@ -108,17 +116,10 @@ public class ProductController {
         return "redirect:/products/admin";
     }
 
-    @PostMapping("/product/add_product_information/{product_id}")
-    public String addProductInformation(@PathVariable(name = "product_id") int id, @ModelAttribute("product_information") ProductInformation productToUpdate) {
-
-        productService.updateInformation(productToUpdate, id);
-        return "redirect:/admin";
-    }
-
     @PostMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable int id) {
 
         productService.deleteProduct(id);
-        return "redirect:/products/products";
+        return "redirect:/products/admin";
     }
 }

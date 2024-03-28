@@ -5,6 +5,7 @@ import com.example.bikeshop.models.Product;
 import com.example.bikeshop.models.ProductInformation;
 import com.example.bikeshop.models.User;
 import com.example.bikeshop.models.enums.ProductCategory;
+import com.example.bikeshop.repositories.ProductInformationRepository;
 import com.example.bikeshop.repositories.ProductRepository;
 import com.example.bikeshop.repositories.UserRepository;
 import jakarta.persistence.EntityManager;
@@ -19,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,6 +29,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductInformationRepository productInformationRepository;
     private final UserRepository userRepository;
 
     @PersistenceContext
@@ -61,7 +61,7 @@ public class ProductService {
                             MultipartFile file9, MultipartFile file10) throws IOException {
 
         List<MultipartFile> files = new ArrayList<>(Arrays.asList(file1, file2, file3, file4, file5,
-                                                    file6, file7, file8, file9, file10));
+                file6, file7, file8, file9, file10));
         for (MultipartFile file : files) {
             if (file != null && file.getSize() != 0) {
                 Image image = toImageEntity(file);
@@ -75,15 +75,13 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateInformation(ProductInformation productToUpdate, int id) {
+    public void updateInformation(ProductInformation productToUpdate, String category, int id, int productId) {
 
-        Product product = productRepository.findById(id).orElse(null);
-        if(product == null)
-            return;
-
-        product.setProductInformation(productToUpdate);
-        productRepository.save(product);
-        log.info("Update product with id: {}", product.getProductId());
+        productToUpdate.setProductCategories(Collections.singleton(ProductCategory.valueOf(category)));
+        productToUpdate.setProductInformationId(id);
+        productToUpdate.setProduct(productRepository.findById(productId).orElse(null));
+        productInformationRepository.save(productToUpdate);
+        log.info("Update product with id: {}", productToUpdate.getProductInformationId());
     }
 
     public Product getProductById(int id) {
@@ -127,10 +125,10 @@ public class ProductService {
 
         Product product = productRepository.findById(id).orElse(null);
 
-        if(product == null)
+        if (product == null)
             return null;
 
-        if(product.getProductInformation() == null){
+        if (product.getProductInformation() == null) {
             ProductInformation productInformation = new ProductInformation();
             productInformation.setProduct(product);
             product.setProductInformation(productInformation);
@@ -138,5 +136,10 @@ public class ProductService {
         }
 
         return product.getProductInformation();
+    }
+
+    public ProductCategory[] getProductCategory() {
+
+        return ProductCategory.values();
     }
 }

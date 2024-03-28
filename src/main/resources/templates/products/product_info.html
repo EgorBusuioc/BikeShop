@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1 th:text="'Your product is: ' + ${product.getTitle()}"> </h1>
+    <h1>Show information about: </h1>
+    <h2 th:text="'Quantity In Stock ' + ${product.getQuantityInStock()}"></h2>
+    <h2>Do you wanna add product information?</h2>
+    <a th:href="@{/products/product/add_product_info/{product_id}(product_id=${product.getProductId()})}">add info</a>
+</body>
+</html>

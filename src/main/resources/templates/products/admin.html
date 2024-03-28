@@ -12,20 +12,34 @@
             <table class="styled-table">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Address</th>
-                    <th>Country</th>
-                    <th>City</th>
-                    <th>Active</th>
-                    <th>Roles</th>
-                    <th>Action</th>
-                    <th>Creation Date</th>
+                    <th>Title</th>
+                    <th>Article Number</th>
+                    <th>In Stock</th>
+                    <th>Price</th>
+                    <th>Product deleting</th>
+                    <th>Go to settings</th>
+                    <th>Creation Time</th>
                 </tr>
                 </thead>
                 <tbody>
+                <tr th:each="product, productIndex : ${products}" th:class="${productIndex.index % 2 == 0} ? 'active-row'">
+                    <td th:text="${product.getTitle()}"></td>
+                    <td th:text="${product.getArticleNumber()}"></td>
+                    <td th:text="${product.getQuantityInStock()}"></td>
+                    <td th:text="${product.getPrice()}"></td>
+                    <td>
+                        <form th:action="@{/products/product/delete/{productId}(productId=${product.productId})}" th:method="POST">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <input type="submit" value="Delete" class="table_btn">
+                        </form>
+                    </td>
+                    <td>
+                        <a th:href="@{/products/product/see_information_about_product/{productId}(productId=${product.getProductId()})}">
+                            View Product Information
+                        </a>
+                    </td>
+                    <td th:text="${product.creationDate()}"></td>
+                </tr>
                 </tbody>
             </table>
         </div>

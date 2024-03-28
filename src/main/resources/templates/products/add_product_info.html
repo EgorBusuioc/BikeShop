@@ -5,6 +5,21 @@
     <title>Title</title>
 </head>
 <body>
+<form th:action="@{/products/product/add_product_information/{product_id}(product_id=${productInformation.getProductInformationId()})}" th:method="POST" th:object="${productInformation}" enctype="multipart/form-data">
 
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="hidden" name="productId" th:value="${product.getProductId()}">
+
+    <input th:field="*{frame}" type="text" name="frame" placeholder="Frame" class="input" required/><br><br>
+    <input th:field="*{fork}" type="text" name="fork" placeholder="Fork" class="input" required/><br><br>
+    <input th:field="*{brakes}" type="text" name="brakes" placeholder="Brakes" class="input" required/><br><br>
+    <input th:field="*{swat}" type="text" name="swat" placeholder="Swat" class="input" required/><br><br>
+    <input th:field="*{cassete}" type="text" name="cassete" placeholder="Cassete" class="input" required/><br><br>
+
+    <select name="category">
+        <option th:each="category : ${productCategories}" th:text="${category}" th:value="${category}"></option>
+    </select>
+    <input type="submit" value="Добавить товар" class="sign_in_btn"/>
+</form>
 </body>
 </html>

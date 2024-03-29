@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping("/registration")
     public String registration() {
 
-        return "registration";
+        return "authentication/registration";
     }
 
     @PostMapping("/registration")
@@ -32,8 +32,9 @@ public class UserController {
 
         if(!userService.createUser(user)) {
             model.addAttribute("errorMessage", "User with email: (" + user.getEmail() + ") already exists");
-            return "registration";
+            return "authentication/registration";
         }
+
         return "redirect:/login";
     }
 
@@ -46,7 +47,7 @@ public class UserController {
             model.addAttribute("loginError", "The username or password is not correct");
         }
 
-        return "login";
+        return "authentication/login";
     }
 
     @PostMapping("/update-user/{id}")

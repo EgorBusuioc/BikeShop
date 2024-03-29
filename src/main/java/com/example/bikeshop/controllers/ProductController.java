@@ -5,7 +5,6 @@ import com.example.bikeshop.models.ProductInformation;
 import com.example.bikeshop.models.enums.ProductCategory;
 import com.example.bikeshop.sevices.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/products")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -72,7 +70,7 @@ public class ProductController {
     @GetMapping("/product/see_information_about_product/{productId}")
     public String showInformationAboutProduct(@PathVariable("productId") int id, Model model) {
 
-        model.addAttribute("product", productService.findProduct(id));
+        model.addAttribute("product", productService.getProductById(id));
         return "products/product_info";
     }
 
@@ -93,15 +91,6 @@ public class ProductController {
 
         productService.updateInformation(productToUpdate, productCategory, id, productId);
         return "redirect:/products/admin";
-    }
-
-    @GetMapping("/admin")
-    public String addNewProductAndShowProductList(@ModelAttribute("product") Product product,
-                                                  Principal principal, Model model) {
-
-        model.addAttribute("products", productService.findBikes(null));
-        model.addAttribute("user", productService.getUserByPrincipal(principal));
-        return "products/admin";
     }
 
     @PostMapping("/product/create")

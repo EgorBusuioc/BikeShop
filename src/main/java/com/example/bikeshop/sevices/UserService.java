@@ -4,8 +4,12 @@ import com.example.bikeshop.models.AdditionalInformation;
 import com.example.bikeshop.models.User;
 import com.example.bikeshop.models.enums.Role;
 import com.example.bikeshop.repositories.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Transactional
     public boolean createUser(User user) {
@@ -72,17 +79,6 @@ public class UserService {
         log.info("User {} was updated", userInDatabase.getEmail());
     }
 
-    public List<User> list() {
-
-        return userRepository.findAll();
-    }
-
-    @Transactional
-    public void saveUser(User user) {
-
-        userRepository.save(user);
-    }
-
     @Transactional
     public void banUser(int id) {
 
@@ -101,11 +97,30 @@ public class UserService {
         }
     }
 
+    public List<User> getUsers() {
+
+        return userRepository.findAll();
+    }
+
+    public User getUserById(int user_id) {
+
+        Session session = entityManager.unwrap(Session.class);
+
+        User user = session.get(User.class, user_id);
+
+        if(user.getAdditionalInformation() != null)
+            Hibernate.initialize(user.getAdditionalInformation());
+
+
+        return user;
+    }
+
     public User getUserByPrincipal(Principal principal) {
 
         if (principal == null)
             return new User();
 
+        System.out.println(principal.getName());
         return userRepository.findByEmail(principal.getName());
     }
 }

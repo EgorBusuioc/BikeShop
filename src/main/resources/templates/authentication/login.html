@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BikeShop</title>
+
+    <link rel="stylesheet" href="../../static/CSS/login.css">
+</head>
+<body>
+<th:block th:if="${user.getEmail()}">
+    <div class="container_for_sign_in">
+        <div class="grid_container">
+            <div class="grid_item">
+                <div class="BikeShop__text" style="font-size: 9vh">BikeShop</div>
+                <div class="sign_in" style="font-size: 1.9vh; padding-top: 5vh;">My Account</div>
+                <div class="sign_in" style="font-size: 4vh" th:text="${user.name} + ' ' + ${user.surname}"></div>
+                <div style="padding-top: 90%">
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        <input type="submit" value="Sign Out" class="sign_in_btn" style="width: 80%; margin-left: auto; margin-right: auto;">
+                    </form>
+                </div>
+                <div>
+                    <a th:if="${user.isAdmin()}" href="/admin" class="registration">Admin Panel</a>
+                </div>
+            </div>
+            <div class="grid_item item2">
+                <div class="grid_container2">
+                    <div class="info_text">Email</div>
+                    <div class="result_text" th:text="${user.getEmail()}"></div>
+                    <div class="info_text">Creation Date</div>
+                    <div class="result_text" th:text="${user.creationDate()}"></div>
+                </div>
+            </div>
+            <div class="grid_item item3">
+                <div class="grid_container2">
+                    <div class="item_grid_update">Update your Data</div>
+                    <form th:action="@{/update-user/{user_id}(user_id=${user.getUserId()})}" th:method="POST" class="item_grid_form">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        <input type="text" name="address" placeholder="Address" class="input item_grid_form"><br><br>
+                        <input type="text" name="city" placeholder="City" class="input"><br><br>
+                        <input type="text" name="country" placeholder="Country" class="input"><br><br>
+                        <input type="text" name="phoneNumber" placeholder="Phone Number" class="input"><br><br>
+                        <input type="submit" value="Save" class="sign_in_btn">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+<th:block th:unless="${user.getEmail()}">
+    <div class="container_for_sign_in">
+        <div class="header_for_sign_in"></div>
+        <div class="login_form">
+            <div class="form_content">
+                <div class="BikeShop__text">BikeShop</div>
+                <div class="sign_in">Sign in to your Account</div>
+                <form action="/login" method="post">
+                    <input type="email" name="username" placeholder="Email" class="input"><br><br>
+                    <input type="password" name="password" placeholder="Password" class="input password"><br><br>
+                    <div th:if="${loginError}" class="error" th:text="${loginError}"></div>
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" value="Sign In" class="sign_in_btn"/>
+                </form>
+                <a href="/registration" class="registration">Registration</a>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

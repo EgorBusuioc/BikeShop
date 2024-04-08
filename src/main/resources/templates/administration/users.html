@@ -3,8 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/CSS/login.css}">
 </head>
 <body>
-
+<div class="container_for_sign_in">
+    <div class="header_for_sign_in" style="height: 50px"></div>
+    <div style="display: grid; grid-template-columns: 1fr; grid-gap: 3vh;">
+        <div style="align-items: center">
+            <table class="styled-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>Address</th>
+                    <th>Get Working Address</th>
+                    <th>Creation Date</th>
+                    <th>Change Activity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user, userIndex : ${users}" th:class="${userIndex.index % 2 == 0} ? 'active-row'">
+                    <td th:text="${user.getName()}"></td>
+                    <td th:text="${user.getSurname()}"></td>
+                    <td th:text="${user.getEmail()}"></td>
+                    <td th:text="${user.getRoles()}"></td>
+                    <td th:text="${user.getAdditionalInformation().getCity()}"></td>
+                    <td th:text="${user.getAdditionalInformation().getCountry()}"></td>
+                    <td th:text="${user.getAdditionalInformation().getAddress()}"></td>
+                    <td th:text="${user.getAdditionalInformation().getWorkingAddress()}"></td>
+                    <td th:text="${user.getCreationDate()}"></td>
+                    <td>
+                        <form th:action="@{/admin/user/ban/{user_id}(user_id=${user.getUserId()})}" th:method="POST">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <input type="submit" value="Delete" class="table_btn">
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <a th:href="@{/admin/add_product}">
+            <button class="product__btn">GO TO PRODUCT</button>
+        </a>
+    </div>
+</div>
 </body>
 </html>

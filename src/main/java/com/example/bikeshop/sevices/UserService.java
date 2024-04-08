@@ -40,8 +40,8 @@ public class UserService {
         AdditionalInformation additionalInformation = new AdditionalInformation();
         additionalInformation.setUser(user);
         user.setAdditionalInformation(additionalInformation);
-        log.info("Saving new User with email: {}", email);
         userRepository.save(user);
+        log.info("Saving new User with email: {}", email);
         return true;
     }
 

@@ -37,8 +37,8 @@ public class ProductInformation {
     @Column(name = "swat")
     private String swat;
 
-    @Column(name = "cassete")
-    private String cassete;
+    @Column(name = "cassette")
+    private String cassette;
 
     @ElementCollection(targetClass = ProductCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "bike_category", joinColumns = @JoinColumn(name = "product_information_id"))

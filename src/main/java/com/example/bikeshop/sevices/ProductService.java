@@ -41,13 +41,14 @@ public class ProductService {
         }
 
         Session session = entityManager.unwrap(Session.class);
-        List<Product> productList = session.createQuery("SELECT p FROM Product p JOIN p.productInformation pi WHERE :category MEMBER OF p.productInformation.productCategories", Product.class)
+        List<Product> productList = session
+                .createQuery("SELECT p FROM Product p JOIN p.productInformation pi WHERE :category MEMBER OF p.productInformation.productCategories", Product.class)
                 .setParameter("category", category)
                 .getResultList();
 
-        for (Product product : productList)
+        for (Product product : productList){
             Hibernate.initialize(product.getProductInformation());
-
+        }
 
         return productList;
     }
@@ -57,6 +58,7 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public ProductInformation getProductInfo(int id) {
 
         Product product = productRepository.findById(id).orElse(null);
@@ -64,26 +66,21 @@ public class ProductService {
         if (product == null)
             return null;
 
-        if (product.getProductInformation() == null)
-            checkIfExistsInformation(product);
+        if (product.getProductInformation() == null) {
+            ProductInformation productInformation = new ProductInformation();
+            productInformation.setProduct(product);
+            product.setProductInformation(productInformation);
+            productRepository.save(product);
+        }
 
         return product.getProductInformation();
     }
 
     @Transactional
-    protected void checkIfExistsInformation(Product product) {
-
-        ProductInformation productInformation = new ProductInformation();
-        productInformation.setProduct(product);
-        product.setProductInformation(productInformation);
-        productRepository.save(product);
-    }
-
-    @Transactional
-    public void updateInformation(ProductInformation productToUpdate, String category, int id, int productId) {
+    public void updateInformation(ProductInformation productToUpdate, String category, int productInformationId, int productId) {
 
         productToUpdate.setProductCategories(Collections.singleton(ProductCategory.valueOf(category)));
-        productToUpdate.setProductInformationId(id);
+        productToUpdate.setProductInformationId(productInformationId);
         productToUpdate.setProduct(productRepository.findById(productId).orElse(null));
         productInformationRepository.save(productToUpdate);
         log.info("Update product with id: {}", productToUpdate.getProductInformationId());
@@ -99,6 +96,7 @@ public class ProductService {
 
         List<MultipartFile> files = new ArrayList<>(Arrays.asList(file1, file2, file3, file4, file5,
                 file6, file7, file8, file9, file10));
+
         for (MultipartFile file : files) {
             if (file != null && file.getSize() != 0) {
                 Image image = toImageEntity(file);

@@ -23,41 +23,50 @@ if (products) {
     });
 }
 
-var descriptionElements = document.querySelectorAll('.description');
-var productFinalDescriptions = document.querySelectorAll('.final__description');
-var productElements = document.querySelectorAll('.product');
-var productImages = document.querySelectorAll('.product__image');
-var productTitles = document.querySelectorAll('.product__title');
-var productButtons = document.querySelectorAll('.product__btn');
-var productInfos = document.querySelectorAll('.product__info');
-var productPrices = document.querySelectorAll('.product__price');
+// Получаем все элементы товаров
+var productArticles = document.querySelectorAll('.product');
 
-// Добавляем обработчики событий каждому элементу
-descriptionElements.forEach(function (element, index) {
-    var originalBackgroundColor = productElements[index].style.backgroundColor;
+// Перебираем каждый элемент товара
+productArticles.forEach(function(productArticle) {
+    // Получаем уникальный идентификатор товара из его атрибута id
+    var productId = productArticle.getAttribute('id');
 
-    function handleMouseOver() {
-        productElements[index].style.backgroundColor = '#b9fcf7';
-        productButtons[index].style.opacity = 0;
-        productImages[index].style.opacity = 0.15;
-        productTitles[index].style.opacity = 0;
-        productInfos[index].style.opacity = 0;
-        productPrices[index].style.opacity = 0;
-        productFinalDescriptions[index].style.display = 'inline';
+    // Получаем ссылку на элемент описания для текущего товара
+    var productDescription = productArticle.querySelector('.description');
+
+    // Получаем ссылки на остальные элементы текущего товара
+    var productButton = productArticle.querySelector('.product__btn');
+    var productImage = productArticle.querySelector('.product__image');
+    var productTitle = productArticle.querySelector('.product__title');
+    var productInfo = productArticle.querySelector('.product__info');
+    var productPrice = productArticle.querySelector('.product__price');
+    var productFinalDescription = productArticle.querySelector('.final__description');
+
+    // Проверяем существование элемента перед применением стилей
+    if (productDescription && productButton && productImage && productTitle && productInfo && productPrice && productFinalDescription) {
+        var originalBackgroundColor = productArticle.style.backgroundColor;
+
+        // Добавляем обработчики событий для текущего товара
+        productDescription.addEventListener('mouseover', function () {
+            productArticle.style.backgroundColor = '#b9fcf7';
+            productButton.style.opacity = 0;
+            productImage.style.opacity = 0.15;
+            productTitle.style.opacity = 0;
+            productInfo.style.opacity = 0;
+            productPrice.style.opacity = 0;
+            productFinalDescription.style.display = 'inline';
+        });
+
+        productDescription.addEventListener('mouseout', function () {
+            productArticle.style.backgroundColor = originalBackgroundColor;
+            productTitle.style.opacity = 1;
+            productImage.style.opacity = 1;
+            productButton.style.opacity = 1;
+            productInfo.style.opacity = 1;
+            productPrice.style.opacity = 1;
+            productFinalDescription.style.display = 'none';
+        });
     }
-
-    function handleMouseOut() {
-        productElements[index].style.backgroundColor = originalBackgroundColor;
-        productTitles[index].style.opacity = 1;
-        productImages[index].style.opacity = 1;
-        productButtons[index].style.opacity = 1;
-        productInfos[index].style.opacity = 1;
-        productPrices[index].style.opacity = 1;
-        productFinalDescriptions[index].style.display = 'none';
-    }
-
-    element.addEventListener('mouseover', handleMouseOver);
-    element.addEventListener('mouseout', handleMouseOut);
 });
 
 

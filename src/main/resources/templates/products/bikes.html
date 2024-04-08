@@ -15,7 +15,7 @@
     <script src="../../static/JavaScriptLibraries/gsap/ScrollSmoother.min.js" defer></script>
     <script src="../../static/JavaScript/product_scripts.js" defer></script>
     <script src="../libs/modal/modal.js" defer></script>
-    <script src="../JavaScript/simplebar.js" defer></script>
+    <script src="../../static/JavaScript/simplebar.js" defer></script>
     <script src="../JavaScript/shoppingcart.js" defer></script>
 
 
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="../../static/CSS/shoppingCart.css">
     <link rel="stylesheet" href="../../static/CSS/simplebar.css">
     <link rel="stylesheet" href="../../static/libs/modal/modal.css">
-    <link rel="stylesheet" href="../CSS/modalorder.css">
+    <link rel="stylesheet" href="../../static/CSS/modalorder.css">
 
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
@@ -204,44 +204,34 @@
                 <div class="container__of__products">
                     <div class="products-content grid-container">
                         <ul class="product-grid">
-
-                            <li th:each ="bike : ${bikes}"
-                                class="product-grid__item dis" data-price="4500">
+                            <li th:each="bike : ${bikes}" class="product-grid__item dis">
                                 <article class="product"
-                                         style="color: black; background-color: #f1f1f1; margin: auto;">
+                                         style="color: black; background-color: #f1f1f1; margin: auto;"
+                                         th:id="${bike.getProductId()}">
                                     <div class="final__description">
                                         <div class="bold__text">FRAME:</div>
-                                        <div class="light__text">IC088-2/RT003-1, 2021 EPIC 11m 29</div>
+                                        <div class="light__text" th:if="${bike.getProductInformation() != null}"
+                                             th:text="${bike.getProductInformation().getFrame()}"></div>
                                         <div class="bold__text">FORK:</div>
-                                        <div class="light__text">SRAM BSE RL 29 SB 100 BLK/DFB 44 C1</div>
+                                        <div class="light__text" th:if="${bike.getProductInformation() != null}"
+                                             th:text="${bike.getProductInformation().getFork()}"></div>
                                         <div class="bold__text">BRAKES:</div>
-                                        <div class="light__text">SRAM DB LVLTL LO GLB FRT DIR</div>
+                                        <div class="light__text" th:if="${bike.getProductInformation() != null}"
+                                             th:text="${bike.getProductInformation().getBrakes()}"></div>
                                         <div class="bold__text">SWAT:</div>
-                                        <div class="light__text">SWAT EMT Cage-Mount Tool</div>
+                                        <div class="light__text" th:if="${bike.getProductInformation() != null}"
+                                             th:text="${bike.getProductInformation().getSwat()}"></div>
                                         <div class="bold__text">CASSETTE:</div>
-                                        <div class="light__text">Sram XG-1275, 12-speed, 10-52t</div>
+                                        <div class="light__text" th:if="${bike.getProductInformation()!= null}"
+                                             th:text="${bike.getProductInformation().getCassette()}"></div>
                                         <div class="classification" style="padding-top: 8%;">Mountain Bikes</div>
                                     </div>
                                     <a href="#" class="product__image">
                                         <div class="product__switch image-switch">
-                                            <div class="image-switch__item">
-                                                <div class="image-switch__img"><img
-                                                        src="../Images/Products/MTB1.1.webp" alt="MTB1">
-                                                </div>
-                                            </div>
-                                            <div class="image-switch__item">
-                                                <div class="image-switch__img"><img
-                                                        src="../Images/Products/MTB1.2.webp" alt="MTB1">
-                                                </div>
-                                            </div>
-                                            <div class="image-switch__item">
-                                                <div class="image-switch__img"><img
-                                                        src="../Images/Products/MTB1.4.webp" alt="MTB1">
-                                                </div>
-                                            </div>
-                                            <div class="image-switch__item">
-                                                <div class="image-switch__img"><img
-                                                        src="../Images/Products/MTB1.3.webp" alt="MTB1">
+                                            <div class="image-switch__item" th:each="img : ${bike.getImages()}"
+                                                 th:if="${bike.getProductId() == img.getProduct().getProductId()}">
+                                                <div class="image-switch__img">
+                                                    <img th:src="@{/images/{image_id}(image_id=${img.getImageId()})}">
                                                 </div>
                                             </div>
                                         </div>
@@ -250,7 +240,8 @@
                                     </a>
 
                                     <h3 class="product__title">
-                                        <a th:text="${bike.getTitle()}" href="#" style="text-decoration: none; color: black;"></a>
+                                        <a th:text="${bike.getTitle()}" href="#"
+                                           style="text-decoration: none; color: black;"></a>
                                     </h3>
                                     <div class="product__info">
                                         <span class="product__term">Article number: 879876</span>
@@ -260,11 +251,10 @@
                                         <span class="product-price__current">4 500 $</span>
                                         <span class="product-price__old">5 600 $</span>
                                     </div>
-                                    <form th:action="@{/shopping_cart/add_to_cart/add/{productId}(productId=${bike.getProductId()})}" th:method="POST">
-                                        <input type="submit" value="ADD TO CART">
-                                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                                    </form>
-                                    <div class="description"
+                                    <a th:href="@{/product_details/{product_id}(product_id=${bike.getProductId()})}">
+                                        <button class="product__btn">GO TO PRODUCT</button>
+                                    </a>
+                                    <div th:if="${bike.getProductInformation() != null}" class="description"
                                          style="text-align: center; cursor: pointer; height: 10%;">
                                         DESCRIPTION
                                     </div>

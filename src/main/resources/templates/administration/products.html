@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>BikeShop</title>
-    <link rel="stylesheet" th:href="@{/static/CSS/login.css}">
+    <link rel="stylesheet" th:href="@{/CSS/login.css}">
 </head>
 <body>
 <div class="container_for_sign_in">
@@ -28,13 +28,13 @@
                     <td th:text="${product.getQuantityInStock()}"></td>
                     <td th:text="${product.getPrice()}"></td>
                     <td>
-                        <form th:action="@{/products/product/delete/{productId}(productId=${product.productId})}" th:method="POST">
+                        <form th:action="@{/admin/add_product/delete/{product_id}(product_id=${product.getProductId()})}" th:method="POST">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                             <input type="submit" value="Delete" class="table_btn">
                         </form>
                     </td>
                     <td>
-                        <a th:href="@{/products/product/see_information_about_product/{productId}(productId=${product.getProductId()})}">
+                        <a th:href="@{/admin/add_product/see_information_about_product/{productId}(productId=${product.getProductId()})}">
                             View Product Information
                         </a>
                     </td>
@@ -42,11 +42,16 @@
                 </tr>
                 </tbody>
             </table>
+            <div>
+                <a th:href="@{/admin}">
+                    <button class="product__btn">GO TO ADMIN PAGE</button>
+                </a>
+            </div>
         </div>
         <div class="login_form">
             <div class="BikeShop__text">BikeShop</div>
             <div class="sign_in">Add New Product</div>
-            <form th:action="@{/products/product/create}" th:method="POST" th:object="${product}" enctype="multipart/form-data">
+            <form th:action="@{/admin/add_product/create}" th:method="POST" th:object="${product}" enctype="multipart/form-data">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                 <input th:field="*{title}" type="text" name="title" placeholder="Model Name" class="input" required/><br><br>
                 <input type="number" name="quantityInStock" placeholder="Quantity In Stock" class="input" required/><br><br>

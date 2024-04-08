@@ -31,6 +31,7 @@ public class UserController {
     public String createUser(User user, Model model) {
 
         if(!userService.createUser(user)) {
+
             model.addAttribute("errorMessage", "User with email: (" + user.getEmail() + ") already exists");
             return "authentication/registration";
         }

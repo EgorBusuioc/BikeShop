@@ -4,6 +4,7 @@ import com.example.bikeshop.models.Product;
 import com.example.bikeshop.models.ProductInformation;
 import com.example.bikeshop.models.enums.ProductCategory;
 import com.example.bikeshop.sevices.ProductService;
+import com.example.bikeshop.sevices.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
+    private final UserService userService;
 
     @GetMapping
     public String getMainPage() {
@@ -67,48 +68,62 @@ public class ProductController {
         return "products/turbo_bikes";
     }
 
-    @GetMapping("/product/see_information_about_product/{productId}")
+    @GetMapping("/admin/add_product")
+    public String addNewProductAndShowProductList(@ModelAttribute("product") Product product, Model model) {
+
+        model.addAttribute("products", productService.findBikes(null));
+        return "administration/products";
+    }
+
+    @PostMapping("/admin/add_product/create")
+    public String createNewProduct(@ModelAttribute("product") Product product,
+                                   @RequestParam(value = "file1") MultipartFile file1, @RequestParam(value = "file2", required = false) MultipartFile file2,
+                                   @RequestParam(value = "file3", required = false) MultipartFile file3, @RequestParam(value = "file4", required = false) MultipartFile file4,
+                                   @RequestParam(value = "file5", required = false) MultipartFile file5, @RequestParam(value = "file6", required = false) MultipartFile file6,
+                                   @RequestParam(value = "file7", required = false) MultipartFile file7, @RequestParam(value = "file8", required = false) MultipartFile file8,
+                                   @RequestParam(value = "file9", required = false) MultipartFile file9, @RequestParam(value = "file10", required = false) MultipartFile file10) throws IOException {
+
+        productService.saveProduct(product, file1, file2, file3, file4, file5, file6, file7, file8, file9, file10);
+        return "redirect:/admin/add_product";
+    }
+
+    @GetMapping("/product_details/{productId}")
+    public String showProductDetails(@PathVariable int productId, Model model) {
+
+        model.addAttribute("product", productService.getProductById(productId));
+        return "administration/product_details";
+    }
+
+    @GetMapping("/admin/add_product/see_information_about_product/{productId}")
     public String showInformationAboutProduct(@PathVariable("productId") int id, Model model) {
 
         model.addAttribute("product", productService.getProductById(id));
-        return "products/product_info";
+        return "administration/product_info";
     }
 
-    @GetMapping("/product/add_product_info/{productId}")
+    @GetMapping("/admin/add_product/add_product_info/{productId}")
     public String addProductInfo(@PathVariable("productId") int id, Model model) {
 
         model.addAttribute("productInformation", productService.getProductInfo(id));
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("productCategories", productService.getProductCategory());
-        return "products/add_product_info";
+        return "administration/add_product_info";
     }
 
-    @PostMapping("/product/add_product_information/{product_id}")
-    public String addProductInformation(@PathVariable("product_id") int id,
+    @PostMapping("/admin/add_product/add_product_info/{productInformationId}")
+    public String addProductInformation(@PathVariable("productInformationId") int productInformationId,
                                         @ModelAttribute("product_information") ProductInformation productToUpdate,
                                         @RequestParam("category") String productCategory,
                                         @RequestParam("productId") int productId) {
 
-        productService.updateInformation(productToUpdate, productCategory, id, productId);
-        return "redirect:/products/admin";
+        productService.updateInformation(productToUpdate, productCategory, productInformationId, productId);
+        return "redirect:/admin/add_product";
     }
 
-    @PostMapping("/product/create")
-    public String createProduct(@RequestParam(value = "file1", required = false) MultipartFile file1, @RequestParam(value = "file2", required = false) MultipartFile file2,
-                                @RequestParam(value = "file3", required = false) MultipartFile file3, @RequestParam(value = "file4", required = false) MultipartFile file4,
-                                @RequestParam(value = "file5", required = false) MultipartFile file5, @RequestParam(value = "file6", required = false) MultipartFile file6,
-                                @RequestParam(value = "file7", required = false) MultipartFile file7, @RequestParam(value = "file8", required = false) MultipartFile file8,
-                                @RequestParam(value = "file9", required = false) MultipartFile file9, @RequestParam(value = "file10", required = false) MultipartFile file10,
-                                Product product) throws IOException {
-
-        productService.saveProduct(product, file1, file2, file3, file4, file5, file6, file7, file8, file9, file10);
-        return "redirect:/products/admin";
-    }
-
-    @PostMapping("/product/delete/{id}")
+    @PostMapping("/admin/add_product/delete/{id}")
     public String deleteProduct(@PathVariable int id) {
 
         productService.deleteProduct(id);
-        return "redirect:/products/admin";
+        return "redirect:/admin/add_product";
     }
 }

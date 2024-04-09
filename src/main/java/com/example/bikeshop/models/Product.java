@@ -3,6 +3,7 @@ package com.example.bikeshop.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -31,6 +32,9 @@ public class Product {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "discount")
+    private Integer discount;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
@@ -50,6 +54,7 @@ public class Product {
     }
 
     public String creationDate() {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en"));
         return creationDate.format(formatter);
     }
@@ -58,5 +63,11 @@ public class Product {
 
         image.setProduct(this);
         images.add(image);
+    }
+
+    public String getFormattedPrice(int price) {
+
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+        return numberFormat.format(price) + " $";
     }
 }

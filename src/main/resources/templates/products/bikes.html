@@ -244,12 +244,15 @@
                                            style="text-decoration: none; color: black;"></a>
                                     </h3>
                                     <div class="product__info">
-                                        <span class="product__term">Article number: 879876</span>
-                                        <span th:text="${bike.getQuantityInStock()}" class="product__available">In Stock: 13 pcs.</span>
+                                        <span class="product__term" th:text="'Article number: ' + ${bike.getArticleNumber()}"></span>
+                                        <span th:text="'In stock ' + ${bike.getQuantityInStock()} + ' pcs.'" class="product__available"></span>
                                     </div>
-                                    <div class="product__price product-price">
-                                        <span class="product-price__current">4 500 $</span>
-                                        <span class="product-price__old">5 600 $</span>
+                                    <div class="product__price product-price" th:if="${bike.getDiscount() == null}">
+                                        <span class="product-price__current" th:text="${bike.getFormattedPrice(bike.getPrice())}">4 500 $</span>
+                                    </div>
+                                    <div class="product__price product-price" th:if="${bike.getDiscount() != null}">
+                                        <span class="product-price__current" th:text="${bike.getFormattedPrice(bike.getDiscount())}">4 500 $</span>
+                                        <span class="product-price__old" th:text="${bike.getFormattedPrice(bike.getPrice())}"></span>
                                     </div>
                                     <a th:href="@{/product_details/{product_id}(product_id=${bike.getProductId()})}">
                                         <button class="product__btn">GO TO PRODUCT</button>

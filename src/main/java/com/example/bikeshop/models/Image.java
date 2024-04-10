@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name ="images")
 @Data
@@ -16,6 +18,9 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
     private int imageId;
+
+    @Column(name = "is_preview_image")
+    private boolean isPreviewImage;
 
     @Column(name = "name")
     private String name;

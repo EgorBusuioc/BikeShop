@@ -58,10 +58,12 @@ public class User implements UserDetails {
 
     @PrePersist
     private void init(){
+
         creationDate = LocalDateTime.now();
     }
 
-    public String creationDate() {
+    public String getFormattedDate() {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMMM/yyyy", new Locale("en"));
         return creationDate.format(formatter);
     }

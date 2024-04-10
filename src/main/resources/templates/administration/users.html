@@ -35,7 +35,7 @@
                     <td th:text="${user.getAdditionalInformation().getCountry()}"></td>
                     <td th:text="${user.getAdditionalInformation().getAddress()}"></td>
                     <td th:text="${user.getAdditionalInformation().getWorkingAddress()}"></td>
-                    <td th:text="${user.getCreationDate()}"></td>
+                    <td th:text="${user.getFormattedDate()}"></td>
                     <td>
                         <form th:action="@{/admin/user/ban/{user_id}(user_id=${user.getUserId()})}" th:method="POST">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">

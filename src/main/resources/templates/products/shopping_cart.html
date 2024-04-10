@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/CSS/login.css}">
+</head>
+<body>
+<div class="container_for_sign_in">
+    <div class="header_for_sign_in" style="height: 50px"></div>
+    <div style="display: grid; grid-template-columns: 1fr; grid-gap: 3vh;">
+        <div style="align-items: center">
+            <table class="styled-table">
+                <thead>
+                <tr>
+                    <th>Product Title</th>
+                    <th>Price</th>
+                    <th>Remove from Shopping Cart</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="shoppingCartItem, userIndex : ${shoppingCart.getShoppingCartItems()}" th:class="${userIndex.index % 2 == 0} ? 'active-row'">
+                    <td th:text="${shoppingCartItem.getProduct().getTitle()}"></td>
+                    <td th:text="${shoppingCartItem.getProduct().getPrice()}"></td>
+                    <td>
+                        <form th:action="@{/shopping_cart/delete_product/{product_id}(product_id=${shoppingCartItem.getShoppingCartItemId()})}" th:method="POST">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <input type="submit" value="Delete From SC" class="table_btn">
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

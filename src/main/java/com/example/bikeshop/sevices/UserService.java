@@ -111,7 +111,6 @@ public class UserService {
         if(user.getAdditionalInformation() != null)
             Hibernate.initialize(user.getAdditionalInformation());
 
-
         return user;
     }
 
@@ -120,7 +119,6 @@ public class UserService {
         if (principal == null)
             return new User();
 
-        System.out.println(principal.getName());
         return userRepository.findByEmail(principal.getName());
     }
 }

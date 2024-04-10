@@ -524,6 +524,21 @@ visibility: visible;
     transition: background-color 0.3s ease-in-out;
 }
 
+.product__btn__is__not__active {
+    margin-bottom: 10px;
+    font-family: menu-button;
+    border: none;
+    font-size: 17px;
+    padding: 14px 0;
+    border-radius: 25px;
+    width: 100%;
+    color: white;
+    background-color: black;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
 .products__selection{
     margin-top: 2%;
 }

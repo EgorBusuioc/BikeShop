@@ -35,6 +35,9 @@ public class Product {
     @Column(name = "discount")
     private Integer discount;
 
+    @Column(name = "is_active")
+    private boolean isActive;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
@@ -51,9 +54,10 @@ public class Product {
     @PrePersist
     private void init(){
         creationDate = LocalDateTime.now();
+        isActive = true;
     }
 
-    public String creationDate() {
+    public String getFormattedDate() {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en"));
         return creationDate.format(formatter);

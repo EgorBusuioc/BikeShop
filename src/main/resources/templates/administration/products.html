@@ -11,6 +11,7 @@
         <div style="align-items: center">
             <table class="styled-table">
                 <thead>
+                <div th:if="${error}" class="error" th:text="${error}"></div>
                 <tr>
                     <th>Title</th>
                     <th>Article Number</th>
@@ -38,7 +39,7 @@
                             View Product Information
                         </a>
                     </td>
-                    <td th:text="${product.creationDate()}"></td>
+                    <td th:text="${product.getFormattedDate()}"></td>
                 </tr>
                 </tbody>
             </table>

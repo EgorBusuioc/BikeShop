@@ -9,5 +9,5 @@ public class BikeShopApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BikeShopApplication.class, args);
 	}
-
+	//TODO make dto's and spring Validator
 }

@@ -88,10 +88,15 @@ public class ProductController {
     }
 
     @GetMapping("/product_details/{productId}")
-    public String showProductDetails(@PathVariable int productId, Model model) {
+    public String showProductDetails(@PathVariable int productId,
+                                     @RequestHeader(value = "referer", required = false) String referer, Model model) {
 
+        int lastSlashIndex = referer.lastIndexOf("/");
+        String lastPart = referer.substring(lastSlashIndex + 1);
+
+        model.addAttribute("lastReferer", lastPart);
         model.addAttribute("product", productService.getProductById(productId));
-        return "administration/product_details";
+        return "products/product_details";
     }
 
     @GetMapping("/admin/add_product/see_information_about_product/{productId}")
@@ -120,10 +125,16 @@ public class ProductController {
         return "redirect:/admin/add_product";
     }
 
-    @PostMapping("/admin/add_product/delete/{id}")
-    public String deleteProduct(@PathVariable int id) {
+    @PostMapping("/admin/add_product/delete/{productId}")
+    public String deleteProduct(@PathVariable("productId") int productId, Model model) {
 
-        productService.deleteProduct(id);
-        return "redirect:/admin/add_product";
+        if (productService.deleteProduct(productId))
+            return "redirect:/admin/add_product";
+        else {
+            model.addAttribute("products", productService.findBikes(null));
+            model.addAttribute("product", new Product());
+            model.addAttribute("error", "Product with id " + productId + " cannot be deleted.");
+            return "administration/products";
+        }
     }
 }

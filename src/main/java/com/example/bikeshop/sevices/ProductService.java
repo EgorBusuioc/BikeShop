@@ -1,12 +1,10 @@
 package com.example.bikeshop.sevices;
 
-import com.example.bikeshop.models.Image;
-import com.example.bikeshop.models.Product;
-import com.example.bikeshop.models.ProductInformation;
-import com.example.bikeshop.models.User;
+import com.example.bikeshop.models.*;
 import com.example.bikeshop.models.enums.ProductCategory;
 import com.example.bikeshop.repositories.ProductInformationRepository;
 import com.example.bikeshop.repositories.ProductRepository;
+import com.example.bikeshop.repositories.ShoppingCartItemRepository;
 import com.example.bikeshop.repositories.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -30,6 +28,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductInformationRepository productInformationRepository;
+    private final ShoppingCartItemRepository shoppingCartItemRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -46,7 +45,7 @@ public class ProductService {
                 .setParameter("category", category)
                 .getResultList();
 
-        for (Product product : productList){
+        for (Product product : productList) {
             Hibernate.initialize(product.getProductInformation());
         }
 
@@ -97,11 +96,16 @@ public class ProductService {
         List<MultipartFile> files = new ArrayList<>(Arrays.asList(file1, file2, file3, file4, file5,
                 file6, file7, file8, file9, file10));
 
+        boolean isFirstImage = true;
+
         for (MultipartFile file : files) {
             if (file != null && file.getSize() != 0) {
                 Image image = toImageEntity(file);
                 product.addImageToProduct(image);
                 log.info("Image ({}) was added to Product", file.getName());
+
+                image.setPreviewImage(isFirstImage);
+                isFirstImage = false;
             }
         }
 
@@ -126,9 +130,22 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(int id) {
+    public boolean deleteProduct(int productId) {
 
-        productRepository.deleteById(id);
-        log.info("Product with {} id was deleted", id);
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            List<ShoppingCartItem> cartItems = shoppingCartItemRepository.findByProduct(product);
+            if (cartItems.isEmpty()) {
+                productRepository.delete(product);
+                log.info("Product with id {} was deleted", productId);
+                return true;
+            } else {
+                log.warn("Product with id {} cannot be deleted as it is associated with shopping cart items", productId);
+                return false;
+            }
+        } else {
+            log.warn("Product with id {} not found", productId);
+            return false;
+        }
     }
 }

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 th:text="${product.getTitle()}"></h1>
+
+<form th:action="@{/shopping_cart/product_details/add_to_cart/{product_id}(product_id=${product.getProductId()})}"
+      th:method="POST" class="add-to-cart-form" th:if="${product.isActive()}">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="hidden" name="lastReferer" th:value="${lastReferer}">
+    <input type="submit" value="ADD TO CART" class="sign_in_btn">
+</form>
+<h1 th:unless="${product.isActive()}">It is impossible to add this product</h1>
+</body>
+</html>

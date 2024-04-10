@@ -254,8 +254,11 @@
                                         <span class="product-price__current" th:text="${bike.getFormattedPrice(bike.getDiscount())}">4 500 $</span>
                                         <span class="product-price__old" th:text="${bike.getFormattedPrice(bike.getPrice())}"></span>
                                     </div>
-                                    <a th:href="@{/product_details/{product_id}(product_id=${bike.getProductId()})}">
+                                    <a th:if="${bike.isActive()}" th:href="@{/product_details/{product_id}(product_id=${bike.getProductId()})}">
                                         <button class="product__btn">GO TO PRODUCT</button>
+                                    </a>
+                                    <a th:unless="${bike.isActive()}">
+                                        <button class="product__btn__is__not__active">OUT OF STOCK</button>
                                     </a>
                                     <div th:if="${bike.getProductInformation() != null}" class="description"
                                          style="text-align: center; cursor: pointer; height: 10%;">
@@ -287,7 +290,7 @@
                                     </div>
                                 </div>
                                 <div class="footer_2023">
-                                    2023
+                                    2024
                                 </div>
                                 <div class="footer_bikeshop" data-lag=".4">
                                     BikeShop

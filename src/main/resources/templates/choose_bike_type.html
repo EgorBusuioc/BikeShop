@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/choose_your_bike}" th:method="POST">
+
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
+    <input type="text" name="location" placeholder="Input Location" class="input" required/><br><br>
+
+    <input type="submit" value="выдать информацию" class="sign_in_btn"/>
+</form>
+<table class="styled-table" th:if="${information != null}">
+    <thead>
+    <tr>
+        <th>Place Id</th>
+        <th>formattedAddress</th>
+        <th>lat</th>
+        <th>lng</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${information.getPlaceId()}"></td>
+        <td th:text="${information.getFormattedAddress()}"></td>
+        <td th:text="${information.getLat()}"></td>
+        <td th:text="${information.getLng()}"></td>
+    </tr>
+    </tbody>
+</table>
+<a th:unless="${information != null}"> Вы ввели не город, а что-то другое</a>
+</body>
+</html>

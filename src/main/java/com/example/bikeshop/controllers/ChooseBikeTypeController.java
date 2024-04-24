@@ -27,7 +27,7 @@ public class ChooseBikeTypeController {
     @PostMapping()
     public String chooseBikeType(@RequestParam("location") String location, Model model) throws JsonProcessingException {
 
-        model.addAttribute("information", chooseBikeTypeService.getType(location));
+        //model.addAttribute("information", chooseBikeTypeService.getBicycleType(location));
         return "choose_bike_type";
     }
 }

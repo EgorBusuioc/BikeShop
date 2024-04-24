@@ -1,17 +1,22 @@
 package com.example.bikeshop.dto;
 
+import com.example.bikeshop.api.aqi.AirIndex;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * @author EgorBusuioc
- * 17.04.2024
+ * 21.04.2024
  */
-@Data
+@Getter
+@Setter
 public class AirQualityIndexDTO {
 
-    private LocationDTO location;
-    public static final List<String> extraComputations = Collections.singletonList("LOCAL_AQI");
+    private LocalDateTime dateTime;
+    private String regionCode;
+    private List<AirIndex> indexes;
 }

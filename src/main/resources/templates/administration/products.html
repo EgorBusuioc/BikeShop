@@ -3,6 +3,7 @@
 <head>
     <title>BikeShop</title>
     <link rel="stylesheet" th:href="@{/CSS/login.css}">
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
 </head>
 <body>
 <div class="container_for_sign_in">
@@ -95,5 +96,18 @@
         </div>
     </div>
 </div>
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
+<script>
+    // Get a reference to the file input element
+    const inputElement = document.querySelector('input[type="file"]');
+
+    // Create a FilePond instance
+    const pond = FilePond.create(inputElement);
+    pond.setOptions({
+        maxFiles: 10,
+        required: true,
+    });
+</script>
 </body>
 </html>

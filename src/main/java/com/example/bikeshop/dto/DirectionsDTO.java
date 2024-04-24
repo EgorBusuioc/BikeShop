@@ -1,0 +1,18 @@
+package com.example.bikeshop.dto;
+
+import com.example.bikeshop.api.routes.Route;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+/**
+ * @author EgorBusuioc
+ * 23.04.2024
+ */
+@Getter
+@Setter
+public class DirectionsDTO {
+
+    List<Route> routes;
+}

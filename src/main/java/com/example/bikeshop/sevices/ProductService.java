@@ -45,9 +45,8 @@ public class ProductService {
                 .setParameter("category", category)
                 .getResultList();
 
-        for (Product product : productList) {
+        for (Product product : productList)
             Hibernate.initialize(product.getProductInformation());
-        }
 
         return productList;
     }
@@ -58,9 +57,9 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductInformation getProductInfo(int id) {
+    public ProductInformation getProductInfo(int productId) {
 
-        Product product = productRepository.findById(id).orElse(null);
+        Product product = productRepository.findById(productId).orElse(null);
 
         if (product == null)
             return null;

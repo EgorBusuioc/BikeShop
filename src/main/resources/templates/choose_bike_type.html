@@ -1,36 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../static/CSS/choose_bike_type.css">
 </head>
 <body>
-<form th:action="@{/choose_your_bike}" th:method="POST">
+<div style="position: relative; width: 500px; height: 500px;">
+    <!-- Canvas для анимаций -->
+    <canvas id="test" style="position: absolute;"></canvas>
 
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <!-- Контейнер для ваших данных -->
+    <div id="dataContainer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+        <!-- Ваши данные здесь -->
+        <form th:action="@{/choose_your_bike}" th:method="POST">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <input type="text" name="location" placeholder="Input Location" class="input" required/><br><br>
+            <input type="submit" value="выдать информацию" class="sign_in_btn"/>
+        </form>
+        <table class="styled-table" th:if="${information != null}">
+            <thead>
+            <tr>
+                <th>Place Id</th>
+                <th>formattedAddress</th>
+                <th>lat</th>
+                <th>lng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${information.getPlaceId()}"></td>
+                <td th:text="${information.getFormattedAddress()}"></td>
+                <td th:text="${information.getLat()}"></td>
+                <td th:text="${information.getLng()}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <a th:unless="${information != null}"> Вы ввели не город, а что-то другое</a>
+    </div>
+</div>
 
-    <input type="text" name="location" placeholder="Input Location" class="input" required/><br><br>
-
-    <input type="submit" value="выдать информацию" class="sign_in_btn"/>
-</form>
-<table class="styled-table" th:if="${information != null}">
-    <thead>
-    <tr>
-        <th>Place Id</th>
-        <th>formattedAddress</th>
-        <th>lat</th>
-        <th>lng</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${information.getPlaceId()}"></td>
-        <td th:text="${information.getFormattedAddress()}"></td>
-        <td th:text="${information.getLat()}"></td>
-        <td th:text="${information.getLng()}"></td>
-    </tr>
-    </tbody>
-</table>
-<a th:unless="${information != null}"> Вы ввели не город, а что-то другое</a>
 </body>
 </html>
+
+<script>
+    const canvas = document.getElementById('test');
+    const ctx = canvas.getContext('2d');
+
+    // Устанавливаем размеры холста в соответствии с окном браузера
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Создаем массив для хранения точек
+    const dots = [];
+    const dotCount = 100; // Количество белых точек
+
+    // Создаем белые точки
+    // Создаем белые и синие точки
+    for (let i = 0; i < dotCount; i++) {
+        // Создаем белые точки
+        dots.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: 2,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5,
+            color: 'white' // Устанавливаем цвет белых точек
+        });
+    }
+
+    for (let i = 0; i < dotCount; i++) {
+        // Создаем синие точки
+        dots.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: 2,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5,
+            color: 'blue' // Устанавливаем цвет синих точек
+        });
+    }
+
+    // Функция для анимации точек
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Обрабатываем каждую точку
+        dots.forEach(dot => {
+            // Изменяем позицию точки
+            dot.x += dot.dx;
+            dot.y += dot.dy;
+
+            // Отражаем точку от краев экрана
+            if (dot.x < 0 || dot.x > canvas.width) {
+                dot.dx = -dot.dx;
+            }
+            if (dot.y < 0 || dot.y > canvas.height) {
+                dot.dy = -dot.dy;
+            }
+
+            // Рисуем точку
+            ctx.beginPath();
+            ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+
+            // Используем цвет точки
+            ctx.fillStyle = dot.color;
+            ctx.fill();
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    // Начинаем анимацию
+    animate();
+
+
+</script>

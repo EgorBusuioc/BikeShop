@@ -1,8 +1,11 @@
 package com.example.bikeshop.models.api;
 
+import com.example.bikeshop.api.places.Photo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author EgorBusuioc
@@ -13,6 +16,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Place {
 
+    private String placeName;
     private String location;
     private Double elevation;
+    private List<Photo> photos;
 }

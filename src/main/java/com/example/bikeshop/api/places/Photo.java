@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class Photo {
 
-    public String name;
-    public int widthPx;
-    public int heightPx;
+    private String name;
+    private int widthPx;
+    private int heightPx;
 }

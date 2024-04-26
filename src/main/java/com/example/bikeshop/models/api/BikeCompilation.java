@@ -4,6 +4,7 @@ import com.example.bikeshop.dto.AirQualityIndexDTO;
 import com.example.bikeshop.dto.GeocodingDTO;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,5 +19,5 @@ public class BikeCompilation {
     private String location;
     private GeocodingDTO geocoding;
     private AirQualityIndexDTO aqi;
-    private List<Direction> directions;
+    private List<Direction> directions = new ArrayList<>();
 }

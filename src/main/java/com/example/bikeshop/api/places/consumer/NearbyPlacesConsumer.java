@@ -3,7 +3,6 @@ package com.example.bikeshop.api.places.consumer;
 import com.example.bikeshop.api.geocoding.Location;
 import com.example.bikeshop.api.places.Circle;
 import com.example.bikeshop.api.places.LocationRestriction;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +15,6 @@ import java.util.List;
  */
 @Getter
 @Setter
-@AllArgsConstructor
 public class NearbyPlacesConsumer {
 
     private List<String> includedTypes = Collections.singletonList("historical_landmark");

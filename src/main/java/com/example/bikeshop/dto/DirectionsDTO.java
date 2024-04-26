@@ -1,6 +1,6 @@
 package com.example.bikeshop.dto;
 
-import com.example.bikeshop.api.routes.Route;
+import com.example.bikeshop.api.routes.Leg;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,5 +14,5 @@ import java.util.List;
 @Setter
 public class DirectionsDTO {
 
-    List<Route> routes;
+    private List<Leg> legs;
 }

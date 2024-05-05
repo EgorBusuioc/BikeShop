@@ -3,7 +3,8 @@
 <head>
     <title>BikeShop</title>
     <link rel="stylesheet" th:href="@{/CSS/login.css}">
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link href="../../static/CSS/filepond.css" rel="stylesheet"/>
+    <script src="../../static/JavaScript/filepond.js"></script>
 </head>
 <body>
 <div class="container_for_sign_in">
@@ -24,13 +25,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="product, productIndex : ${products}" th:class="${productIndex.index % 2 == 0} ? 'active-row'">
+                <tr th:each="product, productIndex : ${products}"
+                    th:class="${productIndex.index % 2 == 0} ? 'active-row'">
                     <td th:text="${product.getTitle()}"></td>
                     <td th:text="${product.getArticleNumber()}"></td>
                     <td th:text="${product.getQuantityInStock()}"></td>
                     <td th:text="${product.getPrice()}"></td>
                     <td>
-                        <form th:action="@{/admin/add_product/delete/{product_id}(product_id=${product.getProductId()})}" th:method="POST">
+                        <form th:action="@{/admin/add_product/delete/{product_id}(product_id=${product.getProductId()})}"
+                              th:method="POST">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                             <input type="submit" value="Delete" class="table_btn">
                         </form>
@@ -53,60 +56,37 @@
         <div class="login_form">
             <div class="BikeShop__text">BikeShop</div>
             <div class="sign_in">Add New Product</div>
-            <form th:action="@{/admin/add_product/create}" th:method="POST" th:object="${product}" enctype="multipart/form-data">
-                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                <input th:field="*{title}" type="text" name="title" placeholder="Model Name" class="input" required/><br><br>
+            <form th:action="@{/admin/add_product/create}" th:method="POST" th:object="${product}"
+                  enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" id="csrfToken">
+                <input th:field="*{title}" type="text" name="title" placeholder="Model Name" class="input"
+                       required/><br><br>
                 <input type="number" name="quantityInStock" placeholder="Quantity In Stock" class="input" required/><br><br>
-                <input type="text" name="articleNumber" placeholder="Article Number" class="input" required/><br><br>
                 <input type="number" name="price" placeholder="Price" class="input" required/><br><br>
                 <input type="number" name="discount" placeholder="Discount" class="input"/><br><br>
-                <div class="result_text" style="font-size: 2.3vh">
-                    First Photo: <input type="file" name="file1" style="float: right;"/><br>
-                </div>
-                <div class="result_text" style="font-size: 2.3vh">
-                    Second Photo: <input type="file" name="file2" style="float: right;"/><br>
-                </div>
-                <div class="result_text" style="font-size: 2.3vh">
-                    Third Photo: <input type="file" name="file3" style="float: right;"/><br>
-                </div>
-                <div class="result_text" style="font-size: 2.3vh">
-                    Fourth Photo: <input type="file" name="file4" style="float: right;"/><br>
-                </div>
-                <div class="result_text" style="font-size: 2.3vh">
-                    Fifth Photo: <input type="file" name="file5" style="float: right;"/><br>
-                </div>
-                <div class="result_text" style="font-size: 2.3vh">
-                    Sixth Photo: <input type="file" name="file1" style="float: right;"/><br>
-                </div>
-                <div class="result_text" style="font-size: 2.3vh">
-                    Seventh Photo: <input type="file" name="file2" style="float: right;"/><br>
-                </div>
-                <div class="result_text" style="font-size: 2.3vh">
-                    Eighth Photo: <input type="file" name="file3" style="float: right;"/><br>
-                </div>
-                <div class="result_text" style="font-size: 2.3vh">
-                    Ninth Photo: <input type="file" name="file4" style="float: right;"/><br>
-                </div>
-                <div class="result_text" style="font-size: 2.3vh">
-                    Tenth Photo: <input type="file" name="file5" style="float: right;"/><br>
-                </div>
+                <input type="file"
+                       class="filepond"
+                       name="filepond"
+                       data-allow-reorder="true"
+                       data-max-file-size="3MB"
+                       data-max-files="3">
                 <input type="submit" value="Добавить товар" class="sign_in_btn"/>
                 <a href="/product" class="registration">All Products</a>
             </form>
         </div>
     </div>
 </div>
-<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
 <script>
-    // Get a reference to the file input element
-    const inputElement = document.querySelector('input[type="file"]');
-
     // Create a FilePond instance
-    const pond = FilePond.create(inputElement);
-    pond.setOptions({
+    const csrfToken = document.getElementById('csrfToken').value;
+    const inputElement = document.querySelector('.filepond');
+    FilePond.create(inputElement, {
         maxFiles: 10,
-        required: true,
+        maxFileSize: '3MB',
+        server: {
+            instantUpload: false,
+        }
     });
 </script>
 </body>

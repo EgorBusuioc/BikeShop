@@ -18,7 +18,7 @@ import java.util.List;
 public class NearbyPlacesConsumer {
 
     private List<String> includedTypes = Collections.singletonList("historical_landmark");
-    private int maxResultCount = 7;
+    private int maxResultCount = 13;
     private LocationRestriction locationRestriction;
 
     public NearbyPlacesConsumer(Location location) {

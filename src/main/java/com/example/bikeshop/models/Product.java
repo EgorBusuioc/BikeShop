@@ -55,6 +55,10 @@ public class Product {
     private void init(){
         creationDate = LocalDateTime.now();
         isActive = true;
+
+        long currentTimeMillis = System.currentTimeMillis();
+        String currentTimeString = Long.toString(currentTimeMillis);
+        articleNumber = currentTimeString.substring(currentTimeString.length() - 6);
     }
 
     public String getFormattedDate() {

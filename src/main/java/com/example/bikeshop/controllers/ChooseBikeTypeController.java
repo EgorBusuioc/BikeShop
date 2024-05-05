@@ -1,5 +1,6 @@
 package com.example.bikeshop.controllers;
 
+import com.example.bikeshop.models.api.BikeCompilation;
 import com.example.bikeshop.sevices.ChooseBikeTypeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,18 @@ public class ChooseBikeTypeController {
     }
 
     @PostMapping()
-    public String chooseBikeType(@RequestParam("location") String location, Model model) throws JsonProcessingException {
+    public String chooseBikeType(@RequestParam("location") String location, Model model) {
 
-        model.addAttribute("information", chooseBikeTypeService.getBicycleType(location));
+        try{
+            BikeCompilation type = chooseBikeTypeService.getBicycleType(location);
+            if(type != null)
+                model.addAttribute("bikeType", chooseBikeTypeService.getBicycleType(location));
+            else
+                model.addAttribute("country", "country");
+        }catch (Exception e){
+            model.addAttribute("errorName", e.getMessage());
+            model.addAttribute("errorInfo", "Something went wrong");
+        }
         return "choose_bike_type";
     }
 }

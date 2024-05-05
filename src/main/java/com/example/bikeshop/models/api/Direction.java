@@ -16,5 +16,6 @@ public class Direction {
     private Place startPlace;
     private Place endPlace;
     private String distanceString;
-    private int distanceInt;
+    private Double distanceDouble;
+    private Double averageElevation;
 }

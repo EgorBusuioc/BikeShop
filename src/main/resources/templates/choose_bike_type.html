@@ -4,39 +4,37 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="../static/CSS/choose_bike_type.css">
+    <link rel="stylesheet" href="../static/CSS/button.css">
 </head>
 <body>
 <div style="position: relative; width: 500px; height: 500px;">
-    <!-- Canvas для анимаций -->
-    <canvas id="test" style="position: absolute;"></canvas>
+ <canvas id="test" style="position: absolute;"></canvas>
 
-    <!-- Контейнер для ваших данных -->
     <div id="dataContainer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-        <!-- Ваши данные здесь -->
         <form th:action="@{/choose_your_bike}" th:method="POST">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
             <input type="text" name="location" placeholder="Input Location" class="input" required/><br><br>
-            <input type="submit" value="выдать информацию" class="sign_in_btn"/>
+            <button type="submit" class="glow-on-hover">FIND YOUR BIKE TYPE</button>
         </form>
-        <table class="styled-table" th:if="${information != null}">
+        <table class="styled-table" th:if="${bikeType}">
             <thead>
             <tr>
                 <th>Place Id</th>
                 <th>formattedAddress</th>
-                <th>lat</th>
-                <th>lng</th>
+                <th>maxElevation</th>
+                <th>minElevation</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td th:text="${information.getPlaceId()}"></td>
-                <td th:text="${information.getFormattedAddress()}"></td>
-                <td th:text="${information.getLatitude()}"></td>
-                <td th:text="${information.getLongitude()}"></td>
+                <td th:text="${bikeType.getGeocoding().getPlaceId()}"></td>
+                <td th:text="${bikeType.getGeocoding().getFormattedAddress()}"></td>
+                <td th:text="${bikeType.getMaxElevation()}"></td>
+                <td th:text="${bikeType.getMinElevation()}"></td>
             </tr>
             </tbody>
         </table>
-        <a th:unless="${information != null}"> Вы ввели не город, а что-то другое</a>
+        <a th:if="${country == 'country'}">You must input only city or address</a>
     </div>
 </div>
 

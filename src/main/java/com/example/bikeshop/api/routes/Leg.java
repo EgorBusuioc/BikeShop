@@ -1,5 +1,6 @@
 package com.example.bikeshop.api.routes;
 
+import com.example.bikeshop.api.places.Place;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -23,5 +24,8 @@ public class Leg {
     @JsonProperty("start_address")
     private String startAddress;
     @JsonIgnore
-    private String name;
+    private Place startPlaceName;
+    @JsonIgnore
+    private Place endPlaceName;
+
 }

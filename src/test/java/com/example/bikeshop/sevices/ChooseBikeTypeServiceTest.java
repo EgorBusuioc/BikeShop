@@ -1,6 +1,6 @@
 package com.example.bikeshop.sevices;
 
-import com.example.bikeshop.dto.DirectionsDTO;
+import com.example.bikeshop.dto.DistanceDTO;
 import com.example.bikeshop.api.geocoding.Location;
 import com.example.bikeshop.api.places.consumer.NearbyPlacesConsumer;
 import com.example.bikeshop.dto.GeocodingDTO;
@@ -167,7 +167,7 @@ public class ChooseBikeTypeServiceTest {
 //    }
 
     private void makeDirections(NearbyPlacesDTO places) throws JsonProcessingException {
-        DirectionsDTO directions = new DirectionsDTO();
+        DistanceDTO directions = new DistanceDTO();
         List<String> FINAL_STRINGS = makeDirectionURL(places);
 
         for (int i = 0; i < FINAL_STRINGS.size(); i++) {
@@ -189,7 +189,7 @@ public class ChooseBikeTypeServiceTest {
             if (resultsArray.isArray() && !resultsArray.isEmpty()) {
                 JsonNode firstResult = resultsArray.get(0);
                 String result = firstResult.toString();
-                DirectionsDTO temporalDirection = objectMapper.readValue(result, DirectionsDTO.class);
+                DistanceDTO temporalDirection = objectMapper.readValue(result, DistanceDTO.class);
 
                 for (int j = 0; j < temporalDirection.getLegs().size(); j++)
                     directions.getLegs().add(temporalDirection.getLegs().get(j));

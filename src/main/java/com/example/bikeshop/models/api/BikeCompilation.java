@@ -20,4 +20,12 @@ public class BikeCompilation {
     private GeocodingDTO geocoding;
     private AirQualityIndexDTO aqi;
     private List<Direction> directions = new ArrayList<>();
+    private Double fullDistance;
+    private Double averageElevation;
+    private double maxElevation;
+    private double minElevation;
+
+    public String getFullDistance() {
+        return fullDistance / 1000 + " km";
+    }
 }

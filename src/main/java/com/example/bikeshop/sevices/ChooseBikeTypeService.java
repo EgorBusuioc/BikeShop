@@ -1,9 +1,10 @@
 package com.example.bikeshop.sevices;
 
 import com.example.bikeshop.api.aqi.consumer.AirQualityIndexConsumer;
+import com.example.bikeshop.api.places.PlaceLeg;
 import com.example.bikeshop.api.places.consumer.NearbyPlacesConsumer;
 import com.example.bikeshop.dto.AirQualityIndexDTO;
-import com.example.bikeshop.dto.DirectionsDTO;
+import com.example.bikeshop.dto.DistanceDTO;
 import com.example.bikeshop.dto.GeocodingDTO;
 import com.example.bikeshop.api.geocoding.Location;
 import com.example.bikeshop.dto.NearbyPlacesDTO;
@@ -14,7 +15,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,6 @@ import java.util.*;
  * 17.04.2024
  */
 @Service
-@Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ChooseBikeTypeService {
@@ -39,10 +38,10 @@ public class ChooseBikeTypeService {
     private final String GEOCODING_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
     private final String AQI_URL = "https://airquality.googleapis.com/v1/currentConditions:lookup";
     private final String NEARBY_PLACES_URL = "https://places.googleapis.com/v1/places:searchNearby";
-    private final String DIRECTIONS_URL = "https://maps.googleapis.com/maps/api/directions/json?origin=%s&destination=%s&waypoints=";
+    private final String DISTANCE_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s";
     private final String ELEVATION_URL = "https://maps.googleapis.com/maps/api/elevation/json?locations=%s,%s";
 
-    public GeocodingDTO getBicycleType(String location) throws JsonProcessingException {
+    public BikeCompilation getBicycleType(String location) throws JsonProcessingException {
 
         BikeCompilation resultType = new BikeCompilation();
 
@@ -57,20 +56,52 @@ public class ChooseBikeTypeService {
         resultType.setAqi(getAQI(geocodingLocation));
 
         NearbyPlacesDTO places = getNearbyPlaces(geocodingLocation);
-        DirectionsDTO directions = getDirections(places);
+        DistanceDTO directions = getDirections(places);
+        Double tripDistance = 0.0;
+        double elevationChange = 0.0;
+        double maxElevation = -100000000000000.0;
+        double minElevation = 100000000000000.0;
+        int countElevation = 0;
 
-        for (int i = 0; i < directions.getLegs().size(); i++) {
-            Place firstPlace = new Place(places.getPlaces().get(i).getDisplayName().getText(),
-                    directions.getLegs().get(i).getStartAddress(),
-                    getElevation(directions.getLegs().get(i).getStartLocation().getLatitude(), directions.getLegs().get(i).getStartLocation().getLongitude()),
-                    places.getPlaces().get(i).getPhotos());
-            Place secondPlace = new Place(places.getPlaces().get(i).getDisplayName().getText(),
-                    directions.getLegs().get(i).getEndAddress(),
-                    getElevation(directions.getLegs().get(i).getEndLocation().getLatitude(), directions.getLegs().get(i).getEndLocation().getLongitude()),
-                    places.getPlaces().get(i).getPhotos());
-            resultType.getDirections().add(new Direction(firstPlace, secondPlace, directions.getLegs().get(i).getDistance().getText(), directions.getLegs().get(i).getDistance().getValue()));
+        for (int i = 0; i < directions.getPlacesLegList().size(); i++) {
+            Place firstPlace = new Place(directions.getPlacesLegList().get(i).getOriginPlace().getDisplayName().getText(),
+                    directions.getPlacesLegList().get(i).getOriginAddress(),
+                    getElevation(directions.getPlacesLegList().get(i).getOriginPlace().getLocation()),
+                    directions.getPlacesLegList().get(i).getOriginPlace().getPhotos());
+            Place secondPlace = new Place(directions.getPlacesLegList().get(i).getDestinationPlace().getDisplayName().getText(),
+                    directions.getPlacesLegList().get(i).getDestinationAddress(),
+                    getElevation(directions.getPlacesLegList().get(i).getDestinationPlace().getLocation()),
+                    directions.getPlacesLegList().get(i).getDestinationPlace().getPhotos());
+
+            if (directions.getPlacesLegList().get(i).getDistanceValue() != null) {
+                tripDistance += directions.getPlacesLegList().get(i).getDistanceValue();
+            }
+
+            resultType.getDirections().add(new Direction(
+                    firstPlace,
+                    secondPlace,
+                    directions.getPlacesLegList().get(i).getDistanceText(),
+                    directions.getPlacesLegList().get(i).getDistanceValue(),
+                    (secondPlace.getElevation() != 0 && firstPlace.getElevation() != 0) ? (secondPlace.getElevation() - firstPlace.getElevation()) : 0.0));
+
+            if(firstPlace.getElevation() != 0.0 && secondPlace.getElevation() != 0.0) {
+                maxElevation = Math.max(maxElevation, firstPlace.getElevation());
+                maxElevation = Math.max(maxElevation, secondPlace.getElevation());
+                minElevation = Math.min(minElevation, firstPlace.getElevation());
+                minElevation = Math.min(minElevation, secondPlace.getElevation());
+            }
+
+            if(resultType.getDirections().get(i).getAverageElevation() != 0.0){
+                elevationChange += resultType.getDirections().get(i).getAverageElevation();
+                countElevation++;
+            }
         }
-        return getGeocoding(location);
+
+        resultType.setMaxElevation(maxElevation);
+        resultType.setMinElevation(minElevation);
+        resultType.setFullDistance(tripDistance);
+        resultType.setAverageElevation(elevationChange / countElevation);
+        return resultType;
     }
 
     private GeocodingDTO getGeocoding(String location) throws JsonProcessingException {
@@ -147,7 +178,7 @@ public class ChooseBikeTypeService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.set("X-Goog-Api-Key", API_KEY);
-        httpHeaders.set("X-Goog-FieldMask", "places.displayName,places.photos");
+        httpHeaders.set("X-Goog-FieldMask", "places.displayName,places.photos,places.location");
 
         NearbyPlacesConsumer nearbyPlacesConsumer = new NearbyPlacesConsumer(location);
 
@@ -156,45 +187,56 @@ public class ChooseBikeTypeService {
         return restTemplate.postForObject(NEARBY_PLACES_URL, requestEntity, NearbyPlacesDTO.class);
     }
 
-    private DirectionsDTO getDirections(NearbyPlacesDTO places) throws JsonProcessingException {
+    private DistanceDTO getDirections(NearbyPlacesDTO places) throws JsonProcessingException {
 
-        DirectionsDTO directions = new DirectionsDTO();
+        DistanceDTO directions = new DistanceDTO();
 
-        List<String> FINAL_STRINGS = makeDirectionURL(places);
+        for (int i = 0; i < places.getPlaces().size(); i++) {
+            if (i + 1 <= places.getPlaces().size() - 1) {
+                List<com.example.bikeshop.api.places.Place> placesList = new ArrayList<>(
+                        Arrays.asList(places.getPlaces().get(i), places.getPlaces().get(i + 1)));
 
-        for (int i = 0; i < FINAL_STRINGS.size(); i++) {
-            String response = restTemplate.getForObject(FINAL_STRINGS.get(i) + "&key=" + API_KEY, String.class);
-            JsonNode rootNode = objectMapper.readTree(response);
-            JsonNode resultsArray = rootNode.path("routes");
+                String FINAL_DIRECTIONS_URL = makeDirectionURL(placesList);
 
-            boolean stopLoop = false;
-            while (resultsArray.isArray() && resultsArray.isEmpty() && !stopLoop) {
-                String URL = modifyDirectionURL(FINAL_STRINGS.get(i));
-                if (URL != null) {
-                    String newResponse = restTemplate.getForObject(URL + "&key=" + API_KEY, String.class);
-                    rootNode = objectMapper.readTree(newResponse);
-                    resultsArray = rootNode.path("routes");
-                    FINAL_STRINGS.set(i, URL);
-                } else
-                    stopLoop = true;
-            }
+                String response = restTemplate.getForObject(FINAL_DIRECTIONS_URL + "&key=" + API_KEY, String.class);
+                JsonNode rootNode = objectMapper.readTree(response);
 
-            if (resultsArray.isArray() && !resultsArray.isEmpty()) {
-                JsonNode firstResult = resultsArray.get(0);
-                String result = firstResult.toString();
-                DirectionsDTO temporalDirection = objectMapper.readValue(result, DirectionsDTO.class);
+                PlaceLeg placeLeg = new PlaceLeg();
+                JsonNode originAddresses = rootNode.path("origin_addresses");
+                if (originAddresses.isArray() && !originAddresses.isEmpty()) {
+                    placeLeg.setOriginAddress(originAddresses.get(0).asText());
+                    placeLeg.setOriginPlace(placesList.get(0));
+                }
 
-                for (int j = 0; j < temporalDirection.getLegs().size(); j++)
-                    directions.getLegs().add(temporalDirection.getLegs().get(j));
+                JsonNode destinationAddresses = rootNode.path("destination_addresses");
+                if (destinationAddresses.isArray() && !destinationAddresses.isEmpty()) {
+                    placeLeg.setDestinationAddress(destinationAddresses.get(0).asText());
+                    placeLeg.setDestinationPlace(placesList.get(1));
+                }
+
+                JsonNode rows = rootNode.path("rows");
+                if (rows.isArray() && !rows.isEmpty()) {
+                    JsonNode elements = rows.get(0).path("elements");
+                    if (elements.isArray() && !elements.isEmpty()) {
+                        JsonNode element = elements.get(0);
+                        JsonNode distance = element.path("distance");
+                        if (distance.has("text")) {
+                            placeLeg.setDistanceText(distance.get("text").asText());
+                        }
+                        if (distance.has("value")) {
+                            placeLeg.setDistanceValue(distance.get("value").asDouble());
+                        }
+                    }
+                }
+                directions.getPlacesLegList().add(placeLeg);
             }
         }
-
         return directions;
     }
 
-    private double getElevation(double latitude, double longitude) throws JsonProcessingException {
+    private double getElevation(Location location) throws JsonProcessingException {
 
-        String URL = String.format(ELEVATION_URL, latitude, longitude);
+        String URL = String.format(ELEVATION_URL, location.getLatitude(), location.getLongitude());
         String response = restTemplate.getForObject(URL + "&key=" + API_KEY, String.class);
 
         JsonNode root = objectMapper.readTree(response);
@@ -206,58 +248,8 @@ public class ChooseBikeTypeService {
             return 0;
     }
 
-    private List<String> makeDirectionURL(NearbyPlacesDTO places) {
+    private String makeDirectionURL(List<com.example.bikeshop.api.places.Place> placesList) {
 
-        List<String> listOfStrings = new ArrayList<>();
-        String preFinalString;
-        int startLocationPosition = 0;
-        int endLocationPosition = 3;
-
-        while (startLocationPosition != endLocationPosition) {
-
-            preFinalString = String.format(DIRECTIONS_URL, places.getPlaces().get(startLocationPosition).getDisplayName().getText(),
-                    places.getPlaces().get(endLocationPosition).getDisplayName().getText());
-            StringBuilder finalString = new StringBuilder(preFinalString);
-            if (endLocationPosition - startLocationPosition == 3) {
-                finalString.append(places.getPlaces().get(startLocationPosition + 1).getDisplayName().getText())
-                        .append("|")
-                        .append(places.getPlaces().get(startLocationPosition + 2).getDisplayName().getText());
-                listOfStrings.add(finalString.toString());
-            } else if (endLocationPosition - startLocationPosition == 2) {
-                finalString.append(places.getPlaces().get(startLocationPosition + 1).getDisplayName().getText());
-                listOfStrings.add(finalString.toString());
-            }
-
-            startLocationPosition = endLocationPosition;
-            endLocationPosition = startLocationPosition + 3;
-
-            boolean endLocationPositionFlag = true;
-            while (endLocationPositionFlag) {
-                if (places.getPlaces().size() > endLocationPosition)
-                    endLocationPositionFlag = false;
-                else {
-                    endLocationPosition--;
-                }
-            }
-        }
-
-        return listOfStrings;
-    }
-
-    private String modifyDirectionURL(String URL) {
-
-        int lastIndex = URL.lastIndexOf("|");
-        if (lastIndex != -1) {
-
-            return URL.substring(0, lastIndex);
-        } else {
-            int lastWaypoint = URL.lastIndexOf("&waypoints");
-            if (lastWaypoint != -1) {
-
-                return URL.substring(0, lastWaypoint);
-            }
-        }
-
-        return null;
+        return String.format(DISTANCE_URL, placesList.get(0).getDisplayName().getText(), placesList.get(1).getDisplayName().getText());
     }
 }

@@ -1,6 +1,6 @@
 package com.example.bikeshop.dto;
 
-import com.example.bikeshop.api.routes.Leg;
+import com.example.bikeshop.api.places.PlaceLeg;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class DirectionsDTO {
+public class DistanceDTO {
 
-    private List<Leg> legs = new ArrayList<>();
+    private List<PlaceLeg> placesLegList = new ArrayList<>();
 }

@@ -3,8 +3,9 @@
 <head>
     <title>BikeShop</title>
     <link rel="stylesheet" th:href="@{/CSS/login.css}">
-    <link href="../../static/CSS/filepond.css" rel="stylesheet"/>
-    <script src="../../static/JavaScript/filepond.js"></script>
+    <link rel="stylesheet" th:href="@{/CSS/file_upload.css}">
+    <link rel="stylesheet" th:href="@{/CSS/select_box.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="container_for_sign_in">
@@ -64,30 +65,24 @@
                 <input type="number" name="quantityInStock" placeholder="Quantity In Stock" class="input" required/><br><br>
                 <input type="number" name="price" placeholder="Price" class="input" required/><br><br>
                 <input type="number" name="discount" placeholder="Discount" class="input"/><br><br>
-                <input type="file"
-                       class="filepond"
-                       name="filepond"
-                       data-allow-reorder="true"
-                       data-max-file-size="3MB"
-                       data-max-files="3">
-                <input type="submit" value="Добавить товар" class="sign_in_btn"/>
+                <div class="selectdiv">
+                    <label>
+                        <select name="category">
+                            <option th:each="category : ${productCategories}" th:text="${category}" th:value="${category}"></option>
+                        </select>
+                    </label>
+                </div>
+                <div class="upload">
+                    <button type="button" class="btn-warning">
+                        <i class="fa fa-upload"></i> Upload File
+                        <input type="file" name="files" multiple>
+                    </button>
+                </div>
+                <input type="submit" value="ADD PRODUCT" class="sign_in_btn" style="margin-top: 1vh"/>
                 <a href="/product" class="registration">All Products</a>
             </form>
         </div>
     </div>
 </div>
-
-<script>
-    // Create a FilePond instance
-    const csrfToken = document.getElementById('csrfToken').value;
-    const inputElement = document.querySelector('.filepond');
-    FilePond.create(inputElement, {
-        maxFiles: 10,
-        maxFileSize: '3MB',
-        server: {
-            instantUpload: false,
-        }
-    });
-</script>
 </body>
 </html>

@@ -16,9 +16,6 @@
     <input th:field="*{swat}" type="text" name="swat" placeholder="Swat" class="input" required/><br><br>
     <input th:field="*{cassette}" type="text" name="cassette" placeholder="Cassette" class="input" required/><br><br>
 
-    <select name="category">
-        <option th:each="category : ${productCategories}" th:text="${category}" th:value="${category}"></option>
-    </select>
     <input type="submit" value="Добавить товар" class="sign_in_btn"/>
 </form>
 </body>

@@ -1,0 +1,36 @@
+@font-face {
+    font-family: menu-button;
+    src: url(../fonts/Montserrat-SemiBold.ttf);
+}
+
+.btn-warning{
+    font-family: menu-button;
+    position: relative;
+    padding: 11px 16px;
+    line-height: 1.5;
+    border: 0;
+    overflow: hidden;
+    font-size: 2.5vh;
+    height: 48px;
+    width: 100%;
+    border-radius: 6px;
+    background-color: #66FCF1;
+    color: black;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+    border: none;
+    transition: all ease-in-out 0.3s;
+}
+
+.btn-warning input[type = "file"]{
+    cursor: pointer;
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    transform: scale(3);
+    opacity: 0;
+}
+
+.btn-warning:hover{
+    background-color: black;
+    color: white;
+}

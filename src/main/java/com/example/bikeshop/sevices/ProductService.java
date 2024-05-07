@@ -30,20 +30,14 @@ public class ProductService {
     private final ProductInformationRepository productInformationRepository;
     private final ShoppingCartItemRepository shoppingCartItemRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     public List<Product> findBikes(ProductCategory category) {
 
         if (category == null) {
             return productRepository.findAll();
         }
-
-        Session session = entityManager.unwrap(Session.class);
-        List<Product> productList = session
-                .createQuery("SELECT p FROM Product p JOIN p.productInformation pi WHERE :category MEMBER OF p.productInformation.productCategories", Product.class)
-                .setParameter("category", category)
-                .getResultList();
+        Set<ProductCategory> categorySet = new HashSet<>();
+        categorySet.add(category);
+        List<Product> productList = productRepository.findByProductCategoriesIn(Collections.synchronizedSet(categorySet));
 
         for (Product product : productList)
             Hibernate.initialize(product.getProductInformation());
@@ -75,9 +69,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateInformation(ProductInformation productToUpdate, String category, int productInformationId, int productId) {
+    public void updateInformation(ProductInformation productToUpdate, int productInformationId, int productId) {
 
-        productToUpdate.setProductCategories(Collections.singleton(ProductCategory.valueOf(category)));
         productToUpdate.setProductInformationId(productInformationId);
         productToUpdate.setProduct(productRepository.findById(productId).orElse(null));
         productInformationRepository.save(productToUpdate);
@@ -85,15 +78,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void saveProduct(Product product,
-                            MultipartFile file1, MultipartFile file2,
-                            MultipartFile file3, MultipartFile file4,
-                            MultipartFile file5, MultipartFile file6,
-                            MultipartFile file7, MultipartFile file8,
-                            MultipartFile file9, MultipartFile file10) throws IOException {
-
-        List<MultipartFile> files = new ArrayList<>(Arrays.asList(file1, file2, file3, file4, file5,
-                file6, file7, file8, file9, file10));
+    public void saveProduct(Product product, MultipartFile[] files, String category) throws IOException {
 
         boolean isFirstImage = true;
 
@@ -108,6 +93,7 @@ public class ProductService {
             }
         }
 
+        product.setProductCategories(Collections.singleton(ProductCategory.valueOf(category)));
         productRepository.save(product);
         log.info("Saving new product: {}", product.getTitle());
     }

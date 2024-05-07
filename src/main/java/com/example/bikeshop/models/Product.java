@@ -1,5 +1,6 @@
 package com.example.bikeshop.models;
 
+import com.example.bikeshop.models.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -50,6 +51,11 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ShoppingCartItem> shoppingCartItem;
+
+    @ElementCollection(targetClass = ProductCategory.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<ProductCategory> productCategories = new HashSet<>();
 
     @PrePersist
     private void init(){

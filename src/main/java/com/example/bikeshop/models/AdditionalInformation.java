@@ -5,6 +5,9 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * @author EgorBusuioc
@@ -42,4 +45,15 @@ public class AdditionalInformation {
     @OneToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
+
+    public static LocalDate stringToDateTime(String date) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", new Locale("en"));
+        return LocalDate.parse(date, formatter);
+    }
+
+    public boolean allFieldsAreNotNull() {
+
+        return address != null || city != null || country != null || dateOfBirth != null || phoneNumber != null || workingAddress != null;
+    }
 }

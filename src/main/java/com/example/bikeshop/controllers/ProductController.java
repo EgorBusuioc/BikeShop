@@ -77,9 +77,14 @@ public class ProductController {
     @PostMapping("/admin/add_product/create")
     public String createNewProduct(@ModelAttribute("product") Product product,
                                    @RequestParam("files") MultipartFile[] files,
-                                   @RequestParam("category") String productCategory) throws IOException {
+                                   @RequestParam("category") String productCategory, Model model) {
+        try {
+            productService.saveProduct(product, files, productCategory);
+        } catch (IOException e) {
+            model.addAttribute("error", "You must upload at least one image");
+            return "administration/products";
+        }
 
-        productService.saveProduct(product, files, productCategory);
         return "redirect:/admin/add_product";
     }
 
@@ -95,14 +100,24 @@ public class ProductController {
         return "products/product_details";
     }
 
-    @GetMapping("/admin/add_product/see_information_about_product/{productId}")
+    @GetMapping("/admin/add_product/product_details/{productId}")
     public String showInformationAboutProduct(@PathVariable("productId") int id, Model model) {
 
         model.addAttribute("product", productService.getProductById(id));
+        model.addAttribute("productCategories", productService.getProductCategory());
         return "administration/product_info";
     }
 
-    @GetMapping("/admin/add_product/add_product_info/{productId}")
+    @PostMapping("/admin/add_product/product_details/{productId}")
+    public String updateInformationAboutProduct(@PathVariable("productId") int productId,
+                                                @ModelAttribute("product") Product product,
+                                                @RequestParam(value = "category", required = false) String category) {
+
+        productService.updateProduct(productId, product, category);
+        return "redirect:/admin/add_product/product_details/" + productId;
+    }
+
+    @GetMapping("/admin/add_product/product_details/add_product_info/{productId}")
     public String addProductInfo(@PathVariable("productId") int id, Model model) {
 
         model.addAttribute("productInformation", productService.getProductInfo(id));
@@ -110,7 +125,7 @@ public class ProductController {
         return "administration/add_product_info";
     }
 
-    @PostMapping("/admin/add_product/add_product_info/{productInformationId}")
+    @PostMapping("/admin/add_product/product_details/add_product_info/{productInformationId}")
     public String addProductInformation(@PathVariable("productInformationId") int productInformationId,
                                         @ModelAttribute("product_information") ProductInformation productToUpdate,
                                         @RequestParam("productId") int productId) {

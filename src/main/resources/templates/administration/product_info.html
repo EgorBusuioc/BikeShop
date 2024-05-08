@@ -3,12 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/CSS/select_box.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <h1 th:text="'Your product is: ' + ${product.getTitle()}"> </h1>
-    <h1>Show information about: </h1>
-    <h2 th:text="'Quantity In Stock ' + ${product.getQuantityInStock()}"></h2>
-    <h2>Do you wanna add product information?</h2>
-    <a th:href="@{/admin/add_product/add_product_info/{product_id}(product_id=${product.getProductId()})}">add info</a>
+<h1 th:text="'Your product is: ' + ${product.getTitle()}"></h1>
+<h1>Show information about: </h1>
+<h2 th:text="'Quantity In Stock ' + ${product.getQuantityInStock()}"></h2>
+<form th:action="@{/admin/add_product/product_details/{product_id}(product_id=${product.getProductId()})}"
+      th:method="POST" th:object="${product}">
+    <input type="text" th:field="*{title}" placeholder="Model name" value="">
+    <input type="text" th:field="*{quantityInStock}" placeholder="Quantity in Stock" value="">
+    <input type="text" th:field="*{price}" placeholder="Price" value="">
+    <input type="text" th:field="*{discount}">
+    <div class="selectdiv">
+    <label>
+        <select name="category">
+            <option th:each="category : ${productCategories}" th:text="${category}" th:value="${category}"></option>
+        </select>
+    </label>
+    </div>
+    <input type="submit" value="UPDATE INFORMATION!">
+</form>
+<h2>Do you wanna add product information?</h2>
+<a th:href="@{/admin/add_product/product_details/add_product_info/{product_id}(product_id=${product.getProductId()})}">add info</a>
 </body>
 </html>

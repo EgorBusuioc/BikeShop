@@ -46,9 +46,9 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(AdditionalInformation newInformation, int id) {
+    public void updateUser(AdditionalInformation newInformation, int userId, String dateOfBirth) {
 
-        User userInDatabase = userRepository.findById(id).orElse(null);
+        User userInDatabase = userRepository.findById(userId).orElse(null);
 
         if (userInDatabase == null)
             return;
@@ -72,6 +72,16 @@ public class UserService {
         if (!newInformation.getPhoneNumber().isEmpty()) {
             additionalInformation.setPhoneNumber(newInformation.getPhoneNumber());
             log.info("Update {} with Phone Number: {}", userInDatabase.getEmail(), additionalInformation.getPhoneNumber());
+        }
+
+        if (!newInformation.getWorkingAddress().isEmpty()) {
+            additionalInformation.setWorkingAddress(newInformation.getWorkingAddress());
+            log.info("Update {} with Working Address: {}", userInDatabase.getEmail(), additionalInformation.getWorkingAddress());
+        }
+
+        if (!dateOfBirth.isEmpty()) {
+            additionalInformation.setDateOfBirth(AdditionalInformation.stringToDateTime(dateOfBirth));
+            log.info("Update {} with Birth Date: {}", userInDatabase.getEmail(), additionalInformation.getDateOfBirth());
         }
 
         userInDatabase.setAdditionalInformation(additionalInformation);
@@ -108,7 +118,7 @@ public class UserService {
 
         User user = session.get(User.class, user_id);
 
-        if(user.getAdditionalInformation() != null)
+        if (user.getAdditionalInformation() != null)
             Hibernate.initialize(user.getAdditionalInformation());
 
         return user;

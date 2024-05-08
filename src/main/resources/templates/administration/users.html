@@ -22,6 +22,7 @@
                     <th>Address</th>
                     <th>Get Working Address</th>
                     <th>Creation Date</th>
+                    <th>Activity</th>
                     <th>Change Activity</th>
                 </tr>
                 </thead>
@@ -35,11 +36,13 @@
                     <td th:text="${user.getAdditionalInformation().getCountry()}"></td>
                     <td th:text="${user.getAdditionalInformation().getAddress()}"></td>
                     <td th:text="${user.getAdditionalInformation().getWorkingAddress()}"></td>
-                    <td th:text="${user.getFormattedDate()}"></td>
+                    <td th:text="${user.getFormattedCreationDate()}"></td>
+                    <td th:if="${user.isActive()}">Active</td>
+                    <td th:unless="${user.isActive()}">Banned</td>
                     <td>
                         <form th:action="@{/admin/user/ban/{user_id}(user_id=${user.getUserId()})}" th:method="POST">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                            <input type="submit" value="Delete" class="table_btn">
+                            <input type="submit" value="CHANGE ACTIVITY" class="table_btn">
                         </form>
                     </td>
                 </tr>

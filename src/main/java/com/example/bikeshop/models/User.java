@@ -62,7 +62,7 @@ public class User implements UserDetails {
         creationDate = LocalDateTime.now();
     }
 
-    public String getFormattedDate() {
+    public String getFormattedCreationDate() {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMMM/yyyy", new Locale("en"));
         return creationDate.format(formatter);

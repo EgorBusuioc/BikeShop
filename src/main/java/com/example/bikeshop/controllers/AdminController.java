@@ -20,13 +20,6 @@ public class AdminController {
         return "administration/users";
     }
 
-    @GetMapping("/show_user/{userId}")
-    public String showUserInformation(@PathVariable("userId") int userId, Model model){
-
-        model.addAttribute("user", userService.getUserById(userId));
-        return "administration/user_info";
-    }
-
     @PostMapping("/user/ban/{userId}")
     public String userBan(@PathVariable("userId") int userId) {
 

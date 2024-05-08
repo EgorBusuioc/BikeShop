@@ -16,30 +16,68 @@
                 <div style="padding-top: 90%">
                     <form action="/logout" method="post">
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                        <input type="submit" value="Sign Out" class="sign_in_btn" style="width: 80%; margin-left: auto; margin-right: auto;">
+                        <input type="submit" value="Sign Out" class="sign_in_btn"
+                               style="width: 80%; margin-left: auto; margin-right: auto;">
                     </form>
                 </div>
                 <div>
                     <a th:if="${user.isAdmin()}" href="/admin" class="registration">Admin Panel</a>
                 </div>
             </div>
-            <div class="grid_item item2">
+
+            <div th:if="${user.getAdditionalInformation().allFieldsAreNotNull()}" class="grid_item item2">
+                <div class="grid_container2">
+
+                    <div class="info_text">Email</div>
+                    <div class="result_text" th:text="${user.getEmail()}"></div>
+
+                    <div class="info_text">Country</div>
+                    <div th:if="${user.getAdditionalInformation().getCountry()}" class="result_text"
+                         th:text="${user.getAdditionalInformation().getCountry()}"></div>
+
+                    <div class="info_text">City</div>
+                    <div th:if="${user.getAdditionalInformation().getCity()}" class="result_text"
+                         th:text="${user.getAdditionalInformation().getCity()}"></div>
+
+                    <div class="info_text">Address</div>
+                    <div th:if="${user.getAdditionalInformation().getAddress()}" class="result_text"
+                         th:text="${user.getAdditionalInformation().getAddress()}"></div>
+
+                    <div th:if="${user.getAdditionalInformation().getWorkingAddress()}" class="info_text">Working address</div>
+                    <div th:if="${user.getAdditionalInformation().getWorkingAddress()}" class="result_text"
+                         th:text="${user.getAdditionalInformation().getWorkingAddress()}"></div>
+
+                    <div class="info_text">Birth date</div>
+                    <div th:if="${user.getAdditionalInformation().getDateOfBirth()}" class="result_text"
+                         th:text="${user.getAdditionalInformation().getDateOfBirth()}"></div>
+
+
+                    <div class="info_text">Phone number</div>
+                    <div th:if="${user.getAdditionalInformation().getPhoneNumber()}" class="result_text"
+                         th:text="${user.getAdditionalInformation().getPhoneNumber()}"></div>
+                </div>
+            </div>
+            <div th:unless="${user.getAdditionalInformation().allFieldsAreNotNull()}" class="grid_item item2">
                 <div class="grid_container2">
                     <div class="info_text">Email</div>
                     <div class="result_text" th:text="${user.getEmail()}"></div>
                     <div class="info_text">Creation Date</div>
-                    <div class="result_text" th:text="${user.getFormattedDate()}"></div>
+                    <div class="result_text" th:text="${user.getFormattedCreationDate()}"></div>
                 </div>
             </div>
             <div class="grid_item item3">
                 <div class="grid_container2">
                     <div class="item_grid_update">Update your Data</div>
-                    <form th:action="@{/update-user/{user_id}(user_id=${user.getUserId()})}" th:method="POST" class="item_grid_form">
+                    <form th:action="@{/update-user/{user_id}(user_id=${user.getUserId()})}" th:method="POST"
+                          th:object="${additionalInformation}" class="item_grid_form">
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                        <input type="text" name="address" placeholder="Address" class="input item_grid_form"><br><br>
-                        <input type="text" name="city" placeholder="City" class="input"><br><br>
-                        <input type="text" name="country" placeholder="Country" class="input"><br><br>
-                        <input type="text" name="phoneNumber" placeholder="Phone Number" class="input"><br><br>
+                        <input type="text" th:field="*{address}" placeholder="Address" class="input item_grid_form"><br><br>
+                        <input type="text" th:field="*{workingAddress}" placeholder="Working Address (if exists)"
+                               class="input"><br><br>
+                        <input type="text" th:field="*{city}" placeholder="City" class="input"><br><br>
+                        <input type="text" th:field="*{country}" placeholder="Country" class="input"><br><br>
+                        <input type="text" th:field="*{phoneNumber}" placeholder="Phone Number" class="input"><br><br>
+                        <input type="text" name="date_of_birth" placeholder="dd/mm/yyyy" class="input"><br><br>
                         <input type="submit" value="Save" class="sign_in_btn">
                     </form>
                 </div>

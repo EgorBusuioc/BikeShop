@@ -5,5 +5,7 @@ public enum ProductCategory {
     ACTIVE_BIKE,
     ROAD_BIKE,
     TURBO_E,
-    S_WORKS;
+    S_WORKS,
+    EQUIPMENT,
+    COMPONENTS;
 }

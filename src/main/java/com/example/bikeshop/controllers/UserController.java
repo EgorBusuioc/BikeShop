@@ -43,6 +43,7 @@ public class UserController {
     public String login(Principal principal, Model model, @RequestParam(name = "error", required = false) String error) {
 
         model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("additionalInformation", new AdditionalInformation());
 
         if (error != null) {
             model.addAttribute("loginError", "The username or password is not correct");
@@ -51,10 +52,11 @@ public class UserController {
         return "authentication/login";
     }
 
-    @PostMapping("/update-user/{id}")
-    public String updateUser(@PathVariable("id") int id, AdditionalInformation additionalInformation) {
+    @PostMapping("/update-user/{userId}")
+    public String updateUser(@PathVariable("userId") int userId, @RequestParam(value = "date_of_birth", required = false) String dateOfBirth,
+                             AdditionalInformation additionalInformation) {
 
-        userService.updateUser(additionalInformation, id);
+        userService.updateUser(additionalInformation, userId, dateOfBirth);
         return "redirect:/login";
     }
 }

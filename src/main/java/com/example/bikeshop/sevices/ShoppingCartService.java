@@ -36,9 +36,8 @@ public class ShoppingCartService {
 
         User user = userService.getUserByPrincipal(principal);
 
-        if (user.getShoppingCart() == null) {
+        if (user.getShoppingCart() == null)
             user.setShoppingCart(new ShoppingCart());
-        }
 
         ShoppingCart shoppingCart = user.getShoppingCart();
         if (shoppingCart.getQuantity() == null) {
@@ -68,11 +67,18 @@ public class ShoppingCartService {
     public ShoppingCart getShoppingCartByPrincipal(Principal principal) {
 
         User user = userService.getUserByPrincipal(principal);
-        ShoppingCart shoppingCart = user.getShoppingCart();
 
-        Hibernate.initialize(shoppingCart.getShoppingCartItems());
-
-        return shoppingCart;
+        if (user.getShoppingCart() == null) {
+            user.setShoppingCart(new ShoppingCart());
+            if (user.getShoppingCart().getQuantity() == null)
+                user.getShoppingCart().setQuantity(0);
+            return user.getShoppingCart();
+        }
+        else {
+            ShoppingCart shoppingCart = user.getShoppingCart();
+            Hibernate.initialize(shoppingCart.getShoppingCartItems());
+            return shoppingCart;
+        }
     }
 
     @Transactional

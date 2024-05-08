@@ -40,7 +40,7 @@
                         </form>
                     </td>
                     <td>
-                        <a th:href="@{/admin/add_product/see_information_about_product/{productId}(productId=${product.getProductId()})}">
+                        <a th:href="@{/admin/add_product/product_details/{productId}(productId=${product.getProductId()})}">
                             View Product Information
                         </a>
                     </td>
@@ -60,11 +60,10 @@
             <form th:action="@{/admin/add_product/create}" th:method="POST" th:object="${product}"
                   enctype="multipart/form-data">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}" id="csrfToken">
-                <input th:field="*{title}" type="text" name="title" placeholder="Model Name" class="input"
-                       required/><br><br>
-                <input type="number" name="quantityInStock" placeholder="Quantity In Stock" class="input" required/><br><br>
-                <input type="number" name="price" placeholder="Price" class="input" required/><br><br>
-                <input type="number" name="discount" placeholder="Discount" class="input"/><br><br>
+                <input th:field="*{title}" type="text" name="title" placeholder="Model Name" class="input" required/><br><br>
+                <input type="text" name="quantityInStock" placeholder="Quantity In Stock" class="input" required/><br><br>
+                <input type="text" name="price" placeholder="Price" class="input" required/><br><br>
+                <input type="text" name="discount" placeholder="Discount (if exists)" class="input"/><br><br>
                 <div class="selectdiv">
                     <label>
                         <select name="category">
@@ -74,7 +73,7 @@
                 </div>
                 <div class="upload">
                     <button type="button" class="btn-warning">
-                        <i class="fa fa-upload"></i> Upload File
+                        <i class="fa fa-upload"></i> UPLOAD PHOTOS
                         <input type="file" name="files" multiple>
                     </button>
                 </div>

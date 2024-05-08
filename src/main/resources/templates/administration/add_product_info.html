@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/admin/add_product/add_product_info/{product_information_id}(product_information_id=${productInformation.getProductInformationId()})}" th:method="POST" th:object="${productInformation}" enctype="multipart/form-data">
+<form th:action="@{/admin/add_product/product_details/add_product_info/{product_information_id}(product_information_id=${productInformation.getProductInformationId()})}" th:method="POST" th:object="${productInformation}" enctype="multipart/form-data">
 
     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="hidden" name="productId" th:value="${product.getProductId()}">

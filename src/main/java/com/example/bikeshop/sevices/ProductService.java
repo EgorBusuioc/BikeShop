@@ -80,9 +80,13 @@ public class ProductService {
     @Transactional
     public void saveProduct(Product product, MultipartFile[] files, String category) throws IOException {
 
+        if (files[0].getSize() == 0)
+            throw new IOException();
+
         boolean isFirstImage = true;
 
         for (MultipartFile file : files) {
+
             if (file != null && file.getSize() != 0) {
                 Image image = toImageEntity(file);
                 product.addImageToProduct(image);
@@ -96,6 +100,34 @@ public class ProductService {
         product.setProductCategories(Collections.singleton(ProductCategory.valueOf(category)));
         productRepository.save(product);
         log.info("Saving new product: {}", product.getTitle());
+    }
+
+    @Transactional
+    public void updateProduct(int productId, Product productToUpdate, String category) {
+
+        Product product = productRepository.findById(productId).orElse(null);
+
+        if (product != null &&
+                (!productToUpdate.getTitle().isEmpty() || productToUpdate.getQuantityInStock() != 0 || productToUpdate.getPrice() != 0 || productToUpdate.getDiscount() != 0 || !category.isEmpty())) {
+
+            if (!productToUpdate.getTitle().isEmpty())
+                product.setTitle(productToUpdate.getTitle());
+
+            if (productToUpdate.getQuantityInStock() <= 0)
+                product.setQuantityInStock(productToUpdate.getQuantityInStock());
+
+            if (productToUpdate.getPrice() != 0)
+                product.setPrice(productToUpdate.getPrice());
+
+            if (productToUpdate.getDiscount() != 0)
+                product.setDiscount(productToUpdate.getDiscount());
+
+            if (!category.isEmpty())
+                product.setProductCategories(Collections.singleton(ProductCategory.valueOf(category)));
+
+            productRepository.save(product);
+            log.info("Product with id was updated: {}", productId);
+        }
     }
 
     public ProductCategory[] getProductCategory() {

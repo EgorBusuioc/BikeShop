@@ -31,14 +31,14 @@ public class ProductController {
         return "products/bikes";
     }
 
-    @GetMapping("/mountain-bikes")
+    @GetMapping("/mountain_bikes")
     public String showMountainBikes(Model model) {
 
         model.addAttribute("mountainBikes", productService.findBikes(ProductCategory.MOUNTAIN_BIKE));
         return "products/mountain_bikes";
     }
 
-    @GetMapping("/active-bikes")
+    @GetMapping("/active_bikes")
     public String showActiveBikes(Model model) {
 
         model.addAttribute("activeBikes", productService.findBikes(ProductCategory.ACTIVE_BIKE));
@@ -55,15 +55,29 @@ public class ProductController {
     @GetMapping("/sworks_bikes")
     public String showSWorksBikes(Model model) {
 
-        model.addAttribute("sworksBikes", productService.findBikes(ProductCategory.S_WORKS));
+        model.addAttribute("sworksBikes", productService.findBikes(ProductCategory.S_WORKS_BIKES));
         return "products/sworks_bikes";
     }
 
     @GetMapping("/turbo_bikes")
     public String showTurboBikes(Model model) {
 
-        model.addAttribute("turboBikes", productService.findBikes(ProductCategory.TURBO_E));
+        model.addAttribute("turboBikes", productService.findBikes(ProductCategory.TURBO_E_BIKES));
         return "products/turbo_bikes";
+    }
+
+    @GetMapping("/components")
+    public String showComponents(Model model) {
+
+        model.addAttribute("components", productService.findBikes(ProductCategory.COMPONENTS));
+        return "products/components";
+    }
+
+    @GetMapping("/equipments")
+    public String showEquipment(Model model) {
+
+        model.addAttribute("equipments", productService.findBikes(ProductCategory.EQUIPMENT));
+        return "products/equipments";
     }
 
     @GetMapping("/admin/add_product")
@@ -105,15 +119,15 @@ public class ProductController {
 
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("productCategories", productService.getProductCategory());
+        model.addAttribute("ProductCategoriesClass", ProductCategory.class);
         return "administration/product_info";
     }
 
     @PostMapping("/admin/add_product/product_details/{productId}")
     public String updateInformationAboutProduct(@PathVariable("productId") int productId,
-                                                @ModelAttribute("product") Product product,
-                                                @RequestParam(value = "category", required = false) String category) {
+                                                @ModelAttribute("product") Product product) {
 
-        productService.updateProduct(productId, product, category);
+        productService.updateProduct(productId, product);
         return "redirect:/admin/add_product/product_details/" + productId;
     }
 

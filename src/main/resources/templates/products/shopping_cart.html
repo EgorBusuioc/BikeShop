@@ -21,7 +21,8 @@
                 <tbody>
                 <tr th:each="shoppingCartItem, userIndex : ${shoppingCart.getShoppingCartItems()}" th:class="${userIndex.index % 2 == 0} ? 'active-row'">
                     <td th:text="${shoppingCartItem.getProduct().getTitle()}"></td>
-                    <td th:text="${shoppingCartItem.getProduct().getPrice()}"></td>
+                    <td th:if="${shoppingCartItem.getProduct().getDiscount() != 0 && shoppingCartItem.getProduct().getDiscount() < shoppingCartItem.getProduct().getPrice()}" th:text="${shoppingCartItem.getProduct().getDiscount()}"></td>
+                    <td th:unless="${shoppingCartItem.getProduct().getDiscount() != 0 && shoppingCartItem.getProduct().getDiscount() < shoppingCartItem.getProduct().getPrice()}" th:text="${shoppingCartItem.getProduct().getPrice()}"></td>
                     <td>
                         <form th:action="@{/shopping_cart/delete_product/{product_id}(product_id=${shoppingCartItem.getShoppingCartItemId()})}" th:method="POST">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">

@@ -33,7 +33,12 @@ public class ProductService {
     public List<Product> findBikes(ProductCategory category) {
 
         if (category == null) {
-            return productRepository.findAll();
+            Set<ProductCategory> categorySet = new HashSet<>(Arrays.asList(
+                    ProductCategory.S_WORKS_BIKES, ProductCategory.ACTIVE_BIKE,
+                    ProductCategory.ROAD_BIKE, ProductCategory.MOUNTAIN_BIKE,
+                    ProductCategory.TURBO_E_BIKES));
+
+            return productRepository.findByProductCategoriesIn(categorySet);
         }
         Set<ProductCategory> categorySet = new HashSet<>();
         categorySet.add(category);
@@ -56,6 +61,9 @@ public class ProductService {
         Product product = productRepository.findById(productId).orElse(null);
 
         if (product == null)
+            return null;
+
+        if (product.getProductCategories().equals(ProductCategory.COMPONENTS) || product.getProductCategories().equals(ProductCategory.EQUIPMENT))
             return null;
 
         if (product.getProductInformation() == null) {
@@ -103,27 +111,24 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProduct(int productId, Product productToUpdate, String category) {
+    public void updateProduct(int productId, Product productToUpdate) {
 
         Product product = productRepository.findById(productId).orElse(null);
 
         if (product != null &&
-                (!productToUpdate.getTitle().isEmpty() || productToUpdate.getQuantityInStock() != 0 || productToUpdate.getPrice() != 0 || productToUpdate.getDiscount() != 0 || !category.isEmpty())) {
+                (!productToUpdate.getTitle().isEmpty() || productToUpdate.getQuantityInStock() != 0 || productToUpdate.getPrice() != 0 || productToUpdate.getDiscount() != 0)) {
 
             if (!productToUpdate.getTitle().isEmpty())
                 product.setTitle(productToUpdate.getTitle());
 
-            if (productToUpdate.getQuantityInStock() <= 0)
+            if (productToUpdate.getQuantityInStock() != null)
                 product.setQuantityInStock(productToUpdate.getQuantityInStock());
 
-            if (productToUpdate.getPrice() != 0)
+            if (productToUpdate.getPrice() != null)
                 product.setPrice(productToUpdate.getPrice());
 
-            if (productToUpdate.getDiscount() != 0)
+            if (productToUpdate.getDiscount() != null)
                 product.setDiscount(productToUpdate.getDiscount());
-
-            if (!category.isEmpty())
-                product.setProductCategories(Collections.singleton(ProductCategory.valueOf(category)));
 
             productRepository.save(product);
             log.info("Product with id was updated: {}", productId);

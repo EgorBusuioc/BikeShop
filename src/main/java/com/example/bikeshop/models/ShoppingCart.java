@@ -29,4 +29,15 @@ public class ShoppingCart {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
+
+    public int getFullPrice() {
+        int fullPrice = 0;
+        for (ShoppingCartItem shoppingCartItem : this.shoppingCartItems) {
+            if(shoppingCartItem.getProduct().getDiscount() != null  && shoppingCartItem.getProduct().getDiscount() < shoppingCartItem.getProduct().getPrice())
+                fullPrice += shoppingCartItem.getProduct().getDiscount();
+            else
+                fullPrice += shoppingCartItem.getProduct().getPrice();
+        }
+        return fullPrice;
+    }
 }

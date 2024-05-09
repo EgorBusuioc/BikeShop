@@ -12,20 +12,15 @@
 <h2 th:text="'Quantity In Stock ' + ${product.getQuantityInStock()}"></h2>
 <form th:action="@{/admin/add_product/product_details/{product_id}(product_id=${product.getProductId()})}"
       th:method="POST" th:object="${product}">
-    <input type="text" th:field="*{title}" placeholder="Model name" value="">
-    <input type="text" th:field="*{quantityInStock}" placeholder="Quantity in Stock" value="">
-    <input type="text" th:field="*{price}" placeholder="Price" value="">
-    <input type="text" th:field="*{discount}">
-    <div class="selectdiv">
-    <label>
-        <select name="category">
-            <option th:each="category : ${productCategories}" th:text="${category}" th:value="${category}"></option>
-        </select>
-    </label>
-    </div>
+    <input type="text" th:field="*{title}" placeholder="Model name" value=""><br><br>
+    <input type="text" th:field="*{quantityInStock}" placeholder="Quantity in Stock"> <br><br>
+    <input type="text" th:field="*{price}" placeholder="Price" ><br><br>
+    <input type="text" th:field="*{discount}" ><br><br>
     <input type="submit" value="UPDATE INFORMATION!">
 </form>
 <h2>Do you wanna add product information?</h2>
-<a th:href="@{/admin/add_product/product_details/add_product_info/{product_id}(product_id=${product.getProductId()})}">add info</a>
+<a th:if="${product.getProductCategories() == T(com.example.bikeshop.models.enums.ProductCategory).EQUIPMENT || product.getProductCategories() == T(com.example.bikeshop.models.enums.ProductCategory).COMPONENTS}">You can't add additional information to this type of product</a>
+
+<a th:unless="${product.getProductCategories() == T(com.example.bikeshop.models.enums.ProductCategory).EQUIPMENT || product.getProductCategories() == T(com.example.bikeshop.models.enums.ProductCategory).COMPONENTS}" th:href="@{/admin/add_product/product_details/add_product_info/{product_id}(product_id=${product.getProductId()})}">add info</a>
 </body>
 </html>

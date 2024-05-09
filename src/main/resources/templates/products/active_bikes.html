@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Project"/>
+  <meta name="author" content=" Бусуйок Егор "/>
+  <link rel="shortcut icon" href="images/logo.jpg">
+
+  <title>BikeShop</title>
+
+  <script src="../../static/JavaScriptLibraries/gsap/gsap.min.js" defer></script>
+  <script src="../../static/JavaScriptLibraries/gsap/ScrollTrigger.min.js" defer></script>
+  <script src="../../static/JavaScriptLibraries/gsap/ScrollSmoother.min.js" defer></script>
+  <script src="../../static/JavaScript/product_scripts.js" defer></script>
+
+  <link rel="stylesheet" href="../../static/CSS/shop.css">
+  <link rel="stylesheet" href="../../static/CSS/footer_shop.css">
+  <link rel="stylesheet" href="../../static/CSS/shoppingCart.css">
+  <link rel="stylesheet" href="../../static/CSS/nav.css">
+
+  <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script src="../../static/JavaScript/app.js" defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+</head>
+
+<body style="background-color: #fafafa;">
+<div class="wrapper">
+  <div class="content">
+    <header>
+      <div class="navbar">
+        <div class="nav-logo">
+          <a data-lag=".4" th:href="@{/}">BikeShop</a>
+        </div>
+        <div class="nav-items">
+          <ul>
+            <li><a th:href="@{/mountain_bikes}"> MOUNTAIN BIKES </a></li>
+            <li><a th:href="@{/road_bikes}"> ROAD BIKES </a></li>
+            <li><a th:href="@{/active_bikes}"> ACTIVE BIKES </a></li>
+            <li><a th:href="@{/turbo_bikes}"> TURBO-E BIKES </a></li>
+            <li><a th:href="@{/equipments}"> EQUIPMENT </a></li>
+            <li><a th:href="@{/components}"> COMPONENTS </a></li>
+            <li><a th:href="@{/sworks_bikes}"> S-WORKS </a></li>
+          </ul>
+        </div>
+        <div class="nav-button">
+          <div class="anim-layer"></div>
+          <a th:href="@{/shopping_cart}">SHOPPING CART</a>
+        </div>
+        <div id="hamburger-menu">&#9776;</div>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <div class="hero__selection" style="pointer-events: none;">
+          <div class="hero__text" style="padding-top: 120px; left: 1vw;;">Active<br> Bikes
+          </div>
+          <iframe src="https://www.youtube.com/embed/Pcc7ma4yqWg?modestbranding=1&amp;controls=0&amp;disablekb=1&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;loop=1&amp;mute=1&amp;playlist=Pcc7ma4yqWg" frameborder="0"  allowfullscreen style="width: 100%; height: 116vh; pointer-events: none;"></iframe>
+
+        </div>
+      </div>
+      <div class="products__selection">
+        <div class="container__of__products">
+          <div class="products-content grid-container">
+            <ul class="product-grid">
+              <li th:each="bike : ${activeBikes}" class="product-grid__item dis">
+                <article class="product"
+                         style="color: black; background-color: #f1f1f1; margin: auto;"
+                         th:id="${bike.getProductId()}">
+                  <div class="final__description">
+                    <div class="bold__text">FRAME:</div>
+                    <div class="light__text" th:if="${bike.getProductInformation() != null}"
+                         th:text="${bike.getProductInformation().getFrame()}"></div>
+                    <div class="bold__text">FORK:</div>
+                    <div class="light__text" th:if="${bike.getProductInformation() != null}"
+                         th:text="${bike.getProductInformation().getFork()}"></div>
+                    <div class="bold__text">BRAKES:</div>
+                    <div class="light__text" th:if="${bike.getProductInformation() != null}"
+                         th:text="${bike.getProductInformation().getBrakes()}"></div>
+                    <div class="bold__text">SWAT:</div>
+                    <div class="light__text" th:if="${bike.getProductInformation() != null}"
+                         th:text="${bike.getProductInformation().getSwat()}"></div>
+                    <div class="bold__text">CASSETTE:</div>
+                    <div class="light__text" th:if="${bike.getProductInformation()!= null}"
+                         th:text="${bike.getProductInformation().getCassette()}"></div>
+                    <div class="classification" style="padding-top: 8%;" th:text="${bike.getFormatCategory()}"></div>
+                  </div>
+                  <a href="#" class="product__image">
+                    <div class="product__switch image-switch">
+                      <div class="image-switch__item" th:each="img : ${bike.getImages()}"
+                           th:if="${bike.getProductId() == img.getProduct().getProductId()}">
+                        <div class="image-switch__img">
+                          <img th:src="@{/images/{image_id}(image_id=${img.getImageId()})}">
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="product__image-pagination image-pagination" aria-hidden="true">
+                    </ul>
+                  </a>
+
+                  <h3 class="product__title">
+                    <a th:text="${bike.getFormatCategory()}" href="#"
+                       style="text-decoration: none; color: black;"></a>
+                  </h3>
+                  <div class="product__info">
+                                        <span class="product__term"
+                                              th:text="'Article number: ' + ${bike.getArticleNumber()}"></span>
+                    <span th:text="'In stock ' + ${bike.getQuantityInStock()} + ' pcs.'"
+                          class="product__available"></span>
+                  </div>
+                  <div class="product__price product-price" th:if="${bike.getDiscount() == null}">
+                                        <span class="product-price__current"
+                                              th:text="${bike.getFormattedPrice(bike.getPrice())}">4 500 $</span>
+                  </div>
+                  <div class="product__price product-price" th:if="${bike.getDiscount() != null}">
+                                        <span class="product-price__current"
+                                              th:text="${bike.getFormattedPrice(bike.getDiscount())}">4 500 $</span>
+                    <span class="product-price__old"
+                          th:text="${bike.getFormattedPrice(bike.getPrice())}"></span>
+                  </div>
+                  <a th:if="${bike.isActive()}"
+                     th:href="@{/product_details/{product_id}(product_id=${bike.getProductId()})}">
+                    <button class="product__btn">GO TO PRODUCT</button>
+                  </a>
+                  <a th:unless="${bike.isActive()}">
+                    <button class="product__btn__is__not__active">OUT OF STOCK</button>
+                  </a>
+                  <div th:if="${bike.getProductInformation() != null}" class="description"
+                       style="text-align: center; cursor: pointer; height: 10%;">
+                    DESCRIPTION
+                  </div>
+                </article>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="footer" data-speed=1.005 style="margin-top: 20vh;">
+        <div class="footer_container">
+          <div class="colors">
+            <div class="footer__content">
+              <div style="height: 15vh; position: relative; top: 5vh;">
+                <div style="display: flex; justify-content: space-between;">
+                  <div class="footer__lines"></div>
+                  <div class="footer__lines" style="width: 50%;"></div>
+                </div>
+                <div style="display: flex;">
+                  <div class="footer__text">
+                    YEAR FOUNDED
+                  </div>
+                  <div class="footer__text" style="width: 6.5vw; position: relative; left: 25vw;">
+                    COMPANY
+                  </div>
+                </div>
+                <div class="footer_2023">
+                  2024
+                </div>
+                <div class="footer_bikeshop" data-lag=".4">
+                  BikeShop
+                </div>
+              </div>
+              <div class="footer_busuiocegor">
+                Busuioc Egor
+              </div>
+            </div>
+          </div>
+          <div style="display: inline-block; height:5%;"></div>
+          <div style="display: flex; flex-direction: row; height: 21%">
+            <div class="get__in__touch">
+              <div style="margin: auto;">
+                Get in touch
+              </div>
+              <div style="margin: auto; display: flex; flex-direction: column;">
+                <div><a class="links__decoration" href="mailto:busuioc.egor@yandex.com">busuioc.egor@yandex.com</a>
+                </div>
+                <div><a class="links__decoration" href="mailto:busuiocegor@outlook.com">busuiocegor@outlook.com</a>
+                </div>
+              </div>
+            </div>
+            <div class="follow__me">
+              <div style="margin: auto;">Follow Me</div>
+              <div style="display: block; height: 100%;"></div>
+              <div style="margin:auto;" class="social-links">
+                <a href="https://www.facebook.com/profile.php?id=100008517721439"><i
+                        class="fab fa-facebook-f"></i></a>
+                <a href="https://vk.com/idp1os"><i class="fab fa-vk"></i></a>
+                <a href="https://www.instagram.com/personal_id_eguar/"><i
+                        class="fab fa-instagram"></i></a>
+                <a href="https://github.com/EgorBusuioc"><i class="fab fa-github"></i></a>
+              </div>
+            </div>
+            <div class="go__back">
+              <a href="#" class="go__back__button" style="border:3px solid #b9fcf7;">Go Back</a>
+            </div>
+          </div>
+          <div style="display: block; height: 100%;">
+            <div data-lag=".4" class="white__bike"><img src="../../static/Images/Bike black.png" width="140px">
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+</body>
+
+</html>

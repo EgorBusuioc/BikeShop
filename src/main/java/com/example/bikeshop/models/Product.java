@@ -25,13 +25,13 @@ public class Product {
     private String title;
 
     @Column(name = "quantity_in_stock")
-    private int quantityInStock;
+    private Integer quantityInStock;
 
     @Column(name = "article_number")
     private String articleNumber;
 
     @Column(name = "price")
-    private int price;
+    private Integer price;
 
     @Column(name = "discount")
     private Integer discount;
@@ -58,7 +58,7 @@ public class Product {
     private Set<ProductCategory> productCategories = new HashSet<>();
 
     @PrePersist
-    private void init(){
+    private void init() {
         creationDate = LocalDateTime.now();
         isActive = true;
 
@@ -71,6 +71,31 @@ public class Product {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en"));
         return creationDate.format(formatter);
+    }
+
+    public String getFormatCategory() {
+        int countUnderlineSymbols = (int) this.getProductCategories().toString().chars().filter(ch -> ch == '_').count();
+        String workString = this.getProductCategories().toString().replace("[", "").replace("]", "");
+        StringBuilder stringBuilder = new StringBuilder();
+        int tempIndex = 0;
+        int index;
+        for (int i = 0; i < countUnderlineSymbols; i++) {
+            index = workString.indexOf("_", tempIndex);
+            if(i + 1 == countUnderlineSymbols) {
+                stringBuilder.append(workString.charAt(tempIndex))
+                        .append(workString.substring(tempIndex + 1, index).toLowerCase())
+                        .append(" ");
+                tempIndex = index + 1;
+                stringBuilder.append(workString.charAt(tempIndex))
+                        .append(workString.substring(tempIndex + 1).toLowerCase());
+            }
+            else
+                stringBuilder.append(workString.charAt(tempIndex))
+                        .append(workString.substring(tempIndex + 1, index).toLowerCase())
+                        .append("-");
+            tempIndex = index + 1;
+        }
+        return stringBuilder.toString();
     }
 
     public void addImageToProduct(Image image) {

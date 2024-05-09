@@ -55,23 +55,21 @@
         <main>
             <div class="container">
                 <div class="hero__selection">
-                    <div class="hero__text">Shaped by the <br>Fastest Riders <br>on Earth
-                        <div class="hero__text__little">When races are won and lost by fractions of a second,
-                            riders get particular about their bikes. Which explains why we spent years field-testing
-                            prototypes,
-                            nerd’ing out on the R&D, and testing various wheel and geometry setups in World Cup
-                            events. It might seem excessive,
-                            but when your R&D team has some of the best riders on earth, you listen. They know fast.
+                    <div class="hero__text" style="padding-top: 90px;">Road Bikes
+                        <div class="hero__text__little">Whether it’s the alpine passes of the T
+                            our or the rolling gravel
+                            roads outside of town, the Saturday club ride with friends or the crosswinds of Kona,
+                            our road bikes set the standard by which all others are measured.
                         </div>
                     </div>
-                    <img src="../../static/Images/work/heroselectionbikes.jpg">
+                    <img src="../../static/Images/work/RoadHero.jpg">
                 </div>
             </div>
             <div class="products__selection">
                 <div class="container__of__products">
                     <div class="products-content grid-container">
                         <ul class="product-grid">
-                            <li th:each="bike : ${bikes}" class="product-grid__item dis">
+                            <li th:each="bike : ${roadBikes}" class="product-grid__item dis">
                                 <article class="product"
                                          style="color: black; background-color: #f1f1f1; margin: auto;"
                                          th:id="${bike.getProductId()}">

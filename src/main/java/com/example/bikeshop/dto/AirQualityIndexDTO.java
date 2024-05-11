@@ -1,7 +1,6 @@
 package com.example.bikeshop.dto;
 
 import com.example.bikeshop.api.aqi.AirIndex;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

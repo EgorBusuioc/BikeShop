@@ -7,8 +7,6 @@ import com.example.bikeshop.repositories.ProductRepository;
 import com.example.bikeshop.repositories.ShoppingCartItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +35,7 @@ public class ProductService {
 
             return productRepository.findByProductCategoriesIn(categorySet);
         }
+
         Set<ProductCategory> categorySet = new HashSet<>();
         categorySet.add(category);
         List<Product> productList = productRepository.findByProductCategoriesIn(Collections.synchronizedSet(categorySet));
@@ -73,6 +72,7 @@ public class ProductService {
             productInformation.setProduct(product);
             product.setProductInformation(productInformation);
             productRepository.save(product);
+            log.info("Additional Information for product '{}' has been created", product.getTitle());
         }
 
         return product.getProductInformation();
@@ -84,13 +84,17 @@ public class ProductService {
         productToUpdate.setProductInformationId(productInformationId);
         productToUpdate.setProduct(productRepository.findById(productId).orElse(null));
         productInformationRepository.save(productToUpdate);
+        log.info("Additional information for product '{} has been updated", productToUpdate.getProduct().getProductId());
     }
 
     @Transactional
     public void saveProduct(Product product, MultipartFile[] files, String category) throws IOException {
 
-        if (files[0].getSize() == 0)
+        if (files[0].getSize() == 0){
+            log.warn("No image files found for product '{}'", product.getTitle());
             throw new IOException();
+        }
+
 
         boolean isFirstImage = true;
 
@@ -102,11 +106,16 @@ public class ProductService {
 
                 image.setPreviewImage(isFirstImage);
                 isFirstImage = false;
+                log.info("Image added to product '{}'", product.getTitle());
             }
         }
+        log.info("Preview image '{}' has been saved for product '{}'", files[0].getOriginalFilename(), product.getTitle());
 
         product.setProductCategories(Collections.singleton(ProductCategory.valueOf(category)));
+        log.info("For product '{}' has been added category '{}'", product.getTitle(), product.getFormatCategory());
+
         productRepository.save(product);
+        log.info("Product '{}' has been saved", product.getTitle());
     }
 
     @Transactional
@@ -117,19 +126,27 @@ public class ProductService {
         if (product != null &&
                 (!productToUpdate.getTitle().isEmpty() || productToUpdate.getQuantityInStock() != 0 || productToUpdate.getPrice() != 0 || productToUpdate.getDiscount() != 0)) {
 
-            if (!productToUpdate.getTitle().isEmpty())
+            if (!productToUpdate.getTitle().isEmpty()) {
                 product.setTitle(productToUpdate.getTitle());
+                log.info("Product '{}' has been updated with new title '{}'", product.getTitle(), productToUpdate.getTitle());
+            }
 
-            if (productToUpdate.getQuantityInStock() != null)
+            if (productToUpdate.getQuantityInStock() != null) {
                 product.setQuantityInStock(productToUpdate.getQuantityInStock());
+                log.info("Product '{}' has been updated with new quantity in stock '{}'", product.getTitle(), productToUpdate.getQuantityInStock());
+            }
 
-            if (productToUpdate.getPrice() != null)
+            if (productToUpdate.getPrice() != null) {
                 product.setPrice(productToUpdate.getPrice());
+                log.info("Product '{}' has been updated with new price '{}'", product.getTitle(), productToUpdate.getPrice().toString());
+            }
 
-            if (productToUpdate.getDiscount() != null)
+            if (productToUpdate.getDiscount() != null) {
                 product.setDiscount(productToUpdate.getDiscount());
-
+                log.info("Product '{}' has been updated with new discount '{}'", product.getTitle(), productToUpdate.getDiscount());
+            }
             productRepository.save(product);
+            log.info("Product '{}' has been updated", product.getTitle());
         }
     }
 
@@ -157,11 +174,14 @@ public class ProductService {
             List<ShoppingCartItem> cartItems = shoppingCartItemRepository.findByProduct(product);
             if (cartItems.isEmpty()) {
                 productRepository.delete(product);
+                log.info("Product '{}' has been deleted", product.getTitle());
                 return true;
             } else {
+                log.warn("Product '{}' cannot be deleted, because the same product is in somebody's shopping cart", product.getTitle());
                 return false;
             }
         } else {
+            log.warn("Product with id '{}' does not exist", productId);
             return false;
         }
     }

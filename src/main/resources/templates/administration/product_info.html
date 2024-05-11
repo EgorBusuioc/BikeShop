@@ -7,9 +7,7 @@
 
     <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
 
-    <link rel="stylesheet" href="../../static/CSS/login.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../../static/CSS/login.css"/>
 </head>
 <body>
 <div class="container_for_sign_in">
@@ -19,7 +17,7 @@
             <div class="sign_in" style="font-size: 1.9vh; padding-top: 5vh;">Product</div>
             <div class="sign_in" style="font-size: 4vh" th:text="${product.getTitle()}"></div>
             <div style="padding-top: 90%">
-                <form action="/admin/products" th:method="GET">
+                <form th:action="@{/admin/products}" th:method="GET">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <input type="submit" value="GO TO PRODUCTS" class="sign_in_btn"
                            style="width: 80%; margin-left: auto; margin-right: auto;">
@@ -98,5 +96,4 @@
     </div>
 </div>
 </body>
-
 </html>

@@ -15,6 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.*;
  * 17.04.2024
  */
 @Service
+@Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ChooseBikeTypeService {
@@ -44,16 +46,26 @@ public class ChooseBikeTypeService {
     public BikeCompilation getBicycleType(String location) throws JsonProcessingException {
 
         BikeCompilation resultType = new BikeCompilation();
+        log.info("COMPILATION RESULT: Entity was created");
 
         GeocodingDTO geocoding = getGeocoding(location);
-        if (geocoding == null)
+        if (geocoding == null) {
+            log.warn("GEOCODING FAILED");
+            log.info("GEOCODING FAILED: Returning null");
             return null;
+        }
 
         Location geocodingLocation = new Location(geocoding.getLatitude(), geocoding.getLongitude());
+        log.info("COMPILATION RESULT: Location entity was created");
 
         resultType.setLocation(geocoding.getFormattedAddress());
+        log.info("COMPILATION RESULT: Formatted address was input to the main Entity");
+
         resultType.setGeocoding(geocoding);
+        log.info("COMPILATION RESULT: Geocoding was input to the main Entity");
+
         resultType.setAqi(getAQI(geocodingLocation));
+        log.info("COMPILATION RESULT: AQI was input to the main Entity");
 
         NearbyPlacesDTO places = getNearbyPlaces(geocodingLocation);
         DistanceDTO directions = getDirections(places);
@@ -68,13 +80,17 @@ public class ChooseBikeTypeService {
                     directions.getPlacesLegList().get(i).getOriginAddress(),
                     getElevation(directions.getPlacesLegList().get(i).getOriginPlace().getLocation()),
                     directions.getPlacesLegList().get(i).getOriginPlace().getPhotos());
+            log.info("FIRST PLACE: For the {}) place was added: Origin Address, Elevation, Destination Address", i);
+
             Place secondPlace = new Place(directions.getPlacesLegList().get(i).getDestinationPlace().getDisplayName().getText(),
                     directions.getPlacesLegList().get(i).getDestinationAddress(),
                     getElevation(directions.getPlacesLegList().get(i).getDestinationPlace().getLocation()),
                     directions.getPlacesLegList().get(i).getDestinationPlace().getPhotos());
+            log.info("SECOND PLACE: For the {}) place was added: Origin Address, Elevation, Destination Address", i);
 
             if (directions.getPlacesLegList().get(i).getDistanceValue() != null) {
                 tripDistance += directions.getPlacesLegList().get(i).getDistanceValue();
+                log.info("Calculating full trip distance...");
             }
 
             resultType.getDirections().add(new Direction(
@@ -83,6 +99,7 @@ public class ChooseBikeTypeService {
                     directions.getPlacesLegList().get(i).getDistanceText(),
                     directions.getPlacesLegList().get(i).getDistanceValue(),
                     (secondPlace.getElevation() != 0 && firstPlace.getElevation() != 0) ? (secondPlace.getElevation() - firstPlace.getElevation()) : 0.0));
+            log.info("COMPILATION RESULT: Add to main Entity: FIRST PLACE, SECOND PLACE, DISTANCE_TEXT, DISTANCE_VALUE, MEDIUM_ELEVATION");
 
             if(firstPlace.getElevation() != 0.0 && secondPlace.getElevation() != 0.0) {
                 maxElevation = Math.max(maxElevation, firstPlace.getElevation());
@@ -90,6 +107,8 @@ public class ChooseBikeTypeService {
                 minElevation = Math.min(minElevation, firstPlace.getElevation());
                 minElevation = Math.min(minElevation, secondPlace.getElevation());
             }
+            log.info("MAX ELEVATION finding out...");
+            log.info("MIN ELEVATION finding out...");
 
             if(resultType.getDirections().get(i).getAverageElevation() != 0.0){
                 elevationChange += resultType.getDirections().get(i).getAverageElevation();
@@ -98,9 +117,17 @@ public class ChooseBikeTypeService {
         }
 
         resultType.setMaxElevation(maxElevation);
+        log.info("COMPILATION RESULT: MAX - Elevation was input to the main Entity");
+
         resultType.setMinElevation(minElevation);
+        log.info("COMPILATION RESULT: MIN - Elevation was input to the main Entity");
+
         resultType.setFullDistance(tripDistance);
+        log.info("COMPILATION RESULT: Full distance was input to the main Entity");
+
         resultType.setAverageElevation(elevationChange / countElevation);
+        log.info("COMPILATION RESULT: Average Elevation was input to the main Entity");
+
         return resultType;
     }
 
@@ -108,12 +135,17 @@ public class ChooseBikeTypeService {
 
         String response = restTemplate.getForObject(GEOCODING_URL + location + "&key=" + API_KEY, String.class);
         JsonNode rootNode = objectMapper.readTree(response);
+        log.info("GEOCODING: Server caught GEOCODING response");
+
         JsonNode resultsArray = rootNode.path("results");
         for (JsonNode result : resultsArray) {
             JsonNode typesArray = result.path("types");
             for (JsonNode type : typesArray) {
-                if (type.asText().equals("country"))
+                if (type.asText().equals("country")){
+                    log.info("GEOCODING: User wrote name of country;");
                     return null;
+                }
+
             }
         }
 
@@ -124,16 +156,19 @@ public class ChooseBikeTypeService {
             JsonNode placeIdNode = firstResult.path("place_id");
             if (!placeIdNode.isMissingNode()) {
                 geocodingDTO.setPlaceId(placeIdNode.asText());
+                log.info("GEOCODING: Entity has been saved 'place_id'");
             }
 
             JsonNode typesNode = firstResult.path("types");
             if (typesNode.isArray() && !typesNode.isEmpty()) {
                 geocodingDTO.setType(typesNode.get(0).asText());
+                log.info("GEOCODING: Entity has been saved 'types'");
             }
 
             JsonNode formattedAddressNode = firstResult.path("formatted_address");
             if (!formattedAddressNode.isMissingNode()) {
                 geocodingDTO.setFormattedAddress(formattedAddressNode.asText());
+                log.info("GEOCODING: Entity has been saved 'formatted_address'");
             }
 
             JsonNode geometryNode = firstResult.path("geometry");
@@ -145,15 +180,17 @@ public class ChooseBikeTypeService {
 
                     if (!latNode.isMissingNode()) {
                         geocodingDTO.setLatitude(latNode.asDouble());
+                        log.info("GEOCODING: Entity has been saved 'latitude'");
                     }
 
                     if (!lngNode.isMissingNode()) {
                         geocodingDTO.setLongitude(lngNode.asDouble());
+                        log.info("GEOCODING: Entity has been saved 'longitude'");
                     }
                 }
             }
         }
-
+        log.info("GEOCODING: Geocoding done, GeocodingDTO has been created '{}'", geocodingDTO.getFormattedAddress());
         return geocodingDTO;
     }
 
@@ -170,7 +207,10 @@ public class ChooseBikeTypeService {
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(AQIData, httpHeaders);
 
-        return restTemplate.postForObject(AQI_URL + "?key=" + API_KEY, requestEntity, AirQualityIndexDTO.class);
+        AirQualityIndexDTO AQIdto = restTemplate.postForObject(AQI_URL + "?key=" + API_KEY, requestEntity, AirQualityIndexDTO.class);
+        log.info("AQI: Server caught AQI response");
+
+        return AQIdto;
     }
 
     private NearbyPlacesDTO getNearbyPlaces(Location location) {
@@ -184,7 +224,10 @@ public class ChooseBikeTypeService {
 
         HttpEntity<NearbyPlacesConsumer> requestEntity = new HttpEntity<>(nearbyPlacesConsumer, httpHeaders);
 
-        return restTemplate.postForObject(NEARBY_PLACES_URL, requestEntity, NearbyPlacesDTO.class);
+        NearbyPlacesDTO places = restTemplate.postForObject(NEARBY_PLACES_URL, requestEntity, NearbyPlacesDTO.class);
+        log.info("NEARBY_PLACES: Server caught NearbyPlaces response");
+
+        return places;
     }
 
     private DistanceDTO getDirections(NearbyPlacesDTO places) throws JsonProcessingException {
@@ -199,6 +242,8 @@ public class ChooseBikeTypeService {
                 String FINAL_DIRECTIONS_URL = makeDirectionURL(placesList);
 
                 String response = restTemplate.getForObject(FINAL_DIRECTIONS_URL + "&key=" + API_KEY, String.class);
+                log.info("DIRECTIONS: Server caught DIRECTIONS response");
+
                 JsonNode rootNode = objectMapper.readTree(response);
 
                 PlaceLeg placeLeg = new PlaceLeg();
@@ -206,12 +251,14 @@ public class ChooseBikeTypeService {
                 if (originAddresses.isArray() && !originAddresses.isEmpty()) {
                     placeLeg.setOriginAddress(originAddresses.get(0).asText());
                     placeLeg.setOriginPlace(placesList.get(0));
+                    log.info("DIRECTIONS: Origin addresses has been saved");
                 }
 
                 JsonNode destinationAddresses = rootNode.path("destination_addresses");
                 if (destinationAddresses.isArray() && !destinationAddresses.isEmpty()) {
                     placeLeg.setDestinationAddress(destinationAddresses.get(0).asText());
                     placeLeg.setDestinationPlace(placesList.get(1));
+                    log.info("DIRECTIONS: Destination addresses has been saved");
                 }
 
                 JsonNode rows = rootNode.path("rows");
@@ -222,15 +269,18 @@ public class ChooseBikeTypeService {
                         JsonNode distance = element.path("distance");
                         if (distance.has("text")) {
                             placeLeg.setDistanceText(distance.get("text").asText());
+                            log.info("DIRECTIONS: Text value of distance has been saved");
                         }
                         if (distance.has("value")) {
                             placeLeg.setDistanceValue(distance.get("value").asDouble());
+                            log.info("DIRECTIONS: Double value of distance has been saved");
                         }
                     }
                 }
                 directions.getPlacesLegList().add(placeLeg);
             }
         }
+        log.info("DIRECTIONS: Directions worked correctly and saved");
         return directions;
     }
 
@@ -238,18 +288,26 @@ public class ChooseBikeTypeService {
 
         String URL = String.format(ELEVATION_URL, location.getLatitude(), location.getLongitude());
         String response = restTemplate.getForObject(URL + "&key=" + API_KEY, String.class);
+        log.info("ELEVATION: Server caught ELEVATION response");
 
         JsonNode root = objectMapper.readTree(response);
         JsonNode resultNode = root.path("results");
 
-        if (resultNode.isArray() && !resultNode.isEmpty())
+        if (resultNode.isArray() && !resultNode.isEmpty()) {
+            log.info("ELEVATION: Entity has been saved 'elevation'");
             return resultNode.get(0).path("elevation").asDouble();
-        else
+        }
+        else{
+            log.warn("ELEVATION: Entity has not been saved 'elevation'");
             return 0;
+        }
     }
 
     private String makeDirectionURL(List<com.example.bikeshop.api.places.Place> placesList) {
 
-        return String.format(DISTANCE_URL, placesList.get(0).getDisplayName().getText(), placesList.get(1).getDisplayName().getText());
+        String newString = String.format(DISTANCE_URL, placesList.get(0).getDisplayName().getText(), placesList.get(1).getDisplayName().getText());
+        log.info("DIRECTION: Direction String has been created");
+
+        return newString;
     }
 }

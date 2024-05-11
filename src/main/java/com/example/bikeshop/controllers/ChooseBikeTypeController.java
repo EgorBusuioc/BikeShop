@@ -2,8 +2,8 @@ package com.example.bikeshop.controllers;
 
 import com.example.bikeshop.models.api.BikeCompilation;
 import com.example.bikeshop.sevices.ChooseBikeTypeService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * 17.04.2024
  */
 @Controller
+@Slf4j
 @RequestMapping("/choose_your_bike")
 @RequiredArgsConstructor
 public class ChooseBikeTypeController {
@@ -35,6 +36,7 @@ public class ChooseBikeTypeController {
             else
                 model.addAttribute("country", "country");
         }catch (Exception e){
+            log.warn("User input wrong type of data");
             model.addAttribute("errorName", e.getMessage());
             model.addAttribute("errorInfo", "Something went wrong");
         }

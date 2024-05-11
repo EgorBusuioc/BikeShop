@@ -15,13 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Objects;
 
 @Service
+@Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-@Slf4j
 public class ShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
@@ -37,32 +36,41 @@ public class ShoppingCartService {
 
         User user = userService.getUserByPrincipal(principal);
 
-        if (user.getShoppingCart() == null)
+        if (user.getShoppingCart() == null) {
             user.setShoppingCart(new ShoppingCart());
+            log.info("Shopping cart created for user: {}", user.getEmail());
+        }
 
         ShoppingCart shoppingCart = user.getShoppingCart();
         if (shoppingCart.getQuantity() == null) {
             shoppingCart.setQuantity(0);
+            log.info("Set quantity '0' for user: {}", user.getEmail());
         }
 
         Product product = productService.getProductById(id);
 
         ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
         shoppingCartItem.setProduct(product);
+        log.info("User has added product '{}' to shopping cart", product.getTitle());
+
         product.setQuantityInStock(product.getQuantityInStock() - 1);
+        log.info("Quantity of product '{}' is now {}", product.getTitle(), product.getQuantityInStock());
 
         if(product.getQuantityInStock() == 0) {
             product.setActive(false);
+            log.info("Product '{}' has been deactivated. Quantity is '{}'", product.getTitle(), product.getQuantityInStock());
         }
 
         shoppingCartItem.setShoppingCart(shoppingCart);
         shoppingCart.getShoppingCartItems().add(shoppingCartItem);
         shoppingCart.setQuantity(shoppingCart.getShoppingCartItems().size());
+        log.info("Quantity of shopping cart has benn updated with quantity: {}", shoppingCart.getQuantity());
+
         if (shoppingCart.getUser() == null)
             shoppingCart.setUser(user);
 
-
         shoppingCartRepository.save(shoppingCart);
+        log.info("Shopping cart saved for user: {}", user.getEmail());
     }
 
     public ShoppingCart getShoppingCartByPrincipal(Principal principal) {
@@ -92,15 +100,16 @@ public class ShoppingCartService {
                 .setParameter("productIdInShoppingCart", productIdInShoppingCart)
                 .executeUpdate();
 
-        log.info("Элемент корзины удален");
+        log.info("Product '{}' has been deleted from user's shopping cart: {}", product.getTitle(), user.getEmail());
 
         product.setQuantityInStock(product.getQuantityInStock() + 1);
-        if(!product.isActive())
+        if(!product.isActive()) {
             product.setActive(true);
-
+            log.info("Product '{}' has been activated", product.getTitle());
+        }
         ShoppingCart shoppingCart = user.getShoppingCart();
         shoppingCart.setQuantity(shoppingCart.getShoppingCartItems().size());
-        log.info("Обновлено количество товаров в корзине");
+        log.info("Has been updated quantity in shopping cart: {}", shoppingCart.getQuantity());
     }
 
     @Transactional
@@ -110,8 +119,10 @@ public class ShoppingCartService {
         ShoppingCart shoppingCart = user.getShoppingCart();
 
         shoppingCartItemRepository.deleteAll(shoppingCart.getShoppingCartItems());
+        log.info("All products have been deleted from user's shopping cart: {}", user.getEmail());
 
         shoppingCart.getShoppingCartItems().clear();
         shoppingCart.setQuantity(0);
+        log.info("Shopping cart was refreshed for user: {}", user.getEmail());
     }
 }

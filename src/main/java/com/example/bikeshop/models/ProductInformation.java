@@ -1,13 +1,9 @@
 package com.example.bikeshop.models;
 
-import com.example.bikeshop.models.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author EgorBusuioc

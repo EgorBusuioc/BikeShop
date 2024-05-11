@@ -18,8 +18,8 @@ import java.security.Principal;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 @Slf4j
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
 
@@ -41,7 +41,7 @@ public class UserService {
         additionalInformation.setUser(user);
         user.setAdditionalInformation(additionalInformation);
         userRepository.save(user);
-        log.info("Saving new User with email: {}", email);
+        log.info("User created: Email: {}", user.getPassword());
         return true;
     }
 
@@ -56,37 +56,37 @@ public class UserService {
         AdditionalInformation additionalInformation = userInDatabase.getAdditionalInformation();
         if (!newInformation.getAddress().isEmpty()) {
             additionalInformation.setAddress(newInformation.getAddress());
-            log.info("Update {} with Address: {}", userInDatabase.getEmail(), additionalInformation.getAddress());
+            log.info("User {} updated Address: {}", userInDatabase.getEmail(), additionalInformation.getAddress());
         }
 
         if (!newInformation.getCity().isEmpty()) {
             additionalInformation.setCity(newInformation.getCity());
-            log.info("Update {} with City: {}", userInDatabase.getEmail(), additionalInformation.getCity());
+            log.info("User {} updated City: {}", userInDatabase.getEmail(), additionalInformation.getCity());
         }
 
         if (!newInformation.getCountry().isEmpty()) {
             additionalInformation.setCountry(newInformation.getCountry());
-            log.info("Update {} with Country: {}", userInDatabase.getEmail(), additionalInformation.getCountry());
+            log.info("User {} updated Country: {}", userInDatabase.getEmail(), additionalInformation.getCountry());
         }
 
         if (!newInformation.getPhoneNumber().isEmpty()) {
             additionalInformation.setPhoneNumber(newInformation.getPhoneNumber());
-            log.info("Update {} with Phone Number: {}", userInDatabase.getEmail(), additionalInformation.getPhoneNumber());
+            log.info("User {} updated Phone Number: {}", userInDatabase.getEmail(), additionalInformation.getPhoneNumber());
         }
 
         if (!newInformation.getWorkingAddress().isEmpty()) {
             additionalInformation.setWorkingAddress(newInformation.getWorkingAddress());
-            log.info("Update {} with Working Address: {}", userInDatabase.getEmail(), additionalInformation.getWorkingAddress());
+            log.info("User {} updated Working Address: {}", userInDatabase.getEmail(), additionalInformation.getWorkingAddress());
         }
 
         if (!dateOfBirth.isEmpty()) {
             additionalInformation.setDateOfBirth(AdditionalInformation.stringToDateTime(dateOfBirth));
-            log.info("Update {} with Birth Date: {}", userInDatabase.getEmail(), additionalInformation.getDateOfBirth());
+            log.info("User {} updated Birth Date: {}", userInDatabase.getEmail(), additionalInformation.getDateOfBirth());
         }
 
         userInDatabase.setAdditionalInformation(additionalInformation);
         userRepository.save(userInDatabase);
-        log.info("User {} was updated", userInDatabase.getEmail());
+        log.info("User {} was updated and saved", userInDatabase.getEmail());
     }
 
     @Transactional

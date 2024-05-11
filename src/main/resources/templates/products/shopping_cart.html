@@ -1,39 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" th:href="@{/CSS/login.css}">
+  <meta charset="UTF-8">
+
+  <title>BikeShop</title>
+
+  <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
+
+  <script src="../../static/JavaScriptLibraries/gsap/gsap.min.js" defer></script>
+  <script src="../../static/JavaScriptLibraries/gsap/ScrollTrigger.min.js" defer></script>
+  <script src="../../static/JavaScriptLibraries/gsap/ScrollSmoother.min.js" defer></script>
+  <script src="../../static/JavaScript/product_scripts.js" defer></script>
+
+  <link rel="stylesheet" href="../../static/CSS/nav.css">
+  <link rel="stylesheet" href="../../static/CSS/shop.css">
+  <link rel="stylesheet" href="../../static/CSS/nav.css">
+  <link rel="stylesheet" href="../../static/CSS/shopping_cart.css">
 </head>
-<body>
-<div class="container_for_sign_in">
-    <div class="header_for_sign_in" style="height: 50px"></div>
-    <div style="display: grid; grid-template-columns: 1fr; grid-gap: 3vh;">
-        <div style="align-items: center">
-            <table class="styled-table">
-                <thead>
-                <tr>
-                    <th>Product Title</th>
-                    <th>Price</th>
-                    <th>Remove from Shopping Cart</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="shoppingCartItem, userIndex : ${shoppingCart.getShoppingCartItems()}" th:class="${userIndex.index % 2 == 0} ? 'active-row'">
-                    <td th:text="${shoppingCartItem.getProduct().getTitle()}"></td>
-                    <td th:if="${shoppingCartItem.getProduct().getDiscount() != 0 && shoppingCartItem.getProduct().getDiscount() < shoppingCartItem.getProduct().getPrice()}" th:text="${shoppingCartItem.getProduct().getDiscount()}"></td>
-                    <td th:unless="${shoppingCartItem.getProduct().getDiscount() != 0 && shoppingCartItem.getProduct().getDiscount() < shoppingCartItem.getProduct().getPrice()}" th:text="${shoppingCartItem.getProduct().getPrice()}"></td>
-                    <td>
-                        <form th:action="@{/shopping_cart/delete_product/{product_id}(product_id=${shoppingCartItem.getShoppingCartItemId()})}" th:method="POST">
-                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                            <input type="submit" value="Delete From SC" class="table_btn">
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+<body style="padding: 0px; background-color: #f1f1f1;">
+  <div class="wrapper">
+    <div class="content">
+      <header>
+        <div class="navbar">
+          <div class="nav-logo">
+            <a data-lag=".4" th:href="@{/}">BikeShop</a>
+          </div>
+          <div class="nav-items">
+            <ul>
+              <li><a th:href="@{/mountain_bikes}"> MOUNTAIN BIKES </a></li>
+              <li><a th:href="@{/road_bikes}"> ROAD BIKES </a></li>
+              <li><a th:href="@{/active_bikes}"> ACTIVE BIKES </a></li>
+              <li><a th:href="@{/turbo_bikes}"> TURBO-E BIKES </a></li>
+              <li><a th:href="@{/equipments}"> EQUIPMENT </a></li>
+              <li><a th:href="@{/components}"> COMPONENTS </a></li>
+              <li><a th:href="@{/sworks_bikes}"> S-WORKS </a></li>
+            </ul>
+          </div>
+          <div class="nav-button">
+            <div class="anim-layer"></div>
+            <a th:href="@{/shopping_cart}">SHOPPING CART</a>
+          </div>
+          <div id="hamburger-menu">&#9776;</div>
         </div>
+      </header>
+      <main class="container" style="height: 85vh">
+        <div class="wrap cf">
+          <h1 class="projTitle">Shopping Cart</h1>
+          <div class="heading cf">
+            <h1 class="title">BikeShop</h1>
+          </div>
+          <div class="cart">
+            <ul class="cartWrap">
+              <li class="items odd" th:each="shoppingCartItem : ${shoppingCart.getShoppingCartItems()}">
+
+                <div class="infoWrap">
+                  <div class="cartSection">
+                    <img th:each="img : ${shoppingCartItem.getProduct().getImages()}"
+                         th:if="${img.isPreviewImage()}"
+                         th:src="@{/images/{image_id}(image_id=${img.getImageId()})}" alt="" class="itemImg" />
+                    <p class="itemNumber" th:text="'Article number: ' + ${shoppingCartItem.getProduct().getArticleNumber()}">#QUE-007544-002</p>
+                    <h3 th:text="${shoppingCartItem.getProduct().getTitle()}"></h3>
+                    <p class="stockStatus" th:if="${shoppingCartItem.getProduct().getQuantityInStock() > 0}">IN STOCK</p>
+                    <p class="stockStatus out" th:unless="${shoppingCartItem.getProduct().getQuantityInStock() > 0}">LAST ITEM</p>
+                  </div>
+                  <div class="prodTotal cartSection">
+                    <p th:if="${shoppingCartItem.getProduct().getDiscount() != null && shoppingCartItem.getProduct().getDiscount() < shoppingCartItem.getProduct().getPrice()}" th:text="'$ ' +  ${shoppingCartItem.getProduct().getDiscount()}"></p>
+                    <p th:unless="${shoppingCartItem.getProduct().getDiscount() != null && shoppingCartItem.getProduct().getDiscount() < shoppingCartItem.getProduct().getPrice()}" th:text="'$ ' + ${shoppingCartItem.getProduct().getPrice()}"></p>
+                  </div>
+                  <form th:action="@{/shopping_cart/delete_product/{product_id}(product_id=${shoppingCartItem.getShoppingCartItemId()})}" th:method="POST">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <div class="cartSection removeWrap">
+                      <button type="submit" class="remove">
+                        <img src="../../static/Images/delete-round-button.png" alt="DELETE BUTTON">
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="subtotal cf">
+            <ul>
+              <li class="totalRow final" style="list-style-type: none;"><span class="label">Total</span><span class="value" th:text="'$ ' + ${shoppingCart.getFullPrice()}"></span></li>
+              <li class="totalRow final" style="list-style-type: none;"><span class="label">Items in cart</span><span class="value" th:text="${shoppingCart.getQuantity()} + ' pcs.'"></span></li>
+              <form th:action="@{/shopping_cart/checkout}" th:method="POST">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <button type="submit" class="btn continue">Checkout</button>
+              </form>
+            </ul>
+          </div>
+        </div>
+      </main>
     </div>
-</div>
+  </div>
 </body>
 </html>

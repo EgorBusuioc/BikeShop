@@ -73,27 +73,6 @@ header {
     100% { background-color: rgba(255, 255, 255, 0); }
 }
 
-.circle {
-    width: 60px;
-    height: 60px;
-    border-radius: 30px 30px 30px 30px;
-    background-color: #b9fcf7;
-    top: 39px;
-    left: 37px;
-    position: absolute;
-    z-index: -1;
-}
-.circle_left{
-    width: 60px;
-    height: 60px;
-    border-radius: 30px 30px 30px 30px;
-    background-color: #b9fcf7;
-    top: 39px;
-    right: 37px;
-    position: absolute;
-    z-index: -1;
-}
-
 /*------------------------*/
 .bikeshop__header{
     display: inline-block;
@@ -142,7 +121,7 @@ header {
 	padding: 20px;
 	padding-top: 9px;
 	font-size: 14px;
-	background-color: #f1f1f1;;
+	background-color: #f1f1f1;
     font-family: menu-button;
     box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
 }

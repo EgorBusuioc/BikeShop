@@ -1,26 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" th:href="@{/CSS/select_box.css}">
+
+    <title>BikeShop</title>
+
+    <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
+
+    <link rel="stylesheet" href="../../static/CSS/login.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<h1 th:text="'Your product is: ' + ${product.getTitle()}"></h1>
-<h1>Show information about: </h1>
-<h2 th:text="'Quantity In Stock ' + ${product.getQuantityInStock()}"></h2>
-<form th:action="@{/admin/add_product/product_details/{product_id}(product_id=${product.getProductId()})}"
-      th:method="POST" th:object="${product}">
-    <input type="text" th:field="*{title}" placeholder="Model name" value=""><br><br>
-    <input type="text" th:field="*{quantityInStock}" placeholder="Quantity in Stock"> <br><br>
-    <input type="text" th:field="*{price}" placeholder="Price" ><br><br>
-    <input type="text" th:field="*{discount}" ><br><br>
-    <input type="submit" value="UPDATE INFORMATION!">
-</form>
-<h2>Do you wanna add product information?</h2>
-<a th:if="${product.getProductCategories() == T(com.example.bikeshop.models.enums.ProductCategory).EQUIPMENT || product.getProductCategories() == T(com.example.bikeshop.models.enums.ProductCategory).COMPONENTS}">You can't add additional information to this type of product</a>
+<div class="container_for_sign_in">
+    <div class="grid_container">
+        <div class="grid_item">
+            <div class="BikeShop__text" style="font-size: 9vh">BikeShop</div>
+            <div class="sign_in" style="font-size: 1.9vh; padding-top: 5vh;">Product</div>
+            <div class="sign_in" style="font-size: 4vh" th:text="${product.getTitle()}"></div>
+            <div style="padding-top: 90%">
+                <form action="/admin/products" th:method="GET">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" value="GO TO PRODUCTS" class="sign_in_btn"
+                           style="width: 80%; margin-left: auto; margin-right: auto;">
+                </form>
+            </div>
+            <div>
+                <a th:if="${product.getProductCategories().contains(T(com.example.bikeshop.models.enums.ProductCategory).EQUIPMENT) || product.getProductCategories().contains(T(com.example.bikeshop.models.enums.ProductCategory).COMPONENT)}">You
+                    can't add additional information to this type of product</a>
+            </div>
+            <div th:unless="${product.getProductCategories().contains(T(com.example.bikeshop.models.enums.ProductCategory).EQUIPMENT) || product.getProductCategories().contains(T(com.example.bikeshop.models.enums.ProductCategory).COMPONENT)}">
+                <a th:href="@{/admin/products/product_details/add_product_info/{product_id}(product_id=${product.getProductId()})}"
+                   class="registration">ADD INFO</a>
+            </div>
+        </div>
 
-<a th:unless="${product.getProductCategories() == T(com.example.bikeshop.models.enums.ProductCategory).EQUIPMENT || product.getProductCategories() == T(com.example.bikeshop.models.enums.ProductCategory).COMPONENTS}" th:href="@{/admin/add_product/product_details/add_product_info/{product_id}(product_id=${product.getProductId()})}">add info</a>
+        <div th:if="${product.getProductInformation() != null}" class="grid_item item2">
+            <div class="grid_container2">
+
+                <div class="info_text">FRAME</div>
+                <div class="result_text" th:text="${product.getProductInformation().getFrame()}"></div>
+
+                <div class="info_text">FORK</div>
+                <div class="result_text" th:text="${product.getProductInformation().getFork()}"></div>
+
+                <div class="info_text">CASSETTE</div>
+                <div class="result_text" th:text="${product.getProductInformation().getCassette()}"></div>
+
+                <div class="info_text">BRAKES</div>
+                <div class="result_text" th:text="${product.getProductInformation().getBrakes()}"></div>
+
+                <div class="info_text">SWAT</div>
+                <div class="result_text" th:text="${product.getProductInformation().getSwat()}"></div>
+
+                <div class="info_text">CREATION DATE</div>
+                <div class="result_text" th:text="${product.getFormattedDate()}"></div>
+            </div>
+        </div>
+        <div th:unless="${product.getProductInformation() != null}" class="grid_item item2">
+            <div class="grid_container2">
+                <div class="info_text">ARTICLE NUMBER</div>
+                <div class="result_text" th:text="${product.getArticleNumber()}"></div>
+
+                <div class="info_text">QUANTITY IN STOCK</div>
+                <div class="result_text" th:text="${product.getQuantityInStock()}"></div>
+
+                <div class="info_text">PRICE</div>
+                <div class="result_text" th:text="${product.getFormattedPrice(product.getPrice())}"></div>
+
+                <div class="info_text" th:if="${product.getDiscount() != null}">DISCOUNT</div>
+                <div class="result_text" th:if="${product.getDiscount() != null}"
+                     th:text="${product.getFormattedPrice(product.getDiscount())}"></div>
+
+                <div class="info_text">IS ACTIVE</div>
+                <div class="result_text" th:if="${product.isActive()}">YES</div>
+                <div class="result_text" th:unless="${product.isActive()}">NO</div>
+
+                <div class="info_text">CREATION DATE</div>
+                <div class="result_text" th:text="${product.getFormattedDate()}"></div>
+            </div>
+        </div>
+        <div class="grid_item item3">
+            <div class="grid_container2">
+                <div class="item_grid_update">UPDATE PRODUCT DATA</div>
+                <form
+                        th:action="@{/admin/products/product_details/{product_id}(product_id=${product.getProductId()})}"
+                        th:method="POST" th:object="${product}" class="item_grid_form">
+                    <input type="text" th:field="*{title}" placeholder="Model name" value=""
+                           class="input item_grid_form"><br><br>
+                    <input type="text" th:field="*{quantityInStock}" placeholder="Quantity in Stock" class="input"> <br><br>
+                    <input type="text" th:field="*{price}" placeholder="Price" class="input"><br><br>
+                    <input type="text" th:field="*{discount}" class="input"><br><br>
+                    <input type="submit" value="UPDATE INFORMATION" class="sign_in_btn">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+
 </html>

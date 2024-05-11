@@ -2,21 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <title>BikeShop</title>
+
+    <link rel="icon" type="image/png" th:href="../../static/Images/helmet.png">
+
+    <link rel="stylesheet" href="../../static/CSS/login.css">
 </head>
 <body>
-<form th:action="@{/admin/add_product/product_details/add_product_info/{product_information_id}(product_information_id=${productInformation.getProductInformationId()})}" th:method="POST" th:object="${productInformation}" enctype="multipart/form-data">
+<div class="container_for_sign_in">
+    <div class="header_for_sign_in" style="height: 80px"></div>
+    <div class="login_form">
+        <div class="form_content">
+            <div class="BikeShop__text">BikeShop</div>
+            <div class="sign_in">ADD PRODUCT INFO</div>
+            <form th:action="@{/admin/products/product_details/add_product_info/{product_information_id}(product_information_id=${productInformation.getProductInformationId()})}" th:method="POST" th:object="${productInformation}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <input type="hidden" name="productId" th:value="${product.getProductId()}">
 
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="hidden" name="productId" th:value="${product.getProductId()}">
+                <input th:field="*{frame}" type="text" name="frame" placeholder="Frame" class="input" required/><br><br>
+                <input th:field="*{fork}" type="text" name="fork" placeholder="Fork" class="input" required/><br><br>
+                <input th:field="*{brakes}" type="text" name="brakes" placeholder="Brakes" class="input" required/><br><br>
+                <input th:field="*{swat}" type="text" name="swat" placeholder="Swat" class="input" required/><br><br>
+                <input th:field="*{cassette}" type="text" name="cassette" placeholder="Cassette" class="input" required/><br><br>
 
-    <input th:field="*{frame}" type="text" name="frame" placeholder="Frame" class="input" required/><br><br>
-    <input th:field="*{fork}" type="text" name="fork" placeholder="Fork" class="input" required/><br><br>
-    <input th:field="*{brakes}" type="text" name="brakes" placeholder="Brakes" class="input" required/><br><br>
-    <input th:field="*{swat}" type="text" name="swat" placeholder="Swat" class="input" required/><br><br>
-    <input th:field="*{cassette}" type="text" name="cassette" placeholder="Cassette" class="input" required/><br><br>
-
-    <input type="submit" value="Добавить товар" class="sign_in_btn"/>
-</form>
+                <input type="submit" value="ADD PRODUCT INFO" class="sign_in_btn"/>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

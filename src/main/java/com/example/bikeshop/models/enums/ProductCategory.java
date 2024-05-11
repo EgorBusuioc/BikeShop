@@ -4,8 +4,8 @@ public enum ProductCategory {
     MOUNTAIN_BIKE,
     ACTIVE_BIKE,
     ROAD_BIKE,
-    TURBO_E_BIKES,
-    S_WORKS_BIKES,
+    TURBO_E_BIKE,
+    S_WORKS_BIKE,
     EQUIPMENT,
-    COMPONENTS;
+    COMPONENT;
 }

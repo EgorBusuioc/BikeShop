@@ -3,6 +3,7 @@ package com.example.bikeshop.models;
 import com.example.bikeshop.models.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ public class Product {
     private boolean isActive;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
@@ -74,8 +76,14 @@ public class Product {
     }
 
     public String getFormatCategory() {
+
         int countUnderlineSymbols = (int) this.getProductCategories().toString().chars().filter(ch -> ch == '_').count();
         String workString = this.getProductCategories().toString().replace("[", "").replace("]", "");
+
+        if(countUnderlineSymbols == 0) {
+            return workString.charAt(0) + workString.substring(1).toLowerCase();
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
         int tempIndex = 0;
         int index;

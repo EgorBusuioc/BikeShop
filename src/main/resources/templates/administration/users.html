@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" th:href="@{/CSS/login.css}">
+
+    <title>BikeShop</title>
+
+    <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
+
+    <link rel="stylesheet" href="../../static/CSS/login.css">
 </head>
 <body>
 <div class="container_for_sign_in">
@@ -13,17 +17,16 @@
             <table class="styled-table">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>City</th>
-                    <th>Country</th>
-                    <th>Address</th>
-                    <th>Get Working Address</th>
-                    <th>Creation Date</th>
-                    <th>Activity</th>
-                    <th>Change Activity</th>
+                    <th>NAME</th>
+                    <th>SURNAME</th>
+                    <th>EMAIL</th>
+                    <th>ROLE</th>
+                    <th>CITY</th>
+                    <th>COUNTRY</th>
+                    <th>ADDRESS</th>
+                    <th>CREATION DATE</th>
+                    <th>ACTIVITY</th>
+                    <th>ACTIVITY MANAGEMENT</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,7 +38,6 @@
                     <td th:text="${user.getAdditionalInformation().getCity()}"></td>
                     <td th:text="${user.getAdditionalInformation().getCountry()}"></td>
                     <td th:text="${user.getAdditionalInformation().getAddress()}"></td>
-                    <td th:text="${user.getAdditionalInformation().getWorkingAddress()}"></td>
                     <td th:text="${user.getFormattedCreationDate()}"></td>
                     <td th:if="${user.isActive()}">Active</td>
                     <td th:unless="${user.isActive()}">Banned</td>
@@ -49,10 +51,11 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div>
-        <a th:href="@{/admin/add_product}">
-            <button class="product__btn">GO TO PRODUCT</button>
+        <a th:href="@{/admin/products}" style="margin: auto;">
+            <button class="table_btn_go_to" style="width: auto; margin: auto; height: 4vh;">PRODUCTS</button>
+        </a>
+        <a th:href="@{/}" style="margin: auto;">
+            <button class="table_btn_go_to" style="width: auto; margin: auto; height: 4vh;">GO TO MAIN PAGE</button>
         </a>
     </div>
 </div>

@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8"/>
-    <meta name="description" content="Project"/>
-    <meta name="author" content=" Бусуйок Егор "/>
-    <link rel="shortcut icon" href="images/logo.jpg">
+    <meta charset="UTF-8">
 
     <title>BikeShop</title>
+
+    <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
 
     <script src="../../static/JavaScriptLibraries/gsap/gsap.min.js" defer></script>
     <script src="../../static/JavaScriptLibraries/gsap/ScrollTrigger.min.js" defer></script>
@@ -16,16 +14,13 @@
 
     <link rel="stylesheet" href="../../static/CSS/shop.css">
     <link rel="stylesheet" href="../../static/CSS/footer_shop.css">
-    <link rel="stylesheet" href="../../static/CSS/shoppingCart.css">
     <link rel="stylesheet" href="../../static/CSS/nav.css">
 
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <script src="../../static/JavaScript/app.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-
 </head>
-
 <body style="background-color: #fafafa;">
 <div class="wrapper">
     <div class="content">
@@ -100,7 +95,7 @@
                                     </a>
 
                                     <h3 class="product__title">
-                                        <a th:text="${equipment.getFormatCategory()}" href="#"
+                                        <a th:text="${equipment.getTitle()}" href="#"
                                            style="text-decoration: none; color: black;"></a>
                                     </h3>
                                     <div class="product__info">

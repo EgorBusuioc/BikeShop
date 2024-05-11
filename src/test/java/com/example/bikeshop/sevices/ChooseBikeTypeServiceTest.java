@@ -1,6 +1,11 @@
 package com.example.bikeshop.sevices;
 
+import com.example.bikeshop.models.Product;
+import com.example.bikeshop.models.enums.ProductCategory;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author EgorBusuioc
@@ -9,27 +14,13 @@ import org.junit.jupiter.api.Test;
 public class ChooseBikeTypeServiceTest {
     @Test
     public void getFormatCategory() {
-        String str = "S_WORKS_BIKE";
-        int countUnderlineSymbols = (int) str.chars().filter(ch -> ch == '_').count();
-        StringBuilder stringBuilder = new StringBuilder();
-        int tempIndex = 0;
-        int index;
-        for (int i = 0; i < countUnderlineSymbols; i++) {
-            index = str.indexOf("_", tempIndex);
-            if(i + 1 == countUnderlineSymbols) {
-                stringBuilder.append(str.charAt(tempIndex))
-                        .append(str.substring(tempIndex + 1, index).toLowerCase())
-                        .append(" ");
-                tempIndex = index + 1;
-                stringBuilder.append(str.charAt(tempIndex))
-                        .append(str.substring(tempIndex + 1).toLowerCase());
-            }
-            else
-                stringBuilder.append(str.charAt(tempIndex))
-                        .append(str.substring(tempIndex + 1, index).toLowerCase())
-                        .append("-");
-            tempIndex = index + 1;
+        Product product = new Product();
+        Set<ProductCategory> categories = new HashSet<>();
+        categories.add(ProductCategory.ACTIVE_BIKE);
+        product.setProductCategories(categories);
+
+        if(product.getProductCategories().contains(ProductCategory.ACTIVE_BIKE)) {
+            System.out.println("da");
         }
-        System.out.println(stringBuilder);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Objects;
 
 @Service
@@ -100,5 +101,17 @@ public class ShoppingCartService {
         ShoppingCart shoppingCart = user.getShoppingCart();
         shoppingCart.setQuantity(shoppingCart.getShoppingCartItems().size());
         log.info("Обновлено количество товаров в корзине");
+    }
+
+    @Transactional
+    public void checkout(Principal principal) {
+
+        User user = userService.getUserByPrincipal(principal);
+        ShoppingCart shoppingCart = user.getShoppingCart();
+
+        shoppingCartItemRepository.deleteAll(shoppingCart.getShoppingCartItems());
+
+        shoppingCart.getShoppingCartItems().clear();
+        shoppingCart.setQuantity(0);
     }
 }

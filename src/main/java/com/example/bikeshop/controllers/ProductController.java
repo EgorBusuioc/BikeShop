@@ -55,21 +55,21 @@ public class ProductController {
     @GetMapping("/sworks_bikes")
     public String showSWorksBikes(Model model) {
 
-        model.addAttribute("sworksBikes", productService.findBikes(ProductCategory.S_WORKS_BIKES));
+        model.addAttribute("sworksBikes", productService.findBikes(ProductCategory.S_WORKS_BIKE));
         return "products/sworks_bikes";
     }
 
     @GetMapping("/turbo_bikes")
     public String showTurboBikes(Model model) {
 
-        model.addAttribute("turboBikes", productService.findBikes(ProductCategory.TURBO_E_BIKES));
+        model.addAttribute("turboBikes", productService.findBikes(ProductCategory.TURBO_E_BIKE));
         return "products/turbo_bikes";
     }
 
     @GetMapping("/components")
     public String showComponents(Model model) {
 
-        model.addAttribute("components", productService.findBikes(ProductCategory.COMPONENTS));
+        model.addAttribute("components", productService.findBikes(ProductCategory.COMPONENT));
         return "products/components";
     }
 
@@ -80,30 +80,15 @@ public class ProductController {
         return "products/equipments";
     }
 
-    @GetMapping("/admin/add_product")
-    public String addNewProductAndShowProductList(@ModelAttribute("product") Product product, Model model) {
+    @GetMapping("/admin/products")
+    public String showProducts(Model model) {
 
-        model.addAttribute("productCategories", productService.getProductCategory());
-        model.addAttribute("products", productService.findBikes(null));
+        model.addAttribute("products", productService.findAllProducts());
         return "administration/products";
     }
 
-    @PostMapping("/admin/add_product/create")
-    public String createNewProduct(@ModelAttribute("product") Product product,
-                                   @RequestParam("files") MultipartFile[] files,
-                                   @RequestParam("category") String productCategory, Model model) {
-        try {
-            productService.saveProduct(product, files, productCategory);
-        } catch (IOException e) {
-            model.addAttribute("error", "You must upload at least one image");
-            return "administration/products";
-        }
-
-        return "redirect:/admin/add_product";
-    }
-
     @GetMapping("/product_details/{productId}")
-    public String showProductDetails(@PathVariable int productId,
+    public String showProductDetails(@PathVariable("productId") int productId,
                                      @RequestHeader(value = "referer", required = false) String referer, Model model) {
 
         int lastSlashIndex = referer.lastIndexOf("/");
@@ -114,24 +99,44 @@ public class ProductController {
         return "products/product_details";
     }
 
-    @GetMapping("/admin/add_product/product_details/{productId}")
+    @GetMapping("/admin/products/add_product")
+    public String addNewProduct(@ModelAttribute("product") Product product, Model model) {
+
+        model.addAttribute("productCategories", productService.getProductCategory());
+        return "administration/add_product";
+    }
+
+    @PostMapping("/admin/products/add_product/create")
+    public String createNewProduct(@ModelAttribute("product") Product product,
+                                   @RequestParam("files") MultipartFile[] files,
+                                   @RequestParam("category") String productCategory, Model model) {
+        try {
+            productService.saveProduct(product, files, productCategory);
+        } catch (IOException e) {
+            model.addAttribute("error", "You must upload at least one image");
+            return "administration/products";
+        }
+
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/admin/products/product_details/{productId}")
     public String showInformationAboutProduct(@PathVariable("productId") int id, Model model) {
 
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("productCategories", productService.getProductCategory());
-        model.addAttribute("ProductCategoriesClass", ProductCategory.class);
         return "administration/product_info";
     }
 
-    @PostMapping("/admin/add_product/product_details/{productId}")
+    @PostMapping("/admin/products/product_details/{productId}")
     public String updateInformationAboutProduct(@PathVariable("productId") int productId,
                                                 @ModelAttribute("product") Product product) {
 
         productService.updateProduct(productId, product);
-        return "redirect:/admin/add_product/product_details/" + productId;
+        return "redirect:/admin/products/product_details/" + productId;
     }
 
-    @GetMapping("/admin/add_product/product_details/add_product_info/{productId}")
+    @GetMapping("/admin/products/product_details/add_product_info/{productId}")
     public String addProductInfo(@PathVariable("productId") int id, Model model) {
 
         model.addAttribute("productInformation", productService.getProductInfo(id));
@@ -139,20 +144,20 @@ public class ProductController {
         return "administration/add_product_info";
     }
 
-    @PostMapping("/admin/add_product/product_details/add_product_info/{productInformationId}")
+    @PostMapping("/admin/products/product_details/add_product_info/{productInformationId}")
     public String addProductInformation(@PathVariable("productInformationId") int productInformationId,
                                         @ModelAttribute("product_information") ProductInformation productToUpdate,
                                         @RequestParam("productId") int productId) {
 
         productService.updateInformation(productToUpdate, productInformationId, productId);
-        return "redirect:/admin/add_product";
+        return "redirect:/admin/products";
     }
 
-    @PostMapping("/admin/add_product/delete/{productId}")
+    @PostMapping("/admin/products/delete/{productId}")
     public String deleteProduct(@PathVariable("productId") int productId, Model model) {
 
         if (productService.deleteProduct(productId))
-            return "redirect:/admin/add_product";
+            return "redirect:/admin/products";
         else {
             model.addAttribute("products", productService.findBikes(null));
             model.addAttribute("product", new Product());

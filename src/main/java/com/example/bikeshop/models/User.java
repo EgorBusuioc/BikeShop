@@ -2,10 +2,14 @@ package com.example.bikeshop.models;
 
 import com.example.bikeshop.models.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,12 +30,15 @@ public class User implements UserDetails {
     private int userId;
 
     @Column(name = "name")
+    @Pattern(regexp = "^[A-Z][a-z]*$", message = "First letter must be uppercase, followed by lowercase letters.")
     private String name;
 
     @Column(name = "surname")
+    @Pattern(regexp = "^[A-Z][a-z]*$", message = "First letter must be uppercase, followed by lowercase letters.")
     private String surname;
 
     @Column(name = "email", unique = true)
+    @Email
     private String email;
 
     @Column(name = "password", length = 1000)
@@ -41,6 +48,7 @@ public class User implements UserDetails {
     private boolean active;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 

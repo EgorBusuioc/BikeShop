@@ -2,17 +2,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1 th:text="${product.getTitle()}"></h1>
 
-<form th:action="@{/shopping_cart/product_details/add_to_cart/{product_id}(product_id=${product.getProductId()})}"
-      th:method="POST" class="add-to-cart-form" th:if="${product.isActive()}">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="hidden" name="lastReferer" th:value="${lastReferer}">
-    <input type="submit" value="ADD TO CART" class="sign_in_btn">
-</form>
-<h1 th:unless="${product.isActive()}">It is impossible to add this product</h1>
+    <title>BikeShop</title>
+
+    <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
+
+    <script src="../../static/JavaScriptLibraries/gsap/gsap.min.js" defer></script>
+    <script src="../../static/JavaScriptLibraries/gsap/ScrollTrigger.min.js" defer></script>
+    <script src="../../static/JavaScriptLibraries/gsap/ScrollSmoother.min.js" defer></script>
+    <script src="../../static/JavaScript/product_scripts.js" defer></script>
+
+    <link rel="stylesheet" href="../../static/CSS/shop.css">
+    <link rel="stylesheet" href="../../static/CSS/product_details.css">
+    <link rel="stylesheet" href="../../static/CSS/nav.css">
+    <link rel="stylesheet" href="../../static/CSS/photo_switcher.css">
+</head>
+<body style="padding: 0px; background-color: #f1f1f1;;">
+<div class="wrapper">
+    <div class="content">
+        <header>
+            <div class="navbar">
+                <div class="nav-logo">
+                    <a data-lag=".4" th:href="@{/}">BikeShop</a>
+                </div>
+                <div class="nav-items">
+                    <ul>
+                        <li><a th:href="@{/mountain_bikes}"> MOUNTAIN BIKES </a></li>
+                        <li><a th:href="@{/road_bikes}"> ROAD BIKES </a></li>
+                        <li><a th:href="@{/active_bikes}"> ACTIVE BIKES </a></li>
+                        <li><a th:href="@{/turbo_bikes}"> TURBO-E BIKES </a></li>
+                        <li><a th:href="@{/equipments}"> EQUIPMENT </a></li>
+                        <li><a th:href="@{/components}"> COMPONENTS </a></li>
+                        <li><a th:href="@{/sworks_bikes}"> S-WORKS </a></li>
+                    </ul>
+                </div>
+                <div class="nav-button">
+                    <div class="anim-layer"></div>
+                    <a th:href="@{/shopping_cart}">SHOPPING CART</a>
+                </div>
+                <div id="hamburger-menu">&#9776;</div>
+            </div>
+        </header>
+        <main class="container" style="height: 85vh">
+            <div style="display: grid;
+                grid-template-columns: auto auto;">
+                <div class="content_slider">
+                    <div id="slider" style="top: 7vh; margin: auto;">
+                        <div th:each="img : ${product.getImages()}" class="slide">
+                            <img th:src="@{/images/{image_id}(image_id=${img.getImageId()})}">
+                        </div>
+                    </div>
+                    <div>
+                            <span style="left: 3%; width: 2%;" class="controls" onclick="prevSlide(-1)"
+                                  id="left-arrow"><img src="../../static/Images/right-arrow.png"
+                                                       style="transform: rotate(180deg);">
+                            </span>
+                        <span style="right: 51%; width: 2%;" class="controls" id="right-arrow"
+                              onclick="nextSlide(1)"><img src="../../static/Images/right-arrow.png">
+                            </span>
+                        <div id="dots-con" style="margin: 8vh;">
+                            <span th:each="img : ${product.getImages()}" class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="details_grid" th:if="${product.getProductInformation() != null}">
+                    <div class="item_grid hd" th:text="${product.getTitle()}"
+                         style="margin-bottom: 3vh; font-size: 4.5vh">Title
+                    </div>
+                    <div class="item_grid hd">FRAME:</div>
+                    <div class="item_grid ct" th:text="${product.getProductInformation().getFrame()}">name</div>
+                    <div class="item_grid hd">FORK:</div>
+                    <div class="item_grid ct" th:text="${product.getProductInformation().getFork()}">name</div>
+                    <div class="item_grid hd">BRAKES:</div>
+                    <div class="item_grid ct" th:text="${product.getProductInformation().getBrakes()}">name</div>
+                    <div class="item_grid hd">SWAT:</div>
+                    <div class="item_grid ct" th:text="${product.getProductInformation().getSwat()}">name</div>
+                    <div class="item_grid hd">CASSETTE</div>
+                    <div class="item_grid ct" th:text="${product.getProductInformation().getCassette()}">name</div>
+                    <div class="item_grid hd">QUANTITY IN STOCK:</div>
+                    <div class="item_grid ct" th:text="${product.getQuantityInStock()}">name</div>
+                    <div class="item_grid hd">PRICE:</div>
+                    <div class="item_grid ct"
+                         th:if="${product.getDiscount() != 0 && product.getDiscount != null && (product.getDiscount() < product.getPrice())}"
+                         th:text="${product.getDiscount()}">name
+                    </div>
+                    <div class="item_grid ct"
+                         th:if="${product.getDiscount() == null || product.getDiscount() == 0}"
+                         th:text="${product.getPrice()}">name
+                    </div>
+                    <div class="item_grid">
+                        <form
+                                th:action="@{/shopping_cart/product_details/add_to_cart/{product_id}(product_id=${product.getProductId()})}"
+                                th:method="POST" class="add-to-cart-form" th:if="${product.isActive()}">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <input type="hidden" name="lastReferer" th:value="${lastReferer}">
+                            <input th:if="${product.getQuantityInStock() > 0}" type="submit" value="ADD TO CART"
+                                   class="product__btn" style="width: 70%;">
+                            <button th:unless="${product.getQuantityInStock() > 0}" value="OUT OF STOCK"
+                                    class="product__btn__is__not__active" style="width: 70%;"></button>
+                        </form>
+                        <h1 th:unless="${product.isActive()}">It is impossible to add this product</h1>
+                        <h1 style="visibility: hidden">It is impossible to add this product</h1>
+                    </div>
+                </div>
+                <div>
+                    <div class="details_grid" th:if="${product.getProductInformation() == null}">
+                        <div class="item_grid hd" th:text="${product.getTitle()}"
+                             style="margin-bottom: 3vh; font-size: 4.5vh">Title
+                        </div>
+                        <div class="item_grid hd" style="visibility: hidden">FRAME:</div>
+                        <div class="item_grid ct" style="visibility: hidden">name</div>
+                        <div class="item_grid hd" style="visibility: hidden">FORK:</div>
+                        <div class="item_grid ct" style="visibility: hidden">name</div>
+                        <div class="item_grid hd" style="visibility: hidden">BRAKES:</div>
+                        <div class="item_grid ct" style="visibility: hidden">name</div>
+                        <div class="item_grid hd" style="visibility: hidden">SWAT:</div>
+                        <div class="item_grid ct" style="visibility: hidden">name</div>
+                        <div class="item_grid hd" style="visibility: hidden">CASSETTE</div>
+                        <div class="item_grid ct" style="visibility: hidden">name</div>
+                        <div class="item_grid hd">QUANTITY IN STOCK:</div>
+                        <div class="item_grid ct">name</div>
+                        <div class="item_grid hd">PRICE:</div>
+                        <div class="item_grid ct"
+                             th:if="${product.getDiscount() != 0 && product.getDiscount != null && (product.getDiscount() < product.getPrice())}"
+                             th:text="${product.getDiscount()}">name
+                        </div>
+                        <div class="item_grid ct"
+                             th:if="${product.getDiscount() == null || product.getDiscount() == 0}"
+                             th:text="${product.getPrice()}">name
+                        </div>
+                        <div class="item_grid">
+                            <form
+                                    th:action="@{/shopping_cart/product_details/add_to_cart/{product_id}(product_id=${product.getProductId()})}"
+                                    th:method="POST" class="add-to-cart-form" th:if="${product.isActive()}">
+                                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                                <input type="hidden" name="lastReferer" th:value="${lastReferer}">
+                                <input th:if="${product.getQuantityInStock() > 0}" type="submit" value="ADD TO CART"
+                                       class="product__btn" style="width: 70%;">
+                                <button th:unless="${product.getQuantityInStock() > 0}" value="OUT OF STOCK"
+                                        class="product__btn__is__not__active" style="width: 70%;"></button>
+                            </form>
+                            <h1 th:unless="${product.isActive()}">It is impossible to add this product</h1>
+                            <h1 style="visibility: hidden">It is impossible to add this product</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
 </body>
+<script>
+    var slides = document.querySelectorAll(".slide");
+    var dots = document.querySelectorAll(".dot");
+    var index = 0;
+
+
+    function prevSlide(n) {
+        index += n;
+        console.log("prevSlide is called");
+        changeSlide();
+    }
+
+    function nextSlide(n) {
+        index += n;
+        changeSlide();
+    }
+
+    changeSlide();
+
+    function changeSlide() {
+
+        if (index > slides.length - 1)
+            index = 0;
+
+        if (index < 0)
+            index = slides.length - 1;
+
+
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+
+            dots[i].classList.remove("active");
+        }
+
+        slides[index].style.display = "block";
+        dots[index].classList.add("active");
+    }
+</script>
+
 </html>

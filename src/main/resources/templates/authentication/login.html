@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+
     <title>BikeShop</title>
+
+    <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
 
     <link rel="stylesheet" href="../../static/CSS/login.css">
 </head>
@@ -12,16 +16,16 @@
             <div class="grid_item">
                 <div class="BikeShop__text" style="font-size: 9vh">BikeShop</div>
                 <div class="sign_in" style="font-size: 1.9vh; padding-top: 5vh;">My Account</div>
-                <div class="sign_in" style="font-size: 4vh" th:text="${user.name} + ' ' + ${user.surname}"></div>
+                <div class="sign_in" style="font-size: 4vh" th:text="${user.getName()} + ' ' + ${user.getSurname()}"></div>
                 <div style="padding-top: 90%">
                     <form action="/logout" method="post">
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                        <input type="submit" value="Sign Out" class="sign_in_btn"
+                        <input type="submit" value="SIGN OUT" class="sign_in_btn"
                                style="width: 80%; margin-left: auto; margin-right: auto;">
                     </form>
                 </div>
                 <div>
-                    <a th:if="${user.isAdmin()}" href="/admin" class="registration">Admin Panel</a>
+                    <a th:if="${user.isAdmin()}" th:href="@{/admin}" class="registration">ADMIN PANEL</a>
                 </div>
             </div>
 
@@ -43,16 +47,16 @@
                     <div th:if="${user.getAdditionalInformation().getAddress()}" class="result_text"
                          th:text="${user.getAdditionalInformation().getAddress()}"></div>
 
-                    <div th:if="${user.getAdditionalInformation().getWorkingAddress()}" class="info_text">Working address</div>
+                    <div th:if="${user.getAdditionalInformation().getWorkingAddress()}" class="info_text">Working Address</div>
                     <div th:if="${user.getAdditionalInformation().getWorkingAddress()}" class="result_text"
                          th:text="${user.getAdditionalInformation().getWorkingAddress()}"></div>
 
-                    <div class="info_text">Birth date</div>
+                    <div class="info_text">Birth Date</div>
                     <div th:if="${user.getAdditionalInformation().getDateOfBirth()}" class="result_text"
                          th:text="${user.getAdditionalInformation().getDateOfBirth()}"></div>
 
 
-                    <div class="info_text">Phone number</div>
+                    <div class="info_text">Phone Number</div>
                     <div th:if="${user.getAdditionalInformation().getPhoneNumber()}" class="result_text"
                          th:text="${user.getAdditionalInformation().getPhoneNumber()}"></div>
                 </div>
@@ -67,7 +71,7 @@
             </div>
             <div class="grid_item item3">
                 <div class="grid_container2">
-                    <div class="item_grid_update">Update your Data</div>
+                    <div class="item_grid_update">UPDATE YOUR DATA</div>
                     <form th:action="@{/update-user/{user_id}(user_id=${user.getUserId()})}" th:method="POST"
                           th:object="${additionalInformation}" class="item_grid_form">
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}">
@@ -78,7 +82,7 @@
                         <input type="text" th:field="*{country}" placeholder="Country" class="input"><br><br>
                         <input type="text" th:field="*{phoneNumber}" placeholder="Phone Number" class="input"><br><br>
                         <input type="text" name="date_of_birth" placeholder="dd/mm/yyyy" class="input"><br><br>
-                        <input type="submit" value="Save" class="sign_in_btn">
+                        <input type="submit" value="SAVE" class="sign_in_btn">
                     </form>
                 </div>
             </div>
@@ -91,15 +95,15 @@
         <div class="login_form">
             <div class="form_content">
                 <div class="BikeShop__text">BikeShop</div>
-                <div class="sign_in">Sign in to your Account</div>
+                <div class="sign_in">SIGN IN TO YOUR ACCOUNT</div>
                 <form action="/login" method="post">
                     <input type="email" name="username" placeholder="Email" class="input"><br><br>
                     <input type="password" name="password" placeholder="Password" class="input password"><br><br>
                     <div th:if="${loginError}" class="error" th:text="${loginError}"></div>
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                    <input type="submit" value="Sign In" class="sign_in_btn"/>
+                    <input type="submit" value="SIGN IN" class="sign_in_btn"/>
                 </form>
-                <a href="/registration" class="registration">Registration</a>
+                <a href="/registration" class="registration">REGISTRATION</a>
             </div>
         </div>
     </div>

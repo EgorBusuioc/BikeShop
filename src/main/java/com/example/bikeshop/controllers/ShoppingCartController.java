@@ -1,10 +1,6 @@
 package com.example.bikeshop.controllers;
 
-import com.example.bikeshop.models.ShoppingCart;
-import com.example.bikeshop.models.User;
 import com.example.bikeshop.sevices.ShoppingCartService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +34,13 @@ public class ShoppingCartController {
     public String deleteProductFromShoppingCart(@PathVariable("productId") int productIdInShoppingCart, Principal principal) {
 
         shoppingCartService.deleteProduct(productIdInShoppingCart, principal);
+        return "redirect:/shopping_cart";
+    }
+
+    @PostMapping("/checkout")
+    public String checkout(Principal principal) {
+
+        shoppingCartService.checkout(principal);
         return "redirect:/shopping_cart";
     }
 }

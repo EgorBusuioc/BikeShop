@@ -23,10 +23,6 @@
                            style="width: 80%; margin-left: auto; margin-right: auto;">
                 </form>
             </div>
-            <div>
-                <a th:if="${product.getProductCategories().contains(T(com.example.bikeshop.models.enums.ProductCategory).EQUIPMENT) || product.getProductCategories().contains(T(com.example.bikeshop.models.enums.ProductCategory).COMPONENT)}">You
-                    can't add additional information to this type of product</a>
-            </div>
             <div th:unless="${product.getProductCategories().contains(T(com.example.bikeshop.models.enums.ProductCategory).EQUIPMENT) || product.getProductCategories().contains(T(com.example.bikeshop.models.enums.ProductCategory).COMPONENT)}">
                 <a th:href="@{/admin/products/product_details/add_product_info/{product_id}(product_id=${product.getProductId()})}"
                    class="registration">ADD INFO</a>

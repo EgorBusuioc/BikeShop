@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --index: calc(1vw + 1vh);
+    --color-header: #f1f1f1;
+    --color-text:black;
+    --gallery-gap:  calc(var(--index) * 10)
+}
+.content, .main-header, .BikeShop__text, .gallery > * {
+	will-change: transform;
+}
+h1, h2, h3, h4, h5, h6, p {
+	font-family: menu-button;
+}
+
+@font-face{
+    font-family: menu-button;
+    src: url(../fonts/Montserrat-SemiBold.ttf);
+}
+@font-face{
+    font-family: BikeShop;
+    src: url(../fonts/brushscriptmtkursiv.ttf);
+}
+@font-face {
+	font-family: outfit-c;
+	src: url(../fonts/outfit-regular.woff2);
+}
+@font-face {
+    font-family: footer;
+    src: url(../fonts/Montserrat-Regular.ttf);
+}
+
+
+body{
+    background-color: #0f1116;
+    color: black;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+header {
+    height: 100vh;
+
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+
+.container {
+	padding: 0 7vw;
+}
+.gallery{
+    display: flex ;
+    padding: calc(var(--index) * 11) 0;
+}
+.gallery > * {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.gallery__item{
+    max-width: calc(var(--index) * 21);
+    margin-bottom: var(--gallery-gap);
+}
+.text-block__h{
+    font-size: 3vw;
+}
+.text-block__p{
+    font-size: 1.3vw;
+}
+
+.result {
+    font-family: BikeShop;
+    color: #34e5d9;
+    font-size: 5vw;
+}
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>BikeShop</title>
+
+    <link rel="icon" type="image/png" href="../static/Images/helmet.png">
+
+    <link rel="stylesheet" href="../static/CSS/error.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="copy-container center-xy">
+            <p th:text="${error}">
+                404, page not found.
+            </p><br>
+            <p th:if="${error == null}">
+                403, this page is closed for you.
+            </p><br>
+            <a th:href="@{/}" class="error_link">
+                Go to main page...
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

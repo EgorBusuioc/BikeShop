@@ -4,38 +4,43 @@
     box-sizing: border-box;
 }
 
-:root{
+:root {
     --index: calc(1vw + 1vh);
     --color-header: #f0f0f0;
-    --color-text:#f0f0f0;
-    --gallery-gap:  calc(var(--index) * 10)
-}
-.content, .main-header, .BikeShop__text, .gallery > * {
-	will-change: transform;
-}
-h1, h2, h3, h4, h5, h6, p {
-	font-family: menu-button;
+    --color-text: #f0f0f0;
+    --gallery-gap: calc(var(--index) * 10)
 }
 
-@font-face{
+.content, .main-header, .BikeShop__text, .gallery > * {
+    will-change: transform;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    font-family: menu-button;
+}
+
+@font-face {
     font-family: menu-button;
     src: url(../fonts/Montserrat-SemiBold.ttf);
 }
-@font-face{
+
+@font-face {
     font-family: BikeShop;
     src: url(../fonts/brushscriptmtkursiv.ttf);
 }
+
 @font-face {
-	font-family: outfit-c;
-	src: url(../fonts/outfit-regular.woff2);
+    font-family: outfit-c;
+    src: url(../fonts/outfit-regular.woff2);
 }
+
 @font-face {
     font-family: footer;
     src: url(../fonts/Montserrat-Regular.ttf);
 }
 
 
-body{
+body {
     background-color: #0f1116;
     color: #f0f0f0;
     user-select: none;
@@ -53,23 +58,24 @@ header {
     background-position: 50% 50%;
 }
 
-.header__container{
+.header__container {
     display: block;
     margin: 0 50px;
     max-height: 100vh;
     max-width: 1500px;
 }
 
-.headers__of__header{
+.headers__of__header {
     display: flex;
 }
+
 .burger {
     position: relative;
     display: inline-block;
     z-index: 103;
 }
 
-.burger_menu{
+.burger_menu {
     position: fixed;
     left: 0;
     top: 0;
@@ -82,9 +88,11 @@ header {
     transition: 0.5s;
     transform: translateX(-100%);
 }
+
 .burger_active {
     transform: translateX(0%);
 }
+
 .bar1, .bar2, .bar3 {
     width: 35px;
     height: 5px;
@@ -93,6 +101,7 @@ header {
     transition: 0.4s;
     border-radius: 3px;
 }
+
 .change .bar1 {
     -webkit-transform: rotate(-45deg) translate(-9px, 6px);
     transform: rotate(-45deg) translate(-9px, 6px);
@@ -100,6 +109,7 @@ header {
     position: relative;
     z-index: 100;
 }
+
 .change .bar2 {
     opacity: 0;
 }
@@ -112,7 +122,7 @@ header {
     z-index: 100;
 }
 
-.menu__button{
+.menu__button {
     position: relative;
     padding-top: 56px;
     padding-left: 21px;
@@ -123,19 +133,22 @@ header {
     transition: 0.5s ease-in-out;
     color: #fafafa;
 }
-.menu__button__active{
+
+.menu__button__active {
     z-index: 300;
     font-family: menu-button;
     font-weight: bold;
     color: black;
 }
+
 .menu-list {
     display: flex;
     height: 60%;
     flex-direction: column;
 
 }
-.menu-list a{
+
+.menu-list a {
     color: black;
     font-family: menu-button;
     text-decoration: none;
@@ -143,7 +156,7 @@ header {
 }
 
 /*Вывод фото*/
-.parent{
+.parent {
     width: 17vw;
     font-size: 1.1em;
     font-weight: bold;
@@ -152,7 +165,8 @@ header {
     padding-top: 2vh;
     padding-bottom: 2vh;
 }
-.ancestor{
+
+.ancestor {
     width: 14vw;
     font-size: 1em;
     display: block;
@@ -161,7 +175,8 @@ header {
     position: relative;
     left: 3vw;
 }
-.main__text__menu{
+
+.main__text__menu {
     position: absolute;
     top: 35vh;
     left: 2vw;
@@ -169,22 +184,26 @@ header {
     text-transform: uppercase;
     font-size: 9vh;
 }
-.text__menu{
+
+.text__menu {
     padding: 1vh;
     width: 30vw;
-    font-size:2vh;
+    font-size: 2vh;
 }
 
-.tooltip{
+.tooltip {
     transition: .2s ease-in-out;
 }
-.tooltip:hover{
+
+.tooltip:hover {
     background-color: black;
 }
-.tooltip a:hover{
+
+.tooltip a:hover {
     color: white;
 }
-.tooltip span{
+
+.tooltip span {
     width: 83vw;
     height: 100vh;
     visibility: hidden;
@@ -193,12 +212,12 @@ header {
     left: 17vw;
     background: #fff;
 }
- 
-.tooltip:hover span{
-visibility: visible;
+
+.tooltip:hover span {
+    visibility: visible;
 }
 
-.logo_menu{
+.logo_menu {
     font-family: BikeShop;
     font-size: calc(2vh + 2vw);
     color: black;
@@ -209,62 +228,72 @@ visibility: visible;
 
 /*------------------------*/
 
-.item2{
-    position:absolute; 
-    right: 50%; 
-    left: 50%; 
-    width: 320px; 
-    margin-left: -160px; 
+.item2 {
+    position: absolute;
+    right: 50%;
+    left: 50%;
+    width: 320px;
+    margin-left: -160px;
     top: 5px;
 }
-.item{
+
+.item {
     transition: transform 0.2s ease-in-out;
 }
-.item:hover{
+
+.item:hover {
     transform: scale(1.1);
 }
-.item3{
-    position: absolute; 
-    top: 54px; 
+
+.item3 {
+    position: absolute;
+    top: 54px;
     right: 130px;
     transition: transform 0.2s ease-in-out;
 }
-.item4{
-    position: absolute; 
-    top: 54px; 
+
+.item4 {
+    position: absolute;
+    top: 54px;
     right: 50px;
 }
-.img1{
+
+.img1 {
     width: calc(var(--index) * 1.5);
 }
-.img2{
+
+.img2 {
     width: calc(var(--index) * 1.5);
 }
-.img3{
+
+.img3 {
     width: calc(var(--index) * 1.6);
 }
 
 
-.button__top__links{
+.button__top__links {
     transition: 0.3s;
 }
-.button__top__links:hover{
+
+.button__top__links:hover {
     transform: scale(1.1);
 }
-.header__texts{
+
+.header__texts {
     margin: auto;
     display: block;
     flex-direction: column;
 }
 
-.BikeShop__text{
+.BikeShop__text {
     padding-top: 120px;
     font-family: BikeShop;
-    color:#66FCF1;
+    color: #66FCF1;
     font-size: 170px;
     text-align: center;
 }
-.hello__text{
+
+.hello__text {
     margin: auto;
     max-width: 690px;
     font-family: menu-button;
@@ -273,14 +302,14 @@ visibility: visible;
     text-align: center;
 }
 
-.very__beatiful__button{
+.very__beatiful__button {
     padding-top: 7vh;
 }
 
 .shop__now {
     position: relative;
-    left: 50%;
-    right: 50%;
+    left: 50.5%;
+    right: 49.5%;
     margin-left: -87px;
     width: 174px;
     font-family: menu-button;
@@ -304,27 +333,28 @@ visibility: visible;
 
 .mouse__container {
     padding-top: 7vh;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .field {
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-	width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 300px;
 }
 
 .mouse {
-	width: 35px;
-	height: 55px;
-	border: 3px solid #fafafa;
-	border-radius: 60px;
-	position: relative;
+    width: 35px;
+    height: 55px;
+    border: 3px solid #fafafa;
+    border-radius: 60px;
+    position: relative;
 }
+
 .mouse::before {
     content: '';
     width: 8px;
@@ -341,43 +371,48 @@ visibility: visible;
 }
 
 @keyframes wheel {
-	to {
-		opacity: 0;
-		top: 90%;
-	}
+    to {
+        opacity: 0;
+        top: 90%;
+    }
 }
 
 @-webkit-keyframes wheel {
-	to {
-		opacity: 0;
-		top: 1%;
-	}
+    to {
+        opacity: 0;
+        top: 1%;
+    }
 }
 
 
 /*------------------------------------------*/
 /*-------------------main-------------------*/
 .container {
-	padding: 0 7vw;
+    padding: 0 7vw;
 }
-.gallery{
-    display: flex ;
+
+.gallery {
+    display: flex;
     padding: calc(var(--index) * 11) 0;
 }
+
 .gallery > * {
-	flex: 1;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
-.gallery__item{
+
+.gallery__item {
     max-width: calc(var(--index) * 21);
     margin-bottom: var(--gallery-gap);
 }
-.text-block__h{
+
+.text-block__h {
     font-size: 3vw;
 }
-.text-block__p{
+
+.text-block__p {
     font-size: 1.3vw;
 }
 

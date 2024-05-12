@@ -26,8 +26,10 @@ public class ProductValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         Product product = (Product) target;
+        if(product.getTitle().isEmpty())
+            errors.rejectValue("title", null, "Title is required");
 
-        if(productRepository.findByTitle(product.getTitle()).isPresent()) {
+        if(productRepository.existsByTitle(product.getTitle())) {
             errors.rejectValue("title", null, "Product with title '" + product.getTitle() + "' already exists");
         }
     }

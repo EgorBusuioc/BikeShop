@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html >
 <head>
     <meta charset="UTF-8">
 
     <title>BikeShop</title>
 
-    <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
+    <link rel="icon" type="image/png" th:href="@{/Images/helmet.png}">
 
-    <link rel="stylesheet" href="../../static/CSS/login.css">
-    <link rel="stylesheet" href="../../static/CSS/file_upload.css">
-    <link rel="stylesheet" href="../../static/CSS/select_box.css">
+    <link rel="stylesheet" th:href="@{/CSS/login.css}">
+    <link rel="stylesheet" th:href="@{/CSS/file_upload.css}">
+    <link rel="stylesheet" th:href="@{/CSS/select_box.css}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -20,15 +20,18 @@
         <div class="form_content">
             <div class="BikeShop__text">BikeShop</div>
             <div class="sign_in">Add New Product</div>
-            <form th:action="@{/admin/products/add_product/create}" th:method="POST" th:object="${product} "
+            <form th:action="@{/admin/products/add_product}" th:method="POST" th:object="${product} "
                   enctype="multipart/form-data">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}" id="csrfToken">
-                <input th:field="*{title}" type="text" name="title" placeholder="Model Name" class="input"
-                       required/><br><br>
-                <input type="text" name="quantityInStock" placeholder="Quantity In Stock" class="input"
-                       required/><br><br>
+                <input th:field="*{title}" type="text" name="title" placeholder="Model Name" class="input"/><br><br>
+                <div class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">error</div>
+                <input type="text" name="quantityInStock" placeholder="Quantity In Stock" class="input" required/><br><br>
+                <div class="error" th:if="${#fields.hasErrors('quantityInStock')}" th:errors="*{quantityInStock}">error</div>
+                <div class="error" th:if="${errorQuantity != null}" th:text="${errorQuantity}">error</div>
                 <input type="text" name="price" placeholder="Price" class="input" required/><br><br>
+                <div class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">error</div>
                 <input type="text" name="discount" placeholder="Discount (if exists)" class="input"/><br><br>
+                <div class="error" th:if="${errorDiscount != null}" th:text="${errorDiscount}">error</div>
                 <div class="selectdiv">
                     <label>
                         <select name="category">
@@ -42,6 +45,7 @@
                         <i class="fa fa-upload"></i> UPLOAD PHOTOS
                         <input type="file" name="files" multiple>
                     </button>
+                    <div th:if="${error != null}" th:text="${error}" class="error">error</div>
                 </div>
                 <input type="submit" value="ADD PRODUCT" class="sign_in_btn" style="margin-top: 1vh"/>
                 <a th:href="@{/admin/products}" class="registration">ALL PRODUCTS</a>

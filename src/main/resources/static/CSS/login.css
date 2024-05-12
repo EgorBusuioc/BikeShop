@@ -198,9 +198,9 @@ input::placeholder {
 }
 
 .error {
+    font-family: menu-button;
     color: red;
-    font-family: input;
-    font-size: 1.8vh;
+    font-size: 2vh;
     text-align: center;
 }
 

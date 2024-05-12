@@ -4,9 +4,12 @@ import com.example.bikeshop.models.Product;
 import com.example.bikeshop.models.ProductInformation;
 import com.example.bikeshop.models.enums.ProductCategory;
 import com.example.bikeshop.sevices.ProductService;
+import com.example.bikeshop.util.ProductValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +20,7 @@ import java.io.IOException;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductValidator productValidator;
 
     @GetMapping
     public String getMainPage() {
@@ -106,15 +110,33 @@ public class ProductController {
         return "administration/add_product";
     }
 
-    @PostMapping("/admin/products/add_product/create")
-    public String createNewProduct(@ModelAttribute("product") Product product,
+    @PostMapping("/admin/products/add_product")
+    public String createNewProduct(@ModelAttribute("product") @Valid Product product,
                                    @RequestParam("files") MultipartFile[] files,
-                                   @RequestParam("category") String productCategory, Model model) {
+                                   @RequestParam("category") String productCategory, Model model,
+                                   BindingResult bindingResult) {
+
+        productValidator.validate(product, bindingResult);
+
+        if(bindingResult.hasErrors()) {
+            return "administration/add_product";
+        }
+
+        if(!product.ifDiscountLower()) {
+            model.addAttribute("errorDiscount", "Discount must be lower than price");
+            return "administration/add_product";
+        }
+
+        if(!product.ifDiscountLower()) {
+            model.addAttribute("errorQuantity", "Quantity must be higher than 0");
+            return "administration/add_product";
+        }
+
         try {
             productService.saveProduct(product, files, productCategory);
         } catch (IOException e) {
             model.addAttribute("error", "You must upload at least one image");
-            return "administration/products";
+            return "administration/add_product";
         }
 
         return "redirect:/admin/products";

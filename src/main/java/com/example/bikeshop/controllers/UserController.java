@@ -27,11 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String createUser(@ModelAttribute("user") @Valid User user, Model model, BindingResult bindingResult) {
-
-        if(bindingResult.hasErrors())
-            return "authentication/registration";
-
+    public String createUser(@ModelAttribute("user") User user, Model model) {
 
         if(!userService.createUser(user)) {
 

@@ -2,6 +2,8 @@ package com.example.bikeshop.models;
 
 import com.example.bikeshop.models.enums.ProductCategory;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -104,6 +106,22 @@ public class Product {
             tempIndex = index + 1;
         }
         return stringBuilder.toString();
+    }
+
+    public boolean ifDiscountLower () {
+
+        if(this.discount != null)
+            return this.discount < this.price;
+
+        return true;
+    }
+
+    public boolean ifQuantity () {
+
+        if(this.quantityInStock != null)
+            return this.quantityInStock > 0;
+
+        return false;
     }
 
     public void addImageToProduct(Image image) {

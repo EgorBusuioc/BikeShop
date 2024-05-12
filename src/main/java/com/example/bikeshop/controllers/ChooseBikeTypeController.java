@@ -37,8 +37,7 @@ public class ChooseBikeTypeController {
                 model.addAttribute("country", "country");
         }catch (Exception e){
             log.warn("User input wrong type of data");
-            model.addAttribute("errorName", e.getMessage());
-            model.addAttribute("errorInfo", "Something went wrong");
+            model.addAttribute("errorInfo", "This location has not been found");
         }
         return "choose_bike_type";
     }

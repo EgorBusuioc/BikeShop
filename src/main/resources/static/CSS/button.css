@@ -8,8 +8,8 @@
     height: 50px;
     border: none;
     outline: none;
-    color: #fff;
-    background: #111;
+    color: black;
+    background: #edfdfc;
     cursor: pointer;
     position: relative;
     z-index: 0;
@@ -20,7 +20,7 @@
 
 .glow-on-hover:before {
     content: '';
-    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    background: linear-gradient(45deg, #66FCF1, black, #66FCF1, #ff00c8, black, #66FCF1, #ff00c8, black, #66FCF1);
     position: absolute;
     top: -2px;
     left:-2px;
@@ -39,7 +39,7 @@
 }
 
 .glow-on-hover:hover {
-    color: black;
+    color: white;
 }
 
 .glow-on-hover:after {
@@ -48,7 +48,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #111;
+    background: #edfdfc;
     left: 0;
     top: 0;
     border-radius: 10px;
@@ -57,6 +57,6 @@
 
 @keyframes glowing {
     0% { background-position: 0 0; }
-    50% { background-position: 400% 0; }
+    50% { background-position: 250% 0; }
     100% { background-position: 0 0; }
 }

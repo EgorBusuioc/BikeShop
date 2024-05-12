@@ -1,95 +1,93 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <title>BikeShop</title>
+
+    <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
     <link rel="stylesheet" href="../static/CSS/choose_bike_type.css">
     <link rel="stylesheet" href="../static/CSS/button.css">
+    <style>
+        canvas {
+            position: absolute;
+            z-index: 0;
+        }
+
+        .main_grid {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 </head>
+
 <body>
-<div style="position: relative; width: 500px; height: 500px;">
- <canvas id="test" style="position: absolute;"></canvas>
-
-    <div id="dataContainer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-        <form th:action="@{/choose_your_bike}" th:method="POST">
-            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-            <input type="text" name="location" placeholder="Input Location" class="input" required/><br><br>
-            <button type="submit" class="glow-on-hover">FIND YOUR BIKE TYPE</button>
-        </form>
-        <table class="styled-table" th:if="${bikeType}">
-            <thead>
-            <tr>
-                <th>Place Id</th>
-                <th>formattedAddress</th>
-                <th>maxElevation</th>
-                <th>minElevation</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td th:text="${bikeType.getGeocoding().getPlaceId()}"></td>
-                <td th:text="${bikeType.getGeocoding().getFormattedAddress()}"></td>
-                <td th:text="${bikeType.getMaxElevation()}"></td>
-                <td th:text="${bikeType.getMinElevation()}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <a th:if="${country == 'country'}">You must input only city or address</a>
+    <canvas id="test" style="position: absolute;"></canvas>
+    <div class="main_grid">
+        <div class="item_grid">
+            <a class="hero_text">BikeShop</a>
+            <a class="second_text">
+                OUR SHOP GIVES YOU A GREAT OPPORTUNITY TO DISCOVER THE BEST BIKE TYPE FOR YOUR CHOSEN LOCATION.</a><br>
+            <a class="second_text">
+                YOU ONLY NEED TO ENTER THE CITY OR ADDRESS.</a><br>
+            <a class="second_text">
+                THE RESULT WILL BE READY IN UP TO 10 SECONDS.</a><br><br>
+        </div>
+        <div class="item_grid">
+            <form th:action="@{/choose_your_bike}" th:method="POST" class="choose_form">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <input type="text" name="location" placeholder="INPUT LOCATION" class="input" required /><br><br>
+                <button type="submit" class="glow-on-hover">FIND YOUR BIKE TYPE</button>
+            </form>
+            <a th:if="${country == 'country'}" class="error_text">You must input only city or address</a>
+            <a th:if="${errorInfo}" th:text="${errorInfo}" class="error_text">Text</a>
+        </div>
     </div>
-</div>
-
 </body>
+
 </html>
 
 <script>
     const canvas = document.getElementById('test');
     const ctx = canvas.getContext('2d');
 
-    // Устанавливаем размеры холста в соответствии с окном браузера
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Создаем массив для хранения точек
     const dots = [];
-    const dotCount = 100; // Количество белых точек
+    const dotCount = 400;
 
-    // Создаем белые точки
-    // Создаем белые и синие точки
     for (let i = 0; i < dotCount; i++) {
-        // Создаем белые точки
         dots.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             radius: 2,
             dx: (Math.random() - 0.5) * 0.5,
             dy: (Math.random() - 0.5) * 0.5,
-            color: 'white' // Устанавливаем цвет белых точек
+            color: 'white'
         });
     }
 
     for (let i = 0; i < dotCount; i++) {
-        // Создаем синие точки
+
         dots.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            radius: 2,
+            radius: 2.5,
             dx: (Math.random() - 0.5) * 0.5,
             dy: (Math.random() - 0.5) * 0.5,
-            color: 'blue' // Устанавливаем цвет синих точек
+            color: '#66FCF1'
         });
     }
 
-    // Функция для анимации точек
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Обрабатываем каждую точку
         dots.forEach(dot => {
-            // Изменяем позицию точки
             dot.x += dot.dx;
             dot.y += dot.dy;
 
-            // Отражаем точку от краев экрана
             if (dot.x < 0 || dot.x > canvas.width) {
                 dot.dx = -dot.dx;
             }
@@ -97,11 +95,9 @@
                 dot.dy = -dot.dy;
             }
 
-            // Рисуем точку
             ctx.beginPath();
             ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
 
-            // Используем цвет точки
             ctx.fillStyle = dot.color;
             ctx.fill();
         });
@@ -109,7 +105,7 @@
         requestAnimationFrame(animate);
     }
 
-    // Начинаем анимацию
+
     animate();
 
 

@@ -25,6 +25,19 @@ public class BikeCompilation {
     private double maxElevation;
     private double minElevation;
 
+    public String returnType () {
+        if (this.fullDistance > 500)
+            return "Road Bike";
+        if (this.fullDistance > 100 && (maxElevation - minElevation) > 50)
+            return "Mountain Bike";
+        if (this.fullDistance > 100 && (maxElevation - minElevation) < 50)
+            return "Road Bike";
+        if (this.fullDistance < 100 && (maxElevation - minElevation) < 50)
+            return "Mountain Bike";
+
+        return "Mountain Bike and Road Bike";
+    }
+
     public String getFullDistance() {
         return fullDistance / 1000 + " km";
     }

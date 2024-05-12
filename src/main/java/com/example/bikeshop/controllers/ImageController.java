@@ -2,7 +2,6 @@ package com.example.bikeshop.controllers;
 
 import com.example.bikeshop.models.Image;
 import com.example.bikeshop.repositories.ImageRepository;
-import com.example.bikeshop.sevices.ChooseBikeTypeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -20,8 +19,6 @@ import java.io.ByteArrayInputStream;
 public class ImageController {
 
     private final ImageRepository imageRepository;
-    private final ChooseBikeTypeService chooseBikeTypeService;
-
     @Transactional
     @GetMapping("/images/{imageId}")
     public ResponseEntity<?> getImageById(@PathVariable("imageId") int imageId) {

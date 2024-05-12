@@ -22,11 +22,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/registration", "/login", "/choose_your_bike/**",
                                 "/bikes", "/active_bikes", "/mountain_bikes", "/road_bikes", "/turbo_bikes", "/sworks_bikes", "/components", "/equipments",
-                                "/static/**", "/images/**").permitAll()
+                                "/static/**", "/images/**", "/error", "/invalid-url/**").permitAll()
                         .requestMatchers("/product_details/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/add_product", "/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/choose_your_bike/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")

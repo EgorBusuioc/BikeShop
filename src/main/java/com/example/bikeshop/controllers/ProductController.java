@@ -127,7 +127,7 @@ public class ProductController {
             return "administration/add_product";
         }
 
-        if(!product.ifDiscountLower()) {
+        if(!product.ifQuantity()) {
             model.addAttribute("errorQuantity", "Quantity must be higher than 0");
             return "administration/add_product";
         }

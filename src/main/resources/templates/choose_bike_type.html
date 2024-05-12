@@ -6,9 +6,23 @@
 
     <title>BikeShop</title>
 
-    <link rel="icon" type="image/png" href="../../static/Images/helmet.png">
-    <link rel="stylesheet" href="../static/CSS/choose_bike_type.css">
+    <script src="../static/JavaScriptLibraries/gsap/gsap.min.js" defer></script>
+    <script src="../static/JavaScriptLibraries/gsap/ScrollTrigger.min.js" defer></script>
+    <script src="../static/JavaScriptLibraries/gsap/ScrollSmoother.min.js" defer></script>
+    <script src="../static/JavaScript/product_scripts.js" defer></script>
+    <script src="../static/JavaScript/app.js" defer></script>
+
+    <link rel="icon" type="image/png" href="../static/Images/helmet.png">
+
+    <link rel="stylesheet" th:if="${bikeType == null}" href="../static/CSS/choose_bike_type.css">
     <link rel="stylesheet" href="../static/CSS/button.css">
+    <link rel="stylesheet" href="../static/CSS/footer_shop.css">
+    <link rel="stylesheet" href="../static/CSS/nav.css">
+    <link rel="stylesheet" th:unless="${bikeType == null}" href="../static/CSS/elem_paral.css">
+
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <style>
         canvas {
             position: absolute;
@@ -22,29 +36,173 @@
     </style>
 </head>
 
-<body>
-    <canvas id="test" style="position: absolute;"></canvas>
-    <div class="main_grid">
-        <div class="item_grid">
-            <a class="hero_text">BikeShop</a>
-            <a class="second_text">
-                OUR SHOP GIVES YOU A GREAT OPPORTUNITY TO DISCOVER THE BEST BIKE TYPE FOR YOUR CHOSEN LOCATION.</a><br>
-            <a class="second_text">
-                YOU ONLY NEED TO ENTER THE CITY OR ADDRESS.</a><br>
-            <a class="second_text">
-                THE RESULT WILL BE READY IN UP TO 10 SECONDS.</a><br><br>
-        </div>
-        <div class="item_grid">
-            <form th:action="@{/choose_your_bike}" th:method="POST" class="choose_form">
-                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                <input type="text" name="location" placeholder="INPUT LOCATION" class="input" required /><br><br>
-                <button type="submit" class="glow-on-hover">FIND YOUR BIKE TYPE</button>
-            </form>
-            <a th:if="${country == 'country'}" class="error_text">You must input only city or address</a>
-            <a th:if="${errorInfo}" th:text="${errorInfo}" class="error_text">Text</a>
+<body th:if="${bikeType == null}">
+<canvas id="test" style="position: absolute;"></canvas>
+<div class="main_grid">
+    <div class="item_grid">
+        <a class="hero_text">BikeShop</a>
+        <a class="second_text">
+            OUR SHOP GIVES YOU A GREAT OPPORTUNITY TO DISCOVER THE BEST BIKE TYPE FOR YOUR CHOSEN LOCATION.</a><br>
+        <a class="second_text">
+            YOU ONLY NEED TO ENTER THE CITY OR ADDRESS.</a><br>
+        <a class="second_text">
+            THE RESULT WILL BE READY IN UP TO 10 SECONDS.</a><br><br>
+    </div>
+    <div class="item_grid">
+        <form th:action="@{/choose_your_bike}" th:method="POST" class="choose_form">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <input type="text" name="location" placeholder="INPUT LOCATION" class="input" required/><br><br>
+            <button type="submit" class="glow-on-hover">FIND YOUR BIKE TYPE</button>
+        </form>
+        <a th:if="${country == 'country'}" class="error_text">You must input only city or address</a>
+        <a th:if="${errorInfo}" th:text="${errorInfo}" class="error_text">Text</a>
+    </div>
+</div>
+</body>
+
+<body th:unless="${bikeType == null}">
+    <div class="wrapper">
+        <div class="content">
+            <header style="background-color: #f1f1f1;">
+                <div class="navbar">
+                    <div class="nav-logo">
+                        <a data-lag=".4" th:href="@{/}">BikeShop</a>
+                    </div>
+                    <div class="nav-items">
+                        <ul>
+                            <li><a th:href="@{/mountain_bikes}"> MOUNTAIN BIKES </a></li>
+                            <li><a th:href="@{/road_bikes}"> ROAD BIKES </a></li>
+                            <li><a th:href="@{/active_bikes}"> ACTIVE BIKES </a></li>
+                            <li><a th:href="@{/turbo_bikes}"> TURBO-E BIKES </a></li>
+                            <li><a th:href="@{/equipments}"> EQUIPMENT </a></li>
+                            <li><a th:href="@{/components}"> COMPONENTS </a></li>
+                            <li><a th:href="@{/sworks_bikes}"> S-WORKS </a></li>
+                        </ul>
+                    </div>
+                    <div class="nav-button">
+                        <div class="anim-layer"></div>
+                        <a th:href="@{/shopping_cart}">SHOPPING CART</a>
+                    </div>
+                </div>
+
+                <div style="padding: 5vh">
+                    <h1>YOU HAVE CHOSEN</h1>
+                    <h1 th:text="${bikeType.getGeocoding().getFormattedAddress()}"></h1><br><br>
+                    <div>
+                        <h2 th:text="${bikeType.getAqi().getIndexes().get(0).getDisplayName()}">
+                            UNIVERSAL
+                            AQI:</h2>
+                        <h2 th:text="'AQI: ' + ${bikeType.getAqi().getIndexes().get(0).getAqi()}">AQI:</h2>
+                        <h2 th:text="${bikeType.getAqi().getIndexes().get(0).getCategory()}">CATEGORY</h2><br>
+
+                        <h2 th:text="'LOCAL AQI: ' + ${bikeType.getAqi().getIndexes().get(1).getDisplayName()}">
+                            UNIVERSAL
+                            AQI:</h2>
+                        <h2 th:text="'AQI: ' + ${bikeType.getAqi().getIndexes().get(1).getAqi()}">AQI:</h2>
+                        <h2 th:text="${bikeType.getAqi().getIndexes().get(1).getCategory()}">CATEGORY</h2><br><br>
+
+                        <h2 th:text="'MAX ELEVATION: ' + ${bikeType.getMaxElevation()}">ELEVATION</h2>
+                        <h2 th:text="'MIN ELEVATION: ' + ${bikeType.getMinElevation()}">ELEVATION</h2>
+                        <h2 th:text="'FULL DISTANCE BETWEEN PLACES: ' + ${bikeType.getFullDistance()}">ELEVATION</h2><br><br>
+
+                        <h2>ACCORDING TO THE GIVEN DATA WE CAN ADVICE</h2>
+                        <h2 class="result" th:text="${bikeType.returnType()}">Mountain Bike</h2>
+                    </div>
+                </div>
+            </header>
+
+            <div class="portfolio" style="background-color: #f1f1f1;">
+                <div class="container">
+                    <main class="gallery" th:each="place : ${bikeType.getDirections()}">
+
+                        <div data-speed=".9" class="gallery__left" th:if="${place.getStartPlace() != null}">
+                            <div class="text-block gallery__item">
+                                <h2 class="text-block__h" th:text="${place.getStartPlace().getPlaceName()}">BIG</h2>
+                                <p class="text-block__p" th:text="${place.getStartPlace().getElevation()}">LITTLE</p>
+                            </div>
+                        </div>
+
+                        <div data-speed="1.1" class="gallery__right" th:if="${place.getStartPlace() != null}">
+                            <img style="border-radius: 10px; box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;" th:if="${place.getStartPlace().getPhotos() != null and not #lists.isEmpty(place.getStartPlace().getPhotos())}"
+                                th:src="@{${places_url} + ${place.getStartPlace().getPhotos().get(0).getName()} + ${media_url} + '&key=' + ${key}}" >
+                        </div>
+                    </main>
+                </div>
+            </div>
+                <footer>
+                    <div class="footer" data-speed=1.005>
+                        <div class="footer_container">
+                            <div class="colors">
+                                <div class="footer__content">
+                                    <div style="height: 15vh; position: relative; top: 5vh;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <div class="footer__lines"></div>
+                                            <div class="footer__lines" style="width: 50%;"></div>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <div class="footer__text">
+                                                YEAR FOUNDED
+                                            </div>
+                                            <div class="footer__text"
+                                                style="width: 6.5vw; position: relative; left: 25vw;">
+                                                COMPANY
+                                            </div>
+                                        </div>
+                                        <div class="footer_2023">
+                                            2024
+                                        </div>
+                                        <div class="footer_bikeshop" data-lag=".4">
+                                            BikeShop
+                                        </div>
+                                    </div>
+                                    <div class="footer_busuiocegor">
+                                        Busuioc Egor
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: inline-block; height:5%;"></div>
+                            <div style="display: flex; flex-direction: row; height: 21%">
+                                <div class="get__in__touch">
+                                    <div style="margin: auto;">
+                                        Get in touch
+                                    </div>
+                                    <div style="margin: auto; display: flex; flex-direction: column;">
+                                        <div><a class="links__decoration"
+                                                href="mailto:busuioc.egor@yandex.com">busuioc.egor@yandex.com</a>
+                                        </div>
+                                        <div><a class="links__decoration"
+                                                href="mailto:busuiocegor@outlook.com">busuiocegor@outlook.com</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="follow__me">
+                                    <div style="margin: auto;">Follow Me</div>
+                                    <div style="display: block; height: 100%;"></div>
+                                    <div style="margin:auto;" class="social-links">
+                                        <a href="https://www.facebook.com/profile.php?id=100008517721439"><i
+                                                class="fab fa-facebook-f"></i></a>
+                                        <a href="https://vk.com/idp1os"><i class="fab fa-vk"></i></a>
+                                        <a href="https://www.instagram.com/personal_id_eguar/"><i
+                                                class="fab fa-instagram"></i></a>
+                                        <a href="https://github.com/EgorBusuioc"><i class="fab fa-github"></i></a>
+                                    </div>
+                                </div>
+                                <div class="go__back">
+                                    <a th:href="@{/}" class="go__back__button" style="border:3px solid #b9fcf7;">Go Back</a>
+                                </div>
+                            </div>
+                            <div style="display: block; height: 100%;">
+                                <div data-lag=".4" class="white__bike"><img src="../static/Images/Bike white.png"
+                                        width="140px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
         </div>
     </div>
 </body>
+
+</html>
 
 </html>
 
@@ -107,6 +265,4 @@
 
 
     animate();
-
-
 </script>
